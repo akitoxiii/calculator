@@ -1,0 +1,54 @@
+name: Database Backup
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日深夜0時に実行
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Setup Environment
+        run: |
+          echo "PGPASSWORD=${{ secrets.SUPABASE_DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "BACKUP_TIMESTAMP=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
+
+      - name: Backup Direct Database
+        run: |
+          pg_dump \
+            -h db.wocwnfhgwxesafjtiaxc.supabase.co \
+            -p 5432 \
+            -U postgres \
+            -d postgres \
+            -F c \
+            -f "backup_direct_${BACKUP_TIMESTAMP}.dump"
+
+      - name: Backup via Transaction Pooler
+        run: |
+          pg_dump \
+            -h aws-0-ap-northeast-1.pooler.supabase.com \
+            -p 6543 \
+            -U postgres.wocwnfhgwxesafjtiaxc \
+            -d postgres \
+            -F c \
+            -f "backup_pooled_${BACKUP_TIMESTAMP}.dump"
+
+      - name: Upload backups as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: database-backups
+          path: backup_*.dump
+          retention-days: 30
+
+      - name: Cleanup local files
+        if: always()
+        run: |
+          rm -f backup_*.dump

@@ -1,0 +1,18 @@
+'Log files:
+C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-04-29T13_23_26_661Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: bestpcfinder@0.1.0
+Found: next@14.1.0
+node_modules/next
+  next@"14.1.0" from the root project
+
+Could not resolve dependency:
+peer next@"^13.5.7 || ^14.2.25 || ^15.2.3" from @clerk/nextjs@6.18.0
+node_modules/@clerk/nextjs
+  @clerk/nextjs@"6.18.0" from the root project
+
+Fix the upstream dependency conflict, or retry
+this command with --force or --legacy-peer-deps
+to accept an incorrect (and potentially broken) dependency resolution.
