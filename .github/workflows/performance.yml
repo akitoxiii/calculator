@@ -24,7 +24,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v9
         with:
           urls: |
-            https://your-production-url.vercel.app
+            ${{ secrets.PRODUCTION_URL }}
           uploadArtifacts: true
           temporaryPublicStorage: true
 
