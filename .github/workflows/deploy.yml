@@ -20,11 +20,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run type check
+        run: npm run type-check
+
+      - name: Run lint
+        run: npm run lint
+
       - name: Run tests
         run: npm test
-
-      - name: Build application
-        run: npm run build
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
