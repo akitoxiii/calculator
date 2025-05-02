@@ -3,7 +3,12 @@ const nextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    domains: ['wocwnfhgwxesafjtiaxc.supabase.co'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'wocwnfhgwxesafjtiaxc.supabase.co',
+      },
+    ],
   },
   basePath: process.env.NODE_ENV === 'production' ? '/calculator' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/calculator/' : '',
