@@ -10,7 +10,6 @@
   },
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm ci",
-  "frameworkVersion": "14.2.28",
+  "installCommand": "npm install",
   "output": "standalone"
 } 

@@ -19,6 +19,9 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   output: 'standalone',
+  experimental: {
+    serverActions: false
+  },
   // experimental: {
   //   appDir: true, // Next.js 13.4以降は不要
   // },

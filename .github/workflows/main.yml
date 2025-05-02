@@ -42,6 +42,14 @@ jobs:
         path: .next
         key: ${{ runner.os }}-nextjs-${{ hashFiles('**/*') }}
 
+    - name: Run Lighthouse CI
+      uses: treosh/lighthouse-ci-action@v9
+      with:
+        urls: |
+          https://calculator-${GITHUB_SHA}.vercel.app
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
   deploy:
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
@@ -64,5 +72,12 @@ jobs:
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+
+    - name: Deploy to Vercel
+      run: |
+        npm install -g vercel
+        vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
     # ここにデプロイ先に応じたデプロイステップを追加
     # 例: Vercel, AWS, Herokuなど 
