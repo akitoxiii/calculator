@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     unoptimized: true,
-    domains: ['wocwnfhgwxesafjtiaxc.supabase.co'], // Supabaseのドメインを追加
+    domains: ['wocwnfhgwxesafjtiaxc.supabase.co'],
   },
   trailingSlash: true,
   env: {
@@ -18,7 +18,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // 静的エクスポートを無効化
   output: 'standalone',
   // experimental: {
   //   appDir: true, // Next.js 13.4以降は不要
