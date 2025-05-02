@@ -1,0 +1,1714 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v22.14.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\akito\git\calculator\.npmrc
+5 silly config load:file:C:\Users\akito\.npmrc
+6 silly config load:file:C:\Users\akito\git\calculator\%APPDATA%\npm\etc\npmrc
+7 verbose title npm audit fix
+8 verbose argv "audit" "fix" "--force"
+9 verbose logfile logs-max:10 dir:C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-02T03_11_22_669Z-
+10 verbose logfile C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-02T03_11_22_669Z-debug-0.log
+11 warn using --force Recommended protections disabled.
+12 silly logfile start cleaning logs, removing 1 files
+13 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+14 silly logfile done cleaning log files
+15 silly audit bulk request {
+15 silly audit   '@alloc/quick-lru': [ '5.2.0' ],
+15 silly audit   '@babel/runtime': [ '7.27.1' ],
+15 silly audit   '@clerk/backend': [ '0.38.15' ],
+15 silly audit   '@types/node': [ '16.18.6', '20.5.0' ],
+15 silly audit   '@clerk/clerk-react': [ '4.32.5' ],
+15 silly audit   '@clerk/clerk-sdk-node': [ '4.13.23' ],
+15 silly audit   'snakecase-keys': [ '3.2.1', '5.4.4' ],
+15 silly audit   '@clerk/localizations': [ '1.22.0' ],
+15 silly audit   '@clerk/nextjs': [ '4.31.8' ],
+15 silly audit   '@clerk/shared': [ '1.4.2' ],
+15 silly audit   '@clerk/types': [ '3.65.5' ],
+15 silly audit   '@emnapi/core': [ '1.4.3' ],
+15 silly audit   '@emnapi/runtime': [ '1.4.3' ],
+15 silly audit   '@emnapi/wasi-threads': [ '1.0.2' ],
+15 silly audit   '@eslint-community/eslint-utils': [ '4.6.1' ],
+15 silly audit   '@eslint-community/regexpp': [ '4.12.1' ],
+15 silly audit   '@eslint/eslintrc': [ '2.1.4' ],
+15 silly audit   '@eslint/js': [ '8.57.1' ],
+15 silly audit   '@humanwhocodes/config-array': [ '0.11.14' ],
+15 silly audit   '@humanwhocodes/module-importer': [ '1.0.1' ],
+15 silly audit   '@humanwhocodes/object-schema': [ '2.0.3' ],
+15 silly audit   '@isaacs/cliui': [ '8.0.2' ],
+15 silly audit   'ansi-regex': [ '6.1.0', '5.0.1' ],
+15 silly audit   'strip-ansi': [ '7.1.0', '6.0.1' ],
+15 silly audit   '@jridgewell/gen-mapping': [ '0.3.8' ],
+15 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+15 silly audit   '@jridgewell/set-array': [ '1.2.1' ],
+15 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.0' ],
+15 silly audit   '@jridgewell/trace-mapping': [ '0.3.25' ],
+15 silly audit   '@kurkle/color': [ '0.3.4' ],
+15 silly audit   '@napi-rs/wasm-runtime': [ '0.2.9' ],
+15 silly audit   '@next/env': [ '14.2.28' ],
+15 silly audit   '@next/eslint-plugin-next': [ '13.4.19' ],
+15 silly audit   '@next/swc-darwin-arm64': [ '14.2.28' ],
+15 silly audit   '@next/swc-darwin-x64': [ '14.2.28' ],
+15 silly audit   '@next/swc-linux-arm64-gnu': [ '14.2.28' ],
+15 silly audit   '@next/swc-linux-arm64-musl': [ '14.2.28' ],
+15 silly audit   '@next/swc-linux-x64-gnu': [ '14.2.28' ],
+15 silly audit   '@next/swc-linux-x64-musl': [ '14.2.28' ],
+15 silly audit   '@next/swc-win32-arm64-msvc': [ '14.2.28' ],
+15 silly audit   '@next/swc-win32-ia32-msvc': [ '14.2.28' ],
+15 silly audit   '@next/swc-win32-x64-msvc': [ '14.2.28' ],
+15 silly audit   '@nodelib/fs.scandir': [ '2.1.5' ],
+15 silly audit   '@nodelib/fs.stat': [ '2.0.5' ],
+15 silly audit   '@nodelib/fs.walk': [ '1.2.8' ],
+15 silly audit   '@nolyfill/is-core-module': [ '1.0.39' ],
+15 silly audit   '@peculiar/asn1-schema': [ '2.3.15' ],
+15 silly audit   tslib: [ '2.8.1', '2.4.1' ],
+15 silly audit   '@peculiar/json-schema': [ '1.1.12' ],
+15 silly audit   '@peculiar/webcrypto': [ '1.4.1' ],
+15 silly audit   '@pkgjs/parseargs': [ '0.11.0' ],
+15 silly audit   '@rtsao/scc': [ '1.1.0' ],
+15 silly audit   '@rushstack/eslint-patch': [ '1.11.0' ],
+15 silly audit   '@supabase/auth-helpers-nextjs': [ '0.7.4' ],
+15 silly audit   '@supabase/auth-helpers-shared': [ '0.4.1' ],
+15 silly audit   '@supabase/functions-js': [ '2.4.4' ],
+15 silly audit   '@supabase/gotrue-js': [ '2.69.1' ],
+15 silly audit   '@supabase/node-fetch': [ '2.6.15' ],
+15 silly audit   '@supabase/postgrest-js': [ '1.19.4' ],
+15 silly audit   '@supabase/realtime-js': [ '2.11.7' ],
+15 silly audit   '@supabase/ssr': [ '0.0.10' ],
+15 silly audit   '@supabase/storage-js': [ '2.7.2' ],
+15 silly audit   '@supabase/supabase-js': [ '2.32.0' ],
+15 silly audit   '@swc/counter': [ '0.1.3' ],
+15 silly audit   '@swc/helpers': [ '0.5.5' ],
+15 silly audit   '@tybys/wasm-util': [ '0.9.0' ],
+15 silly audit   '@types/body-parser': [ '1.19.5' ],
+15 silly audit   '@types/chart.js': [ '2.9.37' ],
+15 silly audit   '@types/connect': [ '3.4.38' ],
+15 silly audit   '@types/cookies': [ '0.7.7' ],
+15 silly audit   '@types/express': [ '4.17.14' ],
+15 silly audit   '@types/express-serve-static-core': [ '4.19.6' ],
+15 silly audit   '@types/http-errors': [ '2.0.4' ],
+15 silly audit   '@types/json5': [ '0.0.29' ],
+15 silly audit   '@types/keygrip': [ '1.0.6' ],
+15 silly audit   '@types/mime': [ '1.3.5' ],
+15 silly audit   '@types/node-fetch': [ '2.6.2' ],
+15 silly audit   '@types/phoenix': [ '1.6.6' ],
+15 silly audit   '@types/prop-types': [ '15.7.14' ],
+15 silly audit   '@types/qs': [ '6.9.18' ],
+15 silly audit   '@types/range-parser': [ '1.2.7' ],
+15 silly audit   '@types/react': [ '18.2.20' ],
+15 silly audit   '@types/react-dom': [ '18.2.7' ],
+15 silly audit   '@types/scheduler': [ '0.26.0' ],
+15 silly audit   '@types/send': [ '0.17.4' ],
+15 silly audit   '@types/serve-static': [ '1.15.7' ],
+15 silly audit   '@types/ws': [ '8.18.1' ],
+15 silly audit   '@typescript-eslint/parser': [ '6.21.0' ],
+15 silly audit   '@typescript-eslint/scope-manager': [ '6.21.0' ],
+15 silly audit   '@typescript-eslint/types': [ '6.21.0' ],
+15 silly audit   '@typescript-eslint/typescript-estree': [ '6.21.0' ],
+15 silly audit   'brace-expansion': [ '2.0.1', '1.1.11' ],
+15 silly audit   minimatch: [ '9.0.3', '3.1.2', '9.0.5' ],
+15 silly audit   '@typescript-eslint/visitor-keys': [ '6.21.0' ],
+15 silly audit   '@unrs/resolver-binding-darwin-arm64': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-darwin-x64': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-freebsd-x64': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm-gnueabihf': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm-musleabihf': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm64-gnu': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm64-musl': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-ppc64-gnu': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-riscv64-gnu': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-riscv64-musl': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-s390x-gnu': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-x64-gnu': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-x64-musl': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-wasm32-wasi': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-arm64-msvc': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-ia32-msvc': [ '1.7.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-x64-msvc': [ '1.7.2' ],
+15 silly audit   acorn: [ '8.14.1' ],
+15 silly audit   'acorn-jsx': [ '5.3.2' ],
+15 silly audit   ajv: [ '6.12.6' ],
+15 silly audit   'ansi-styles': [ '4.3.0', '6.2.1' ],
+15 silly audit   'any-promise': [ '1.3.0' ],
+15 silly audit   anymatch: [ '3.1.3' ],
+15 silly audit   arg: [ '5.0.2' ],
+15 silly audit   argparse: [ '2.0.1' ],
+15 silly audit   'aria-query': [ '5.3.2' ],
+15 silly audit   'array-buffer-byte-length': [ '1.0.2' ],
+15 silly audit   'array-includes': [ '3.1.8' ],
+15 silly audit   'array-union': [ '2.1.0' ],
+15 silly audit   'array.prototype.findlast': [ '1.2.5' ],
+15 silly audit   'array.prototype.findlastindex': [ '1.2.6' ],
+15 silly audit   'array.prototype.flat': [ '1.3.3' ],
+15 silly audit   'array.prototype.flatmap': [ '1.3.3' ],
+15 silly audit   'array.prototype.tosorted': [ '1.1.4' ],
+15 silly audit   'arraybuffer.prototype.slice': [ '1.0.4' ],
+15 silly audit   asn1js: [ '3.0.6' ],
+15 silly audit   'ast-types-flow': [ '0.0.8' ],
+15 silly audit   'async-function': [ '1.0.0' ],
+15 silly audit   asynckit: [ '0.4.0' ],
+15 silly audit   autoprefixer: [ '10.4.15' ],
+15 silly audit   'available-typed-arrays': [ '1.0.7' ],
+15 silly audit   'axe-core': [ '4.10.3' ],
+15 silly audit   'axobject-query': [ '4.1.0' ],
+15 silly audit   'balanced-match': [ '1.0.2' ],
+15 silly audit   'bin-links': [ '4.0.4' ],
+15 silly audit   'binary-extensions': [ '2.3.0' ],
+15 silly audit   braces: [ '3.0.3' ],
+15 silly audit   browserslist: [ '4.24.4' ],
+15 silly audit   busboy: [ '1.6.0' ],
+15 silly audit   'call-bind': [ '1.0.8' ],
+15 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+15 silly audit   'call-bound': [ '1.0.4' ],
+15 silly audit   callsites: [ '3.1.0' ],
+15 silly audit   camelcase: [ '5.3.1' ],
+15 silly audit   'camelcase-css': [ '2.0.1' ],
+15 silly audit   'camelcase-keys': [ '6.2.2' ],
+15 silly audit   'caniuse-lite': [ '1.0.30001716' ],
+15 silly audit   chalk: [ '4.1.2' ],
+15 silly audit   'chart.js': [ '4.4.0' ],
+15 silly audit   chokidar: [ '3.6.0' ],
+15 silly audit   'glob-parent': [ '5.1.2', '6.0.2' ],
+15 silly audit   chownr: [ '2.0.0' ],
+15 silly audit   'client-only': [ '0.0.1' ],
+15 silly audit   'cmd-shim': [ '6.0.3' ],
+15 silly audit   'color-convert': [ '2.0.1' ],
+15 silly audit   'color-name': [ '1.1.4' ],
+15 silly audit   'combined-stream': [ '1.0.8' ],
+15 silly audit   commander: [ '4.1.1' ],
+15 silly audit   'concat-map': [ '0.0.1' ],
+15 silly audit   cookie: [ '0.5.0' ],
+15 silly audit   'cross-fetch': [ '3.2.0' ],
+15 silly audit   'cross-spawn': [ '7.0.6' ],
+15 silly audit   cssesc: [ '3.0.0' ],
+15 silly audit   csstype: [ '3.1.1' ],
+15 silly audit   'damerau-levenshtein': [ '1.0.8' ],
+15 silly audit   'data-uri-to-buffer': [ '4.0.1' ],
+15 silly audit   'data-view-buffer': [ '1.0.2' ],
+15 silly audit   'data-view-byte-length': [ '1.0.2' ],
+15 silly audit   'data-view-byte-offset': [ '1.0.1' ],
+15 silly audit   'date-fns': [ '2.30.0' ],
+15 silly audit   debug: [ '4.4.0', '3.2.7' ],
+15 silly audit   'deep-is': [ '0.1.4' ],
+15 silly audit   deepmerge: [ '4.2.2' ],
+15 silly audit   'define-data-property': [ '1.1.4' ],
+15 silly audit   'define-properties': [ '1.2.1' ],
+15 silly audit   'delayed-stream': [ '1.0.0' ],
+15 silly audit   didyoumean: [ '1.2.2' ],
+15 silly audit   'dir-glob': [ '3.0.1' ],
+15 silly audit   dlv: [ '1.1.3' ],
+15 silly audit   doctrine: [ '3.0.0', '2.1.0' ],
+15 silly audit   'dot-case': [ '3.0.4' ],
+15 silly audit   'dunder-proto': [ '1.0.1' ],
+15 silly audit   eastasianwidth: [ '0.2.0' ],
+15 silly audit   'electron-to-chromium': [ '1.5.148' ],
+15 silly audit   'emoji-regex': [ '9.2.2', '8.0.0' ],
+15 silly audit   'es-abstract': [ '1.23.9' ],
+15 silly audit   'es-define-property': [ '1.0.1' ],
+15 silly audit   'es-errors': [ '1.3.0' ],
+15 silly audit   'es-iterator-helpers': [ '1.2.1' ],
+15 silly audit   'es-object-atoms': [ '1.1.1' ],
+15 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+15 silly audit   'es-shim-unscopables': [ '1.1.0' ],
+15 silly audit   'es-to-primitive': [ '1.3.0' ],
+15 silly audit   escalade: [ '3.2.0' ],
+15 silly audit   'escape-string-regexp': [ '4.0.0' ],
+15 silly audit   eslint: [ '8.47.0' ],
+15 silly audit   'eslint-config-next': [ '13.4.19' ],
+15 silly audit   'eslint-import-resolver-node': [ '0.3.9' ],
+15 silly audit   'eslint-import-resolver-typescript': [ '3.10.1' ],
+15 silly audit   'eslint-module-utils': [ '2.12.0' ],
+15 silly audit   'eslint-plugin-import': [ '2.31.0' ],
+15 silly audit   semver: [ '6.3.1', '7.7.1' ],
+15 silly audit   'eslint-plugin-jsx-a11y': [ '6.10.2' ],
+15 silly audit   'eslint-plugin-react': [ '7.37.5' ],
+15 silly audit   'eslint-plugin-react-hooks': [ '5.0.0-canary-7118f5dd7-20230705' ],
+15 silly audit   resolve: [ '2.0.0-next.5', '1.22.10' ],
+15 silly audit   'eslint-scope': [ '7.2.2' ],
+15 silly audit   'eslint-visitor-keys': [ '3.4.3' ],
+15 silly audit   espree: [ '9.6.1' ],
+15 silly audit   esquery: [ '1.6.0' ],
+15 silly audit   esrecurse: [ '4.3.0' ],
+15 silly audit   estraverse: [ '5.3.0' ],
+15 silly audit   esutils: [ '2.0.3' ],
+15 silly audit   'fast-deep-equal': [ '3.1.3' ],
+15 silly audit   'fast-glob': [ '3.3.3' ],
+15 silly audit   'fast-json-stable-stringify': [ '2.1.0' ],
+15 silly audit   'fast-levenshtein': [ '2.0.6' ],
+15 silly audit   fastq: [ '1.19.1' ],
+15 silly audit   fdir: [ '6.4.4' ],
+15 silly audit   'fetch-blob': [ '3.2.0' ],
+15 silly audit   'file-entry-cache': [ '6.0.1' ],
+15 silly audit   'fill-range': [ '7.1.1' ],
+15 silly audit   'find-up': [ '5.0.0' ],
+15 silly audit   'flat-cache': [ '3.2.0' ],
+15 silly audit   flatted: [ '3.3.3' ],
+15 silly audit   'for-each': [ '0.3.5' ],
+15 silly audit   'foreground-child': [ '3.3.1' ],
+15 silly audit   'form-data': [ '3.0.3' ],
+15 silly audit   'formdata-polyfill': [ '4.0.10' ],
+15 silly audit   'fraction.js': [ '4.3.7' ],
+15 silly audit   'fs-minipass': [ '2.1.0' ],
+15 silly audit   minipass: [ '3.3.6', '5.0.0', '7.1.2' ],
+15 silly audit   'fs.realpath': [ '1.0.0' ],
+15 silly audit   fsevents: [ '2.3.3' ],
+15 silly audit   'function-bind': [ '1.1.2' ],
+15 silly audit   'function.prototype.name': [ '1.1.8' ],
+15 silly audit   'functions-have-names': [ '1.2.3' ],
+15 silly audit   'get-intrinsic': [ '1.3.0' ],
+15 silly audit   'get-proto': [ '1.0.1' ],
+15 silly audit   'get-symbol-description': [ '1.1.0' ],
+15 silly audit   'get-tsconfig': [ '4.10.0' ],
+15 silly audit   glob: [ '7.1.7', '10.4.5' ],
+15 silly audit   'glob-to-regexp': [ '0.4.1' ],
+15 silly audit   globals: [ '13.24.0' ],
+15 silly audit   globalthis: [ '1.0.4' ],
+15 silly audit   globby: [ '11.1.0' ],
+15 silly audit   gopd: [ '1.2.0' ],
+15 silly audit   'graceful-fs': [ '4.2.11' ],
+15 silly audit   graphemer: [ '1.4.0' ],
+15 silly audit   'has-bigints': [ '1.1.0' ],
+15 silly audit   'has-flag': [ '4.0.0' ],
+15 silly audit   'has-property-descriptors': [ '1.0.2' ],
+15 silly audit   'has-proto': [ '1.2.0' ],
+15 silly audit   'has-symbols': [ '1.1.0' ],
+15 silly audit   'has-tostringtag': [ '1.0.2' ],
+15 silly audit   hasown: [ '2.0.2' ],
+15 silly audit   ignore: [ '5.3.2' ],
+15 silly audit   'import-fresh': [ '3.3.1' ],
+15 silly audit   imurmurhash: [ '0.1.4' ],
+15 silly audit   inflight: [ '1.0.6' ],
+15 silly audit   inherits: [ '2.0.4' ],
+15 silly audit   'internal-slot': [ '1.1.0' ],
+15 silly audit   'is-array-buffer': [ '3.0.5' ],
+15 silly audit   'is-async-function': [ '2.1.1' ],
+15 silly audit   'is-bigint': [ '1.1.0' ],
+15 silly audit   'is-binary-path': [ '2.1.0' ],
+15 silly audit   'is-boolean-object': [ '1.2.2' ],
+15 silly audit   'is-bun-module': [ '2.0.0' ],
+15 silly audit   'is-callable': [ '1.2.7' ],
+15 silly audit   'is-core-module': [ '2.16.1' ],
+15 silly audit   'is-data-view': [ '1.0.2' ],
+15 silly audit   'is-date-object': [ '1.1.0' ],
+15 silly audit   'is-extglob': [ '2.1.1' ],
+15 silly audit   'is-finalizationregistry': [ '1.1.1' ],
+15 silly audit   'is-fullwidth-code-point': [ '3.0.0' ],
+15 silly audit   'is-generator-function': [ '1.1.0' ],
+15 silly audit   'is-glob': [ '4.0.3' ],
+15 silly audit   'is-map': [ '2.0.3' ],
+15 silly audit   'is-number': [ '7.0.0' ],
+15 silly audit   'is-number-object': [ '1.1.1' ],
+15 silly audit   'is-path-inside': [ '3.0.3' ],
+15 silly audit   'is-regex': [ '1.2.1' ],
+15 silly audit   'is-set': [ '2.0.3' ],
+15 silly audit   'is-shared-array-buffer': [ '1.0.4' ],
+15 silly audit   'is-string': [ '1.1.1' ],
+15 silly audit   'is-symbol': [ '1.1.1' ],
+15 silly audit   'is-typed-array': [ '1.1.15' ],
+15 silly audit   'is-weakmap': [ '2.0.2' ],
+15 silly audit   'is-weakref': [ '1.1.1' ],
+15 silly audit   'is-weakset': [ '2.0.4' ],
+15 silly audit   isarray: [ '2.0.5' ],
+15 silly audit   isexe: [ '2.0.0' ],
+15 silly audit   'iterator.prototype': [ '1.1.5' ],
+15 silly audit   jackspeak: [ '3.4.3' ],
+15 silly audit   jiti: [ '1.21.7' ],
+15 silly audit   jose: [ '4.15.9' ],
+15 silly audit   'js-cookie': [ '3.0.1' ],
+15 silly audit   'js-tokens': [ '4.0.0' ],
+15 silly audit   'js-yaml': [ '4.1.0' ],
+15 silly audit   'json-buffer': [ '3.0.1' ],
+15 silly audit   'json-schema-traverse': [ '0.4.1' ],
+15 silly audit   'json-stable-stringify-without-jsonify': [ '1.0.1' ],
+15 silly audit   json5: [ '1.0.2' ],
+15 silly audit   'jsx-ast-utils': [ '3.3.5' ],
+15 silly audit   keyv: [ '4.5.4' ],
+15 silly audit   'language-subtag-registry': [ '0.3.23' ],
+15 silly audit   'language-tags': [ '1.0.9' ],
+15 silly audit   levn: [ '0.4.1' ],
+15 silly audit   lilconfig: [ '2.1.0', '3.1.3' ],
+15 silly audit   'lines-and-columns': [ '1.2.4' ],
+15 silly audit   'locate-path': [ '6.0.0' ],
+15 silly audit   'lodash.merge': [ '4.6.2' ],
+15 silly audit   'loose-envify': [ '1.4.0' ],
+15 silly audit   'lower-case': [ '2.0.2' ],
+15 silly audit   'lru-cache': [ '10.4.3' ],
+15 silly audit   'map-obj': [ '4.3.0' ],
+15 silly audit   'math-intrinsics': [ '1.1.0' ],
+15 silly audit   merge2: [ '1.4.1' ],
+15 silly audit   micromatch: [ '4.0.8' ],
+15 silly audit   'mime-db': [ '1.52.0' ],
+15 silly audit   'mime-types': [ '2.1.35' ],
+15 silly audit   minimist: [ '1.2.8' ],
+15 silly audit   minizlib: [ '2.1.2' ],
+15 silly audit   mkdirp: [ '1.0.4' ],
+15 silly audit   moment: [ '2.30.1' ],
+15 silly audit   ms: [ '2.1.3' ],
+15 silly audit   mz: [ '2.7.0' ],
+15 silly audit   nanoid: [ '3.3.11' ],
+15 silly audit   'napi-postinstall': [ '0.2.3' ],
+15 silly audit   'natural-compare': [ '1.4.0' ],
+15 silly audit   next: [ '14.2.28' ],
+15 silly audit   postcss: [ '8.4.31', '8.4.28' ],
+15 silly audit   'no-case': [ '3.0.4' ],
+15 silly audit   'node-domexception': [ '1.0.0' ],
+15 silly audit   'node-fetch': [ '2.7.0', '3.3.2' ],
+15 silly audit   'node-fetch-native': [ '1.0.1' ],
+15 silly audit   'node-releases': [ '2.0.19' ],
+15 silly audit   'normalize-path': [ '3.0.0' ],
+15 silly audit   'normalize-range': [ '0.1.2' ],
+15 silly audit   'npm-normalize-package-bin': [ '3.0.1' ],
+15 silly audit   'object-assign': [ '4.1.1' ],
+15 silly audit   'object-hash': [ '3.0.0' ],
+15 silly audit   'object-inspect': [ '1.13.4' ],
+15 silly audit   'object-keys': [ '1.1.1' ],
+15 silly audit   'object.assign': [ '4.1.7' ],
+15 silly audit   'object.entries': [ '1.1.9' ],
+15 silly audit   'object.fromentries': [ '2.0.8' ],
+15 silly audit   'object.groupby': [ '1.0.3' ],
+15 silly audit   'object.values': [ '1.2.1' ],
+15 silly audit   once: [ '1.4.0' ],
+15 silly audit   optionator: [ '0.9.4' ],
+15 silly audit   'own-keys': [ '1.0.1' ],
+15 silly audit   'p-limit': [ '3.1.0' ],
+15 silly audit   'p-locate': [ '5.0.0' ],
+15 silly audit   'package-json-from-dist': [ '1.0.1' ],
+15 silly audit   'parent-module': [ '1.0.1' ],
+15 silly audit   'path-exists': [ '4.0.0' ],
+15 silly audit   'path-is-absolute': [ '1.0.1' ],
+15 silly audit   'path-key': [ '3.1.1' ],
+15 silly audit   'path-parse': [ '1.0.7' ],
+15 silly audit   'path-scurry': [ '1.11.1' ],
+15 silly audit   'path-type': [ '4.0.0' ],
+15 silly audit   picocolors: [ '1.1.1' ],
+15 silly audit   picomatch: [ '2.3.1', '4.0.2' ],
+15 silly audit   pify: [ '2.3.0' ],
+15 silly audit   pirates: [ '4.0.7' ],
+15 silly audit   'possible-typed-array-names': [ '1.1.0' ],
+15 silly audit   'postcss-import': [ '15.1.0' ],
+15 silly audit   'postcss-js': [ '4.0.1' ],
+15 silly audit   'postcss-load-config': [ '4.0.2' ],
+15 silly audit   'postcss-nested': [ '6.2.0' ],
+15 silly audit   'postcss-selector-parser': [ '6.1.2' ],
+15 silly audit   'postcss-value-parser': [ '4.2.0' ],
+15 silly audit   'prelude-ls': [ '1.2.1' ],
+15 silly audit   'prop-types': [ '15.8.1' ],
+15 silly audit   punycode: [ '2.3.1' ],
+15 silly audit   pvtsutils: [ '1.3.6' ],
+15 silly audit   pvutils: [ '1.1.3' ],
+15 silly audit   'queue-microtask': [ '1.2.3' ],
+15 silly audit   'quick-lru': [ '4.0.1' ],
+15 silly audit   ramda: [ '0.29.1' ],
+15 silly audit   react: [ '18.2.0' ],
+15 silly audit   'react-chartjs-2': [ '5.2.0' ],
+15 silly audit   'react-dom': [ '18.2.0' ],
+15 silly audit   'react-is': [ '16.13.1' ],
+15 silly audit   'read-cache': [ '1.0.0' ],
+15 silly audit   'read-cmd-shim': [ '4.0.0' ],
+15 silly audit   readdirp: [ '3.6.0' ],
+15 silly audit   'reflect.getprototypeof': [ '1.0.10' ],
+15 silly audit   'regexp.prototype.flags': [ '1.5.4' ],
+15 silly audit   'resolve-from': [ '4.0.0' ],
+15 silly audit   'resolve-pkg-maps': [ '1.0.0' ],
+15 silly audit   reusify: [ '1.1.0' ],
+15 silly audit   rimraf: [ '3.0.2' ],
+15 silly audit   'run-parallel': [ '1.2.0' ],
+15 silly audit   'safe-array-concat': [ '1.1.3' ],
+15 silly audit   'safe-push-apply': [ '1.0.0' ],
+15 silly audit   'safe-regex-test': [ '1.1.0' ],
+15 silly audit   scheduler: [ '0.23.2' ],
+15 silly audit   'set-cookie-parser': [ '2.7.1' ],
+15 silly audit   'set-function-length': [ '1.2.2' ],
+15 silly audit   'set-function-name': [ '2.0.2' ],
+15 silly audit   'set-proto': [ '1.0.0' ],
+15 silly audit   'shebang-command': [ '2.0.0' ],
+15 silly audit   'shebang-regex': [ '3.0.0' ],
+15 silly audit   'side-channel': [ '1.1.0' ],
+15 silly audit   'side-channel-list': [ '1.0.0' ],
+15 silly audit   'side-channel-map': [ '1.0.1' ],
+15 silly audit   'side-channel-weakmap': [ '1.0.2' ],
+15 silly audit   'signal-exit': [ '4.1.0' ],
+15 silly audit   slash: [ '3.0.0' ],
+15 silly audit   'snake-case': [ '3.0.4' ],
+15 silly audit   'type-fest': [ '2.19.0', '0.20.2' ],
+15 silly audit   'source-map-js': [ '1.2.1' ],
+15 silly audit   'stable-hash': [ '0.0.5' ],
+15 silly audit   streamsearch: [ '1.1.0' ],
+15 silly audit   'string-width': [ '5.1.2', '4.2.3' ],
+15 silly audit   'string.prototype.includes': [ '2.0.1' ],
+15 silly audit   'string.prototype.matchall': [ '4.0.12' ],
+15 silly audit   'string.prototype.repeat': [ '1.0.0' ],
+15 silly audit   'string.prototype.trim': [ '1.2.10' ],
+15 silly audit   'string.prototype.trimend': [ '1.0.9' ],
+15 silly audit   'string.prototype.trimstart': [ '1.0.8' ],
+15 silly audit   'strip-bom': [ '3.0.0' ],
+15 silly audit   'strip-json-comments': [ '3.1.1' ],
+15 silly audit   'styled-jsx': [ '5.1.1' ],
+15 silly audit   sucrase: [ '3.35.0' ],
+15 silly audit   supabase: [ '1.88.0' ],
+15 silly audit   'supports-color': [ '7.2.0' ],
+15 silly audit   'supports-preserve-symlinks-flag': [ '1.0.0' ],
+15 silly audit   swr: [ '2.2.0' ],
+15 silly audit   tailwindcss: [ '3.3.3' ],
+15 silly audit   tar: [ '6.1.15' ],
+15 silly audit   'text-table': [ '0.2.0' ],
+15 silly audit   thenify: [ '3.3.1' ],
+15 silly audit   'thenify-all': [ '1.6.0' ],
+15 silly audit   tinyglobby: [ '0.2.13' ],
+15 silly audit   'to-no-case': [ '1.0.2' ],
+15 silly audit   'to-regex-range': [ '5.0.1' ],
+15 silly audit   'to-snake-case': [ '1.0.0' ],
+15 silly audit   'to-space-case': [ '1.0.0' ],
+15 silly audit   tr46: [ '0.0.3' ],
+15 silly audit   'ts-api-utils': [ '1.4.3' ],
+15 silly audit   'ts-interface-checker': [ '0.1.13' ],
+15 silly audit   'tsconfig-paths': [ '3.15.0' ],
+15 silly audit   'type-check': [ '0.4.0' ],
+15 silly audit   'typed-array-buffer': [ '1.0.3' ],
+15 silly audit   'typed-array-byte-length': [ '1.0.3' ],
+15 silly audit   'typed-array-byte-offset': [ '1.0.4' ],
+15 silly audit   'typed-array-length': [ '1.0.7' ],
+15 silly audit   typescript: [ '5.1.6' ],
+15 silly audit   'unbox-primitive': [ '1.1.0' ],
+15 silly audit   'unrs-resolver': [ '1.7.2' ],
+15 silly audit   'update-browserslist-db': [ '1.1.3' ],
+15 silly audit   'uri-js': [ '4.4.1' ],
+15 silly audit   'use-sync-external-store': [ '1.5.0' ],
+15 silly audit   'util-deprecate': [ '1.0.2' ],
+15 silly audit   'web-streams-polyfill': [ '3.3.3' ],
+15 silly audit   'webcrypto-core': [ '1.8.1' ],
+15 silly audit   'webidl-conversions': [ '3.0.1' ],
+15 silly audit   'whatwg-url': [ '5.0.0' ],
+15 silly audit   which: [ '2.0.2' ],
+15 silly audit   'which-boxed-primitive': [ '1.1.1' ],
+15 silly audit   'which-builtin-type': [ '1.2.1' ],
+15 silly audit   'which-collection': [ '1.0.2' ],
+15 silly audit   'which-typed-array': [ '1.1.19' ],
+15 silly audit   'word-wrap': [ '1.2.5' ],
+15 silly audit   'wrap-ansi': [ '8.1.0', '7.0.0' ],
+15 silly audit   wrappy: [ '1.0.2' ],
+15 silly audit   'write-file-atomic': [ '5.0.1' ],
+15 silly audit   ws: [ '8.18.1' ],
+15 silly audit   yallist: [ '4.0.0' ],
+15 silly audit   yaml: [ '2.7.1' ],
+15 silly audit   'yocto-queue': [ '0.1.0' ]
+15 silly audit }
+16 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 421ms
+17 silly audit report {
+17 silly audit report   cookie: [
+17 silly audit report     {
+17 silly audit report       id: 1103907,
+17 silly audit report       url: 'https://github.com/advisories/GHSA-pxg6-pf52-xh8x',
+17 silly audit report       title: 'cookie accepts cookie name, path, and domain with out of bounds characters',
+17 silly audit report       severity: 'low',
+17 silly audit report       vulnerable_versions: '<0.7.0',
+17 silly audit report       cwe: [Array],
+17 silly audit report       cvss: [Object]
+17 silly audit report     }
+17 silly audit report   ],
+17 silly audit report   postcss: [
+17 silly audit report     {
+17 silly audit report       id: 1094544,
+17 silly audit report       url: 'https://github.com/advisories/GHSA-7fh5-64p2-3v2j',
+17 silly audit report       title: 'PostCSS line return parsing error',
+17 silly audit report       severity: 'moderate',
+17 silly audit report       vulnerable_versions: '<8.4.31',
+17 silly audit report       cwe: [Array],
+17 silly audit report       cvss: [Object]
+17 silly audit report     }
+17 silly audit report   ],
+17 silly audit report   tar: [
+17 silly audit report     {
+17 silly audit report       id: 1097493,
+17 silly audit report       url: 'https://github.com/advisories/GHSA-f5x3-32g6-xq36',
+17 silly audit report       title: 'Denial of service while parsing a tar file due to lack of folders count validation',
+17 silly audit report       severity: 'moderate',
+17 silly audit report       vulnerable_versions: '<6.2.1',
+17 silly audit report       cwe: [Array],
+17 silly audit report       cvss: [Object]
+17 silly audit report     }
+17 silly audit report   ]
+17 silly audit report }
+18 silly packumentCache corgi:https://registry.npmjs.org/cookie cache-miss
+19 silly packumentCache corgi:https://registry.npmjs.org/postcss cache-miss
+20 silly packumentCache corgi:https://registry.npmjs.org/tar cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/cookie 54ms (cache updated)
+22 silly packumentCache corgi:https://registry.npmjs.org/cookie set size:undefined disposed:false
+23 http fetch GET 200 https://registry.npmjs.org/tar 108ms (cache updated)
+24 silly packumentCache corgi:https://registry.npmjs.org/tar set size:undefined disposed:false
+25 http fetch GET 200 https://registry.npmjs.org/postcss 111ms (cache updated)
+26 silly packumentCache corgi:https://registry.npmjs.org/postcss set size:undefined disposed:false
+27 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fbackend cache-miss
+28 silly packumentCache corgi:https://registry.npmjs.org/@supabase%2fssr cache-miss
+29 http fetch GET 200 https://registry.npmjs.org/@supabase%2fssr 391ms (cache updated)
+30 silly packumentCache corgi:https://registry.npmjs.org/@supabase%2fssr set size:undefined disposed:false
+31 http fetch GET 200 https://registry.npmjs.org/@clerk%2fbackend 1722ms (cache updated)
+32 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fbackend set size:undefined disposed:false
+33 silly packumentCache corgi:https://registry.npmjs.org/tailwindcss cache-miss
+34 http fetch GET 200 https://registry.npmjs.org/tailwindcss 112ms (cache updated)
+35 silly packumentCache corgi:https://registry.npmjs.org/tailwindcss set size:undefined disposed:false
+36 silly packumentCache corgi:https://registry.npmjs.org/supabase cache-miss
+37 http fetch GET 200 https://registry.npmjs.org/supabase 58ms (cache updated)
+38 silly packumentCache corgi:https://registry.npmjs.org/supabase set size:undefined disposed:false
+39 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fclerk-sdk-node cache-miss
+40 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fnextjs cache-miss
+41 http fetch GET 200 https://registry.npmjs.org/@clerk%2fnextjs 1194ms (cache updated)
+42 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fnextjs set size:undefined disposed:false
+43 http fetch GET 200 https://registry.npmjs.org/@clerk%2fclerk-sdk-node 1253ms (cache updated)
+44 silly packumentCache corgi:https://registry.npmjs.org/@clerk%2fclerk-sdk-node set size:undefined disposed:false
+45 warn audit Updating postcss to 8.5.3, which is outside your stated dependency range.
+46 warn audit Updating @supabase/ssr to 0.6.1, which is a SemVer major change.
+47 warn audit Updating supabase to 1.226.4, which is outside your stated dependency range.
+48 warn audit Updating @clerk/nextjs to 6.18.4, which is a SemVer major change.
+49 silly idealTree buildDeps
+50 silly fetch manifest @clerk/nextjs@6.18.4
+51 silly packumentCache full:https://registry.npmjs.org/@clerk%2fnextjs cache-miss
+52 http fetch GET 200 https://registry.npmjs.org/@clerk%2fnextjs 1106ms (cache miss)
+53 silly packumentCache full:https://registry.npmjs.org/@clerk%2fnextjs set size:undefined disposed:false
+54 silly fetch manifest @supabase/ssr@0.6.1
+55 silly packumentCache full:https://registry.npmjs.org/@supabase%2fssr cache-miss
+56 http fetch GET 200 https://registry.npmjs.org/@supabase%2fssr 142ms (cache miss)
+57 silly packumentCache full:https://registry.npmjs.org/@supabase%2fssr set size:undefined disposed:false
+58 silly fetch manifest supabase@1.226.4
+59 silly packumentCache full:https://registry.npmjs.org/supabase cache-miss
+60 http fetch GET 200 https://registry.npmjs.org/supabase 131ms (cache miss)
+61 silly packumentCache full:https://registry.npmjs.org/supabase set size:undefined disposed:false
+62 silly fetch manifest postcss@8.5.3
+63 silly packumentCache full:https://registry.npmjs.org/postcss cache-miss
+64 http fetch GET 200 https://registry.npmjs.org/postcss 50ms (cache miss)
+65 silly packumentCache full:https://registry.npmjs.org/postcss set size:undefined disposed:false
+66 silly placeDep ROOT @clerk/nextjs@6.18.4 REPLACE for: calculator@0.1.0 want: 6.18.4
+67 silly placeDep ROOT @supabase/ssr@0.6.1 REPLACE for: calculator@0.1.0 want: 0.6.1
+68 silly placeDep ROOT postcss@8.5.3 REPLACE for: calculator@0.1.0 want: 8.5.3
+69 silly placeDep ROOT supabase@1.226.4 REPLACE for: calculator@0.1.0 want: 1.226.4
+70 silly fetch manifest tslib@2.8.1
+71 silly packumentCache full:https://registry.npmjs.org/tslib cache-miss
+72 silly fetch manifest server-only@0.0.1
+73 silly packumentCache full:https://registry.npmjs.org/server-only cache-miss
+74 silly fetch manifest @clerk/types@^4.56.2
+75 silly packumentCache full:https://registry.npmjs.org/@clerk%2ftypes cache-miss
+76 silly fetch manifest @clerk/shared@^3.7.7
+77 silly packumentCache full:https://registry.npmjs.org/@clerk%2fshared cache-miss
+78 silly fetch manifest @clerk/backend@^1.31.1
+79 silly packumentCache full:https://registry.npmjs.org/@clerk%2fbackend cache-miss
+80 silly fetch manifest @clerk/clerk-react@^5.30.3
+81 silly packumentCache full:https://registry.npmjs.org/@clerk%2fclerk-react cache-miss
+82 silly fetch manifest cookie@^1.0.1
+83 silly packumentCache full:https://registry.npmjs.org/cookie cache-miss
+84 silly fetch manifest tar@7.4.3
+85 silly packumentCache full:https://registry.npmjs.org/tar cache-miss
+86 silly fetch manifest bin-links@^5.0.0
+87 silly packumentCache full:https://registry.npmjs.org/bin-links cache-miss
+88 silly fetch manifest https-proxy-agent@^7.0.2
+89 silly packumentCache full:https://registry.npmjs.org/https-proxy-agent cache-miss
+90 http fetch GET 200 https://registry.npmjs.org/cookie 52ms (cache miss)
+91 silly packumentCache full:https://registry.npmjs.org/cookie set size:undefined disposed:false
+92 http fetch GET 200 https://registry.npmjs.org/server-only 54ms (cache miss)
+93 silly packumentCache full:https://registry.npmjs.org/server-only set size:undefined disposed:false
+94 http fetch GET 200 https://registry.npmjs.org/https-proxy-agent 135ms (cache updated)
+95 silly packumentCache full:https://registry.npmjs.org/https-proxy-agent set size:undefined disposed:false
+96 http fetch GET 200 https://registry.npmjs.org/bin-links 138ms (cache updated)
+97 silly packumentCache full:https://registry.npmjs.org/bin-links set size:undefined disposed:false
+98 http fetch GET 200 https://registry.npmjs.org/tslib 142ms (cache updated)
+99 silly packumentCache full:https://registry.npmjs.org/tslib set size:undefined disposed:false
+100 http fetch GET 200 https://registry.npmjs.org/tar 146ms (cache miss)
+101 silly packumentCache full:https://registry.npmjs.org/tar set size:undefined disposed:false
+102 http fetch GET 200 https://registry.npmjs.org/@clerk%2fclerk-react 456ms (cache updated)
+103 silly packumentCache full:https://registry.npmjs.org/@clerk%2fclerk-react set size:undefined disposed:false
+104 http fetch GET 200 https://registry.npmjs.org/@clerk%2fbackend 1018ms (cache miss)
+105 silly packumentCache full:https://registry.npmjs.org/@clerk%2fbackend set size:undefined disposed:false
+106 http fetch GET 200 https://registry.npmjs.org/@clerk%2fshared 1216ms (cache updated)
+107 silly packumentCache full:https://registry.npmjs.org/@clerk%2fshared set size:undefined disposed:false
+108 http fetch GET 200 https://registry.npmjs.org/@clerk%2ftypes 1730ms (cache updated)
+109 silly packumentCache full:https://registry.npmjs.org/@clerk%2ftypes set size:undefined disposed:false
+110 silly placeDep ROOT @clerk/backend@1.31.1 OK for: @clerk/nextjs@6.18.4 want: ^1.31.1
+111 silly placeDep ROOT @clerk/clerk-react@5.30.3 OK for: @clerk/nextjs@6.18.4 want: ^5.30.3
+112 silly placeDep ROOT @clerk/shared@3.7.7 OK for: @clerk/nextjs@6.18.4 want: ^3.7.7
+113 silly placeDep node_modules/@clerk/nextjs @clerk/types@4.56.2 OK for: @clerk/nextjs@6.18.4 want: ^4.56.2
+114 silly placeDep ROOT server-only@0.0.1 OK for: @clerk/nextjs@6.18.4 want: 0.0.1
+115 silly placeDep ROOT tslib@2.8.1 REPLACE for: @clerk/nextjs@6.18.4 want: 2.8.1
+116 silly fetch manifest cookie@1.0.2
+117 silly packumentCache full:https://registry.npmjs.org/cookie cache-miss
+118 silly fetch manifest snakecase-keys@8.0.1
+119 silly packumentCache full:https://registry.npmjs.org/snakecase-keys cache-miss
+120 silly fetch manifest dequal@2.0.3
+121 silly packumentCache full:https://registry.npmjs.org/dequal cache-miss
+122 silly fetch manifest glob-to-regexp@0.4.1
+123 silly packumentCache full:https://registry.npmjs.org/glob-to-regexp cache-miss
+124 silly fetch manifest js-cookie@3.0.5
+125 silly packumentCache full:https://registry.npmjs.org/js-cookie cache-miss
+126 silly fetch manifest std-env@^3.9.0
+127 silly packumentCache full:https://registry.npmjs.org/std-env cache-miss
+128 silly fetch manifest swr@^2.3.3
+129 silly packumentCache full:https://registry.npmjs.org/swr cache-miss
+130 silly fetch manifest csstype@3.1.3
+131 silly packumentCache full:https://registry.npmjs.org/csstype cache-miss
+132 http cache https://registry.npmjs.org/cookie 25ms (cache hit)
+133 silly packumentCache full:https://registry.npmjs.org/cookie set size:67120 disposed:false
+134 http fetch GET 200 https://registry.npmjs.org/dequal 51ms (cache miss)
+135 silly packumentCache full:https://registry.npmjs.org/dequal set size:undefined disposed:false
+136 http fetch GET 200 https://registry.npmjs.org/std-env 51ms (cache miss)
+137 silly packumentCache full:https://registry.npmjs.org/std-env set size:undefined disposed:false
+138 http fetch GET 200 https://registry.npmjs.org/js-cookie 67ms (cache updated)
+139 silly packumentCache full:https://registry.npmjs.org/js-cookie set size:undefined disposed:false
+140 http fetch GET 200 https://registry.npmjs.org/csstype 67ms (cache updated)
+141 silly packumentCache full:https://registry.npmjs.org/csstype set size:undefined disposed:false
+142 http fetch GET 200 https://registry.npmjs.org/swr 76ms (cache updated)
+143 silly packumentCache full:https://registry.npmjs.org/swr set size:undefined disposed:false
+144 http fetch GET 200 https://registry.npmjs.org/glob-to-regexp 121ms (cache updated)
+145 silly packumentCache full:https://registry.npmjs.org/glob-to-regexp set size:undefined disposed:false
+146 http fetch GET 200 https://registry.npmjs.org/snakecase-keys 511ms (cache updated)
+147 silly packumentCache full:https://registry.npmjs.org/snakecase-keys set size:undefined disposed:false
+148 silly placeDep node_modules/@clerk/backend @clerk/types@4.56.2 OK for: @clerk/backend@1.31.1 want: ^4.56.2
+149 silly placeDep ROOT cookie@1.0.2 OK for: @clerk/backend@1.31.1 want: 1.0.2
+150 silly placeDep ROOT snakecase-keys@8.0.1 OK for: @clerk/backend@1.31.1 want: 8.0.1
+151 silly fetch manifest map-obj@^4.1.0
+152 silly packumentCache full:https://registry.npmjs.org/map-obj cache-miss
+153 silly fetch manifest snake-case@^3.0.4
+154 silly packumentCache full:https://registry.npmjs.org/snake-case cache-miss
+155 silly fetch manifest type-fest@^4.15.0
+156 silly packumentCache full:https://registry.npmjs.org/type-fest cache-miss
+157 http fetch GET 200 https://registry.npmjs.org/map-obj 47ms (cache updated)
+158 silly packumentCache full:https://registry.npmjs.org/map-obj set size:undefined disposed:false
+159 http fetch GET 200 https://registry.npmjs.org/type-fest 48ms (cache updated)
+160 silly packumentCache full:https://registry.npmjs.org/type-fest set size:undefined disposed:false
+161 http fetch GET 200 https://registry.npmjs.org/snake-case 97ms (cache updated)
+162 silly packumentCache full:https://registry.npmjs.org/snake-case set size:undefined disposed:false
+163 silly placeDep node_modules/@clerk/clerk-react @clerk/types@4.56.2 OK for: @clerk/clerk-react@5.30.3 want: ^4.56.2
+164 silly placeDep node_modules/@clerk/shared @clerk/types@4.56.2 OK for: @clerk/shared@3.7.7 want: ^4.56.2
+165 silly placeDep ROOT dequal@2.0.3 OK for: @clerk/shared@3.7.7 want: 2.0.3
+166 silly placeDep ROOT glob-to-regexp@0.4.1 OK for: @clerk/shared@3.7.7 want: 0.4.1
+167 silly placeDep ROOT js-cookie@3.0.5 OK for: @clerk/shared@3.7.7 want: 3.0.5
+168 silly placeDep ROOT std-env@3.9.0 OK for: @clerk/shared@3.7.7 want: ^3.9.0
+169 silly placeDep ROOT swr@2.3.3 OK for: @clerk/shared@3.7.7 want: ^2.3.3
+170 silly fetch manifest use-sync-external-store@^1.4.0
+171 silly packumentCache full:https://registry.npmjs.org/use-sync-external-store cache-miss
+172 http fetch GET 200 https://registry.npmjs.org/use-sync-external-store 113ms (cache updated)
+173 silly packumentCache full:https://registry.npmjs.org/use-sync-external-store set size:undefined disposed:false
+174 silly placeDep ROOT map-obj@4.3.0 OK for: snakecase-keys@8.0.1 want: ^4.1.0
+175 silly placeDep ROOT snake-case@3.0.4 OK for: snakecase-keys@8.0.1 want: ^3.0.4
+176 silly placeDep node_modules/snakecase-keys type-fest@4.40.1 OK for: snakecase-keys@8.0.1 want: ^4.15.0
+177 silly fetch manifest dot-case@^3.0.4
+178 silly packumentCache full:https://registry.npmjs.org/dot-case cache-miss
+179 http fetch GET 200 https://registry.npmjs.org/dot-case 35ms (cache updated)
+180 silly packumentCache full:https://registry.npmjs.org/dot-case set size:undefined disposed:false
+181 silly placeDep ROOT dot-case@3.0.4 OK for: snake-case@3.0.4 want: ^3.0.4
+182 silly fetch manifest no-case@^3.0.4
+183 silly packumentCache full:https://registry.npmjs.org/no-case cache-miss
+184 http fetch GET 200 https://registry.npmjs.org/no-case 35ms (cache updated)
+185 silly packumentCache full:https://registry.npmjs.org/no-case set size:undefined disposed:false
+186 silly placeDep ROOT no-case@3.0.4 OK for: dot-case@3.0.4 want: ^3.0.4
+187 silly fetch manifest lower-case@^2.0.2
+188 silly packumentCache full:https://registry.npmjs.org/lower-case cache-miss
+189 http fetch GET 200 https://registry.npmjs.org/lower-case 32ms (cache updated)
+190 silly packumentCache full:https://registry.npmjs.org/lower-case set size:undefined disposed:false
+191 silly placeDep ROOT lower-case@2.0.2 OK for: no-case@3.0.4 want: ^2.0.2
+192 silly placeDep ROOT bin-links@5.0.0 OK for: supabase@1.226.4 want: ^5.0.0
+193 silly placeDep ROOT https-proxy-agent@7.0.6 OK for: supabase@1.226.4 want: ^7.0.2
+194 silly placeDep ROOT tar@7.4.3 OK for: supabase@1.226.4 want: 7.4.3
+195 silly fetch manifest cmd-shim@^7.0.0
+196 silly packumentCache full:https://registry.npmjs.org/cmd-shim cache-miss
+197 silly fetch manifest proc-log@^5.0.0
+198 silly packumentCache full:https://registry.npmjs.org/proc-log cache-miss
+199 silly fetch manifest read-cmd-shim@^5.0.0
+200 silly packumentCache full:https://registry.npmjs.org/read-cmd-shim cache-miss
+201 silly fetch manifest write-file-atomic@^6.0.0
+202 silly packumentCache full:https://registry.npmjs.org/write-file-atomic cache-miss
+203 silly fetch manifest npm-normalize-package-bin@^4.0.0
+204 silly packumentCache full:https://registry.npmjs.org/npm-normalize-package-bin cache-miss
+205 silly fetch manifest agent-base@^7.1.2
+206 silly packumentCache full:https://registry.npmjs.org/agent-base cache-miss
+207 silly fetch manifest @isaacs/fs-minipass@^4.0.0
+208 silly packumentCache full:https://registry.npmjs.org/@isaacs%2ffs-minipass cache-miss
+209 silly fetch manifest chownr@^3.0.0
+210 silly packumentCache full:https://registry.npmjs.org/chownr cache-miss
+211 silly fetch manifest minipass@^7.1.2
+212 silly packumentCache full:https://registry.npmjs.org/minipass cache-miss
+213 silly fetch manifest minizlib@^3.0.1
+214 silly packumentCache full:https://registry.npmjs.org/minizlib cache-miss
+215 silly fetch manifest mkdirp@^3.0.1
+216 silly packumentCache full:https://registry.npmjs.org/mkdirp cache-miss
+217 http fetch GET 200 https://registry.npmjs.org/npm-normalize-package-bin 37ms (cache updated)
+218 silly packumentCache full:https://registry.npmjs.org/npm-normalize-package-bin set size:undefined disposed:false
+219 silly fetch manifest yallist@^5.0.0
+220 silly packumentCache full:https://registry.npmjs.org/yallist cache-miss
+221 http fetch GET 200 https://registry.npmjs.org/proc-log 47ms (cache updated)
+222 silly packumentCache full:https://registry.npmjs.org/proc-log set size:undefined disposed:false
+223 http fetch GET 200 https://registry.npmjs.org/read-cmd-shim 53ms (cache updated)
+224 silly packumentCache full:https://registry.npmjs.org/read-cmd-shim set size:undefined disposed:false
+225 http fetch GET 200 https://registry.npmjs.org/chownr 55ms (cache updated)
+226 silly packumentCache full:https://registry.npmjs.org/chownr set size:undefined disposed:false
+227 http fetch GET 200 https://registry.npmjs.org/minizlib 55ms (cache updated)
+228 silly packumentCache full:https://registry.npmjs.org/minizlib set size:undefined disposed:false
+229 http fetch GET 200 https://registry.npmjs.org/agent-base 57ms (cache updated)
+230 silly packumentCache full:https://registry.npmjs.org/agent-base set size:undefined disposed:false
+231 http fetch GET 200 https://registry.npmjs.org/@isaacs%2ffs-minipass 58ms (cache updated)
+232 silly packumentCache full:https://registry.npmjs.org/@isaacs%2ffs-minipass set size:undefined disposed:false
+233 http fetch GET 200 https://registry.npmjs.org/write-file-atomic 60ms (cache updated)
+234 silly packumentCache full:https://registry.npmjs.org/write-file-atomic set size:undefined disposed:false
+235 http fetch GET 200 https://registry.npmjs.org/cmd-shim 62ms (cache updated)
+236 silly packumentCache full:https://registry.npmjs.org/cmd-shim set size:undefined disposed:false
+237 http fetch GET 200 https://registry.npmjs.org/minipass 63ms (cache updated)
+238 silly packumentCache full:https://registry.npmjs.org/minipass set size:undefined disposed:false
+239 http fetch GET 200 https://registry.npmjs.org/yallist 39ms (cache updated)
+240 silly packumentCache full:https://registry.npmjs.org/yallist set size:undefined disposed:false
+241 http fetch GET 200 https://registry.npmjs.org/mkdirp 114ms (cache updated)
+242 silly packumentCache full:https://registry.npmjs.org/mkdirp set size:undefined disposed:false
+243 silly placeDep ROOT cmd-shim@7.0.0 OK for: bin-links@5.0.0 want: ^7.0.0
+244 silly placeDep ROOT npm-normalize-package-bin@4.0.0 OK for: bin-links@5.0.0 want: ^4.0.0
+245 silly placeDep ROOT proc-log@5.0.0 OK for: bin-links@5.0.0 want: ^5.0.0
+246 silly placeDep ROOT read-cmd-shim@5.0.0 OK for: bin-links@5.0.0 want: ^5.0.0
+247 silly placeDep ROOT write-file-atomic@6.0.0 OK for: bin-links@5.0.0 want: ^6.0.0
+248 silly placeDep ROOT agent-base@7.1.3 OK for: https-proxy-agent@7.0.6 want: ^7.1.2
+249 silly placeDep ROOT use-sync-external-store@1.5.0 OK for: swr@2.3.3 want: ^1.4.0
+250 silly placeDep ROOT @isaacs/fs-minipass@4.0.1 OK for: tar@7.4.3 want: ^4.0.0
+251 silly placeDep ROOT chownr@3.0.0 OK for: tar@7.4.3 want: ^3.0.0
+252 silly placeDep ROOT minipass@7.1.2 REPLACE for: tar@7.4.3 want: ^7.1.2
+253 silly placeDep ROOT minizlib@3.0.2 OK for: tar@7.4.3 want: ^3.0.1
+254 silly placeDep ROOT mkdirp@3.0.1 OK for: tar@7.4.3 want: ^3.0.1
+255 silly placeDep ROOT yallist@5.0.0 OK for: tar@7.4.3 want: ^5.0.0
+256 silly fetch manifest minipass@^7.0.4
+257 silly packumentCache full:https://registry.npmjs.org/minipass cache-miss
+258 http cache https://registry.npmjs.org/minipass 4ms (cache hit)
+259 silly packumentCache full:https://registry.npmjs.org/minipass set size:490195 disposed:false
+260 silly placeDep node_modules/@clerk/backend csstype@3.1.3 OK for: @clerk/types@4.56.2 want: 3.1.3
+261 silly placeDep node_modules/@clerk/clerk-react csstype@3.1.3 OK for: @clerk/types@4.56.2 want: 3.1.3
+262 silly placeDep node_modules/@clerk/nextjs csstype@3.1.3 OK for: @clerk/types@4.56.2 want: 3.1.3
+263 silly placeDep node_modules/@clerk/shared csstype@3.1.3 OK for: @clerk/types@4.56.2 want: 3.1.3
+264 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\backend' ]
+265 silly reify mark retired [
+265 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\clerk-react'
+265 silly reify ]
+266 silly reify mark retired [
+266 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\clerk-sdk-node'
+266 silly reify ]
+267 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\nextjs' ]
+268 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\shared' ]
+269 silly reify mark retired [
+269 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\asn1-schema'
+269 silly reify ]
+270 silly reify mark retired [
+270 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\json-schema'
+270 silly reify ]
+271 silly reify mark retired [
+271 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\webcrypto'
+271 silly reify ]
+272 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@supabase\\ssr' ]
+273 silly reify mark retired [
+273 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\body-parser'
+273 silly reify ]
+274 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\connect' ]
+275 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\cookies' ]
+276 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\express' ]
+277 silly reify mark retired [
+277 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\express-serve-static-core'
+277 silly reify ]
+278 silly reify mark retired [
+278 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\http-errors'
+278 silly reify ]
+279 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\keygrip' ]
+280 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\mime' ]
+281 silly reify mark retired [
+281 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\node-fetch'
+281 silly reify ]
+282 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\qs' ]
+283 silly reify mark retired [
+283 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\range-parser'
+283 silly reify ]
+284 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\send' ]
+285 silly reify mark retired [
+285 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\serve-static'
+285 silly reify ]
+286 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\asn1js' ]
+287 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\asynckit' ]
+288 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\bin-links' ]
+289 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\camelcase' ]
+290 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\camelcase-keys' ]
+291 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\chownr' ]
+292 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\cmd-shim' ]
+293 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\combined-stream' ]
+294 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\cookie' ]
+295 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\deepmerge' ]
+296 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\delayed-stream' ]
+297 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\form-data' ]
+298 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\fs-minipass' ]
+299 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\js-cookie' ]
+300 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\mime-db' ]
+301 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\mime-types' ]
+302 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\minipass' ]
+303 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\minizlib' ]
+304 silly reify mark retired [
+304 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\mkdirp',
+304 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp',
+304 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp.cmd',
+304 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp.ps1'
+304 silly reify ]
+305 silly reify mark retired [
+305 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\node-fetch-native'
+305 silly reify ]
+306 silly reify mark retired [
+306 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\npm-normalize-package-bin'
+306 silly reify ]
+307 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\postcss' ]
+308 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\pvtsutils' ]
+309 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\pvutils' ]
+310 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\quick-lru' ]
+311 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\ramda' ]
+312 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\read-cmd-shim' ]
+313 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\snakecase-keys' ]
+314 silly reify mark retired [
+314 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\sucrase\\node_modules\\minipass'
+314 silly reify ]
+315 silly reify mark retired [
+315 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\supabase',
+315 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase',
+315 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase.cmd',
+315 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase.ps1'
+315 silly reify ]
+316 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\swr' ]
+317 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\tar' ]
+318 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\to-no-case' ]
+319 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\to-snake-case' ]
+320 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\to-space-case' ]
+321 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\tslib' ]
+322 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\webcrypto-core' ]
+323 silly reify mark retired [
+323 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\write-file-atomic'
+323 silly reify ]
+324 silly reify mark retired [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\yallist' ]
+325 silly reify moves {
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\backend': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\.backend-TZiQMONc',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\clerk-react': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\.clerk-react-mqIhXGUU',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\clerk-sdk-node': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\.clerk-sdk-node-nRVp1Ce3',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\nextjs': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\.nextjs-kXF9atIa',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\shared': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@clerk\\.shared-Ox719iYy',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\asn1-schema': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\.asn1-schema-iKRRcf0E',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\json-schema': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\.json-schema-2U1X9OJy',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\webcrypto': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@peculiar\\.webcrypto-Xcv8lWCX',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@supabase\\ssr': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@supabase\\.ssr-GbbQtBSW',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\body-parser': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.body-parser-rIJE9Hbc',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\connect': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.connect-NN4oQoR8',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\cookies': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.cookies-yXesDmJC',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\express': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.express-kSHDWl78',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\express-serve-static-core': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.express-serve-static-core-IiXWYk33',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\http-errors': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.http-errors-W1m4E6Et',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\keygrip': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.keygrip-l20wSgG3',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\mime': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.mime-qPE9fYiB',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\node-fetch': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.node-fetch-d6iljXfO',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\qs': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.qs-HsIZuxyx',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\range-parser': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.range-parser-Lao0blAI',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\send': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.send-PV7T5qOE',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\serve-static': 'C:\\Users\\akito\\git\\calculator\\node_modules\\@types\\.serve-static-CLxdALWi',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\asn1js': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.asn1js-y9VsL8zV',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\asynckit': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.asynckit-sQlHBERR',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\bin-links': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin-links-xZpsVNiT',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\camelcase': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.camelcase-p6Tncqbc',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\camelcase-keys': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.camelcase-keys-8RyxCfJW',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\chownr': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.chownr-60kO04AK',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\cmd-shim': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.cmd-shim-I99cUre7',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\combined-stream': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.combined-stream-XXt5aBVA',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\cookie': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.cookie-4yxZTPR3',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\deepmerge': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.deepmerge-MTurVAEH',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\delayed-stream': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.delayed-stream-TrbiAWki',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\form-data': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.form-data-tdVwf9FL',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\fs-minipass': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.fs-minipass-GX9yVIb7',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\js-cookie': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.js-cookie-2y7WTvuJ',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\mime-db': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.mime-db-Ko8fDltP',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\mime-types': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.mime-types-7ELP25cF',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\minipass': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.minipass-BB7WXKmF',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\minizlib': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.minizlib-XgFypID4',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\mkdirp': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.mkdirp-HVSFXFum',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.mkdirp-yvsCcBGh',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp.cmd': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.mkdirp.cmd-4GioMGaM',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\mkdirp.ps1': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.mkdirp.ps1-EN9DHr93',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\node-fetch-native': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.node-fetch-native-iPFiFg0w',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\npm-normalize-package-bin': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.npm-normalize-package-bin-bm37oTsI',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\postcss': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.postcss-nuUadMpT',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\pvtsutils': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.pvtsutils-Pqhg45Nf',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\pvutils': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.pvutils-jGCsRbtc',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\quick-lru': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.quick-lru-8cCFi9db',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\ramda': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.ramda-E6krctbX',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\read-cmd-shim': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.read-cmd-shim-t8n7HSkG',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\snakecase-keys': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.snakecase-keys-3FqQPkih',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\sucrase\\node_modules\\minipass': 'C:\\Users\\akito\\git\\calculator\\node_modules\\sucrase\\node_modules\\.minipass-IVYStgbq',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\supabase': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.supabase-3YMbDg5w',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.supabase-TAelk7D9',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase.cmd': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.supabase.cmd-efc7wcni',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\supabase.ps1': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.bin\\.supabase.ps1-BSSAs9ce',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\swr': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.swr-bd4UdGuS',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\tar': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.tar-bzDtl1yG',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\to-no-case': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.to-no-case-Og6DN84m',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\to-snake-case': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.to-snake-case-Das0OyHY',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\to-space-case': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.to-space-case-nwTOYoAl',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\tslib': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.tslib-FDwjJxP9',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\webcrypto-core': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.webcrypto-core-kfsWZZcN',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\write-file-atomic': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.write-file-atomic-CISTb2Hu',
+325 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\yallist': 'C:\\Users\\akito\\git\\calculator\\node_modules\\.yallist-ZApccz26'
+325 silly reify }
+326 silly audit bulk request {
+326 silly audit   '@alloc/quick-lru': [ '5.2.0' ],
+326 silly audit   '@babel/runtime': [ '7.27.1' ],
+326 silly audit   '@types/node': [ '20.5.0' ],
+326 silly audit   '@clerk/localizations': [ '1.22.0' ],
+326 silly audit   '@clerk/types': [ '3.65.5', '4.56.2' ],
+326 silly audit   '@emnapi/core': [ '1.4.3' ],
+326 silly audit   '@emnapi/runtime': [ '1.4.3' ],
+326 silly audit   '@emnapi/wasi-threads': [ '1.0.2' ],
+326 silly audit   '@eslint-community/eslint-utils': [ '4.6.1' ],
+326 silly audit   '@eslint-community/regexpp': [ '4.12.1' ],
+326 silly audit   '@eslint/eslintrc': [ '2.1.4' ],
+326 silly audit   '@eslint/js': [ '8.57.1' ],
+326 silly audit   '@humanwhocodes/config-array': [ '0.11.14' ],
+326 silly audit   '@humanwhocodes/module-importer': [ '1.0.1' ],
+326 silly audit   '@humanwhocodes/object-schema': [ '2.0.3' ],
+326 silly audit   '@isaacs/cliui': [ '8.0.2' ],
+326 silly audit   'ansi-regex': [ '6.1.0', '5.0.1' ],
+326 silly audit   'strip-ansi': [ '7.1.0', '6.0.1' ],
+326 silly audit   '@jridgewell/gen-mapping': [ '0.3.8' ],
+326 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+326 silly audit   '@jridgewell/set-array': [ '1.2.1' ],
+326 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.0' ],
+326 silly audit   '@jridgewell/trace-mapping': [ '0.3.25' ],
+326 silly audit   '@kurkle/color': [ '0.3.4' ],
+326 silly audit   '@napi-rs/wasm-runtime': [ '0.2.9' ],
+326 silly audit   '@next/env': [ '14.2.28' ],
+326 silly audit   '@next/eslint-plugin-next': [ '13.4.19' ],
+326 silly audit   '@next/swc-darwin-arm64': [ '14.2.28' ],
+326 silly audit   '@next/swc-darwin-x64': [ '14.2.28' ],
+326 silly audit   '@next/swc-linux-arm64-gnu': [ '14.2.28' ],
+326 silly audit   '@next/swc-linux-arm64-musl': [ '14.2.28' ],
+326 silly audit   '@next/swc-linux-x64-gnu': [ '14.2.28' ],
+326 silly audit   '@next/swc-linux-x64-musl': [ '14.2.28' ],
+326 silly audit   '@next/swc-win32-arm64-msvc': [ '14.2.28' ],
+326 silly audit   '@next/swc-win32-ia32-msvc': [ '14.2.28' ],
+326 silly audit   '@next/swc-win32-x64-msvc': [ '14.2.28' ],
+326 silly audit   '@nodelib/fs.scandir': [ '2.1.5' ],
+326 silly audit   '@nodelib/fs.stat': [ '2.0.5' ],
+326 silly audit   '@nodelib/fs.walk': [ '1.2.8' ],
+326 silly audit   '@nolyfill/is-core-module': [ '1.0.39' ],
+326 silly audit   '@pkgjs/parseargs': [ '0.11.0' ],
+326 silly audit   '@rtsao/scc': [ '1.1.0' ],
+326 silly audit   '@rushstack/eslint-patch': [ '1.11.0' ],
+326 silly audit   '@supabase/auth-helpers-nextjs': [ '0.7.4' ],
+326 silly audit   '@supabase/auth-helpers-shared': [ '0.4.1' ],
+326 silly audit   '@supabase/functions-js': [ '2.4.4' ],
+326 silly audit   '@supabase/gotrue-js': [ '2.69.1' ],
+326 silly audit   '@supabase/node-fetch': [ '2.6.15' ],
+326 silly audit   '@supabase/postgrest-js': [ '1.19.4' ],
+326 silly audit   '@supabase/realtime-js': [ '2.11.7' ],
+326 silly audit   '@supabase/storage-js': [ '2.7.2' ],
+326 silly audit   '@supabase/supabase-js': [ '2.32.0' ],
+326 silly audit   '@swc/counter': [ '0.1.3' ],
+326 silly audit   '@swc/helpers': [ '0.5.5' ],
+326 silly audit   '@tybys/wasm-util': [ '0.9.0' ],
+326 silly audit   '@types/chart.js': [ '2.9.37' ],
+326 silly audit   '@types/json5': [ '0.0.29' ],
+326 silly audit   '@types/phoenix': [ '1.6.6' ],
+326 silly audit   '@types/prop-types': [ '15.7.14' ],
+326 silly audit   '@types/react': [ '18.2.20' ],
+326 silly audit   '@types/react-dom': [ '18.2.7' ],
+326 silly audit   '@types/scheduler': [ '0.26.0' ],
+326 silly audit   '@types/ws': [ '8.18.1' ],
+326 silly audit   '@typescript-eslint/parser': [ '6.21.0' ],
+326 silly audit   '@typescript-eslint/scope-manager': [ '6.21.0' ],
+326 silly audit   '@typescript-eslint/types': [ '6.21.0' ],
+326 silly audit   '@typescript-eslint/typescript-estree': [ '6.21.0' ],
+326 silly audit   'brace-expansion': [ '2.0.1', '1.1.11' ],
+326 silly audit   minimatch: [ '9.0.3', '3.1.2', '9.0.5' ],
+326 silly audit   '@typescript-eslint/visitor-keys': [ '6.21.0' ],
+326 silly audit   '@unrs/resolver-binding-darwin-arm64': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-darwin-x64': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-freebsd-x64': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-arm-gnueabihf': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-arm-musleabihf': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-arm64-gnu': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-arm64-musl': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-ppc64-gnu': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-riscv64-gnu': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-riscv64-musl': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-s390x-gnu': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-x64-gnu': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-linux-x64-musl': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-wasm32-wasi': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-win32-arm64-msvc': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-win32-ia32-msvc': [ '1.7.2' ],
+326 silly audit   '@unrs/resolver-binding-win32-x64-msvc': [ '1.7.2' ],
+326 silly audit   acorn: [ '8.14.1' ],
+326 silly audit   'acorn-jsx': [ '5.3.2' ],
+326 silly audit   ajv: [ '6.12.6' ],
+326 silly audit   'ansi-styles': [ '4.3.0', '6.2.1' ],
+326 silly audit   'any-promise': [ '1.3.0' ],
+326 silly audit   anymatch: [ '3.1.3' ],
+326 silly audit   arg: [ '5.0.2' ],
+326 silly audit   argparse: [ '2.0.1' ],
+326 silly audit   'aria-query': [ '5.3.2' ],
+326 silly audit   'array-buffer-byte-length': [ '1.0.2' ],
+326 silly audit   'array-includes': [ '3.1.8' ],
+326 silly audit   'array-union': [ '2.1.0' ],
+326 silly audit   'array.prototype.findlast': [ '1.2.5' ],
+326 silly audit   'array.prototype.findlastindex': [ '1.2.6' ],
+326 silly audit   'array.prototype.flat': [ '1.3.3' ],
+326 silly audit   'array.prototype.flatmap': [ '1.3.3' ],
+326 silly audit   'array.prototype.tosorted': [ '1.1.4' ],
+326 silly audit   'arraybuffer.prototype.slice': [ '1.0.4' ],
+326 silly audit   'ast-types-flow': [ '0.0.8' ],
+326 silly audit   'async-function': [ '1.0.0' ],
+326 silly audit   autoprefixer: [ '10.4.15' ],
+326 silly audit   'available-typed-arrays': [ '1.0.7' ],
+326 silly audit   'axe-core': [ '4.10.3' ],
+326 silly audit   'axobject-query': [ '4.1.0' ],
+326 silly audit   'balanced-match': [ '1.0.2' ],
+326 silly audit   'binary-extensions': [ '2.3.0' ],
+326 silly audit   braces: [ '3.0.3' ],
+326 silly audit   browserslist: [ '4.24.4' ],
+326 silly audit   busboy: [ '1.6.0' ],
+326 silly audit   'call-bind': [ '1.0.8' ],
+326 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+326 silly audit   'call-bound': [ '1.0.4' ],
+326 silly audit   callsites: [ '3.1.0' ],
+326 silly audit   'camelcase-css': [ '2.0.1' ],
+326 silly audit   'caniuse-lite': [ '1.0.30001716' ],
+326 silly audit   chalk: [ '4.1.2' ],
+326 silly audit   'chart.js': [ '4.4.0' ],
+326 silly audit   chokidar: [ '3.6.0' ],
+326 silly audit   'glob-parent': [ '5.1.2', '6.0.2' ],
+326 silly audit   'client-only': [ '0.0.1' ],
+326 silly audit   'color-convert': [ '2.0.1' ],
+326 silly audit   'color-name': [ '1.1.4' ],
+326 silly audit   commander: [ '4.1.1' ],
+326 silly audit   'concat-map': [ '0.0.1' ],
+326 silly audit   'cross-fetch': [ '3.2.0' ],
+326 silly audit   'cross-spawn': [ '7.0.6' ],
+326 silly audit   cssesc: [ '3.0.0' ],
+326 silly audit   csstype: [ '3.1.1', '3.1.3' ],
+326 silly audit   'damerau-levenshtein': [ '1.0.8' ],
+326 silly audit   'data-uri-to-buffer': [ '4.0.1' ],
+326 silly audit   'data-view-buffer': [ '1.0.2' ],
+326 silly audit   'data-view-byte-length': [ '1.0.2' ],
+326 silly audit   'data-view-byte-offset': [ '1.0.1' ],
+326 silly audit   'date-fns': [ '2.30.0' ],
+326 silly audit   debug: [ '4.4.0', '3.2.7' ],
+326 silly audit   'deep-is': [ '0.1.4' ],
+326 silly audit   'define-data-property': [ '1.1.4' ],
+326 silly audit   'define-properties': [ '1.2.1' ],
+326 silly audit   didyoumean: [ '1.2.2' ],
+326 silly audit   'dir-glob': [ '3.0.1' ],
+326 silly audit   dlv: [ '1.1.3' ],
+326 silly audit   doctrine: [ '3.0.0', '2.1.0' ],
+326 silly audit   'dunder-proto': [ '1.0.1' ],
+326 silly audit   eastasianwidth: [ '0.2.0' ],
+326 silly audit   'electron-to-chromium': [ '1.5.148' ],
+326 silly audit   'emoji-regex': [ '9.2.2', '8.0.0' ],
+326 silly audit   'es-abstract': [ '1.23.9' ],
+326 silly audit   'es-define-property': [ '1.0.1' ],
+326 silly audit   'es-errors': [ '1.3.0' ],
+326 silly audit   'es-iterator-helpers': [ '1.2.1' ],
+326 silly audit   'es-object-atoms': [ '1.1.1' ],
+326 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+326 silly audit   'es-shim-unscopables': [ '1.1.0' ],
+326 silly audit   'es-to-primitive': [ '1.3.0' ],
+326 silly audit   escalade: [ '3.2.0' ],
+326 silly audit   'escape-string-regexp': [ '4.0.0' ],
+326 silly audit   eslint: [ '8.47.0' ],
+326 silly audit   'eslint-config-next': [ '13.4.19' ],
+326 silly audit   'eslint-import-resolver-node': [ '0.3.9' ],
+326 silly audit   'eslint-import-resolver-typescript': [ '3.10.1' ],
+326 silly audit   'eslint-module-utils': [ '2.12.0' ],
+326 silly audit   'eslint-plugin-import': [ '2.31.0' ],
+326 silly audit   semver: [ '6.3.1', '7.7.1' ],
+326 silly audit   'eslint-plugin-jsx-a11y': [ '6.10.2' ],
+326 silly audit   'eslint-plugin-react': [ '7.37.5' ],
+326 silly audit   'eslint-plugin-react-hooks': [ '5.0.0-canary-7118f5dd7-20230705' ],
+326 silly audit   resolve: [ '2.0.0-next.5', '1.22.10' ],
+326 silly audit   'eslint-scope': [ '7.2.2' ],
+326 silly audit   'eslint-visitor-keys': [ '3.4.3' ],
+326 silly audit   espree: [ '9.6.1' ],
+326 silly audit   esquery: [ '1.6.0' ],
+326 silly audit   esrecurse: [ '4.3.0' ],
+326 silly audit   estraverse: [ '5.3.0' ],
+326 silly audit   esutils: [ '2.0.3' ],
+326 silly audit   'fast-deep-equal': [ '3.1.3' ],
+326 silly audit   'fast-glob': [ '3.3.3' ],
+326 silly audit   'fast-json-stable-stringify': [ '2.1.0' ],
+326 silly audit   'fast-levenshtein': [ '2.0.6' ],
+326 silly audit   fastq: [ '1.19.1' ],
+326 silly audit   fdir: [ '6.4.4' ],
+326 silly audit   'fetch-blob': [ '3.2.0' ],
+326 silly audit   'file-entry-cache': [ '6.0.1' ],
+326 silly audit   'fill-range': [ '7.1.1' ],
+326 silly audit   'find-up': [ '5.0.0' ],
+326 silly audit   'flat-cache': [ '3.2.0' ],
+326 silly audit   flatted: [ '3.3.3' ],
+326 silly audit   'for-each': [ '0.3.5' ],
+326 silly audit   'foreground-child': [ '3.3.1' ],
+326 silly audit   'formdata-polyfill': [ '4.0.10' ],
+326 silly audit   'fraction.js': [ '4.3.7' ],
+326 silly audit   minipass: [ '7.1.2' ],
+326 silly audit   'fs.realpath': [ '1.0.0' ],
+326 silly audit   fsevents: [ '2.3.3' ],
+326 silly audit   'function-bind': [ '1.1.2' ],
+326 silly audit   'function.prototype.name': [ '1.1.8' ],
+326 silly audit   'functions-have-names': [ '1.2.3' ],
+326 silly audit   'get-intrinsic': [ '1.3.0' ],
+326 silly audit   'get-proto': [ '1.0.1' ],
+326 silly audit   'get-symbol-description': [ '1.1.0' ],
+326 silly audit   'get-tsconfig': [ '4.10.0' ],
+326 silly audit   glob: [ '7.1.7', '10.4.5' ],
+326 silly audit   globals: [ '13.24.0' ],
+326 silly audit   globalthis: [ '1.0.4' ],
+326 silly audit   globby: [ '11.1.0' ],
+326 silly audit   gopd: [ '1.2.0' ],
+326 silly audit   'graceful-fs': [ '4.2.11' ],
+326 silly audit   graphemer: [ '1.4.0' ],
+326 silly audit   'has-bigints': [ '1.1.0' ],
+326 silly audit   'has-flag': [ '4.0.0' ],
+326 silly audit   'has-property-descriptors': [ '1.0.2' ],
+326 silly audit   'has-proto': [ '1.2.0' ],
+326 silly audit   'has-symbols': [ '1.1.0' ],
+326 silly audit   'has-tostringtag': [ '1.0.2' ],
+326 silly audit   hasown: [ '2.0.2' ],
+326 silly audit   ignore: [ '5.3.2' ],
+326 silly audit   'import-fresh': [ '3.3.1' ],
+326 silly audit   imurmurhash: [ '0.1.4' ],
+326 silly audit   inflight: [ '1.0.6' ],
+326 silly audit   inherits: [ '2.0.4' ],
+326 silly audit   'internal-slot': [ '1.1.0' ],
+326 silly audit   'is-array-buffer': [ '3.0.5' ],
+326 silly audit   'is-async-function': [ '2.1.1' ],
+326 silly audit   'is-bigint': [ '1.1.0' ],
+326 silly audit   'is-binary-path': [ '2.1.0' ],
+326 silly audit   'is-boolean-object': [ '1.2.2' ],
+326 silly audit   'is-bun-module': [ '2.0.0' ],
+326 silly audit   'is-callable': [ '1.2.7' ],
+326 silly audit   'is-core-module': [ '2.16.1' ],
+326 silly audit   'is-data-view': [ '1.0.2' ],
+326 silly audit   'is-date-object': [ '1.1.0' ],
+326 silly audit   'is-extglob': [ '2.1.1' ],
+326 silly audit   'is-finalizationregistry': [ '1.1.1' ],
+326 silly audit   'is-fullwidth-code-point': [ '3.0.0' ],
+326 silly audit   'is-generator-function': [ '1.1.0' ],
+326 silly audit   'is-glob': [ '4.0.3' ],
+326 silly audit   'is-map': [ '2.0.3' ],
+326 silly audit   'is-number': [ '7.0.0' ],
+326 silly audit   'is-number-object': [ '1.1.1' ],
+326 silly audit   'is-path-inside': [ '3.0.3' ],
+326 silly audit   'is-regex': [ '1.2.1' ],
+326 silly audit   'is-set': [ '2.0.3' ],
+326 silly audit   'is-shared-array-buffer': [ '1.0.4' ],
+326 silly audit   'is-string': [ '1.1.1' ],
+326 silly audit   'is-symbol': [ '1.1.1' ],
+326 silly audit   'is-typed-array': [ '1.1.15' ],
+326 silly audit   'is-weakmap': [ '2.0.2' ],
+326 silly audit   'is-weakref': [ '1.1.1' ],
+326 silly audit   'is-weakset': [ '2.0.4' ],
+326 silly audit   isarray: [ '2.0.5' ],
+326 silly audit   isexe: [ '2.0.0' ],
+326 silly audit   'iterator.prototype': [ '1.1.5' ],
+326 silly audit   jackspeak: [ '3.4.3' ],
+326 silly audit   jiti: [ '1.21.7' ],
+326 silly audit   jose: [ '4.15.9' ],
+326 silly audit   'js-tokens': [ '4.0.0' ],
+326 silly audit   'js-yaml': [ '4.1.0' ],
+326 silly audit   'json-buffer': [ '3.0.1' ],
+326 silly audit   'json-schema-traverse': [ '0.4.1' ],
+326 silly audit   'json-stable-stringify-without-jsonify': [ '1.0.1' ],
+326 silly audit   json5: [ '1.0.2' ],
+326 silly audit   'jsx-ast-utils': [ '3.3.5' ],
+326 silly audit   keyv: [ '4.5.4' ],
+326 silly audit   'language-subtag-registry': [ '0.3.23' ],
+326 silly audit   'language-tags': [ '1.0.9' ],
+326 silly audit   levn: [ '0.4.1' ],
+326 silly audit   lilconfig: [ '2.1.0', '3.1.3' ],
+326 silly audit   'lines-and-columns': [ '1.2.4' ],
+326 silly audit   'locate-path': [ '6.0.0' ],
+326 silly audit   'lodash.merge': [ '4.6.2' ],
+326 silly audit   'loose-envify': [ '1.4.0' ],
+326 silly audit   'lru-cache': [ '10.4.3' ],
+326 silly audit   'math-intrinsics': [ '1.1.0' ],
+326 silly audit   merge2: [ '1.4.1' ],
+326 silly audit   micromatch: [ '4.0.8' ],
+326 silly audit   minimist: [ '1.2.8' ],
+326 silly audit   moment: [ '2.30.1' ],
+326 silly audit   ms: [ '2.1.3' ],
+326 silly audit   mz: [ '2.7.0' ],
+326 silly audit   nanoid: [ '3.3.11' ],
+326 silly audit   'napi-postinstall': [ '0.2.3' ],
+326 silly audit   'natural-compare': [ '1.4.0' ],
+326 silly audit   next: [ '14.2.28' ],
+326 silly audit   postcss: [ '8.4.31', '8.5.3' ],
+326 silly audit   'node-domexception': [ '1.0.0' ],
+326 silly audit   'node-fetch': [ '2.7.0', '3.3.2' ],
+326 silly audit   'node-releases': [ '2.0.19' ],
+326 silly audit   'normalize-path': [ '3.0.0' ],
+326 silly audit   'normalize-range': [ '0.1.2' ],
+326 silly audit   'object-assign': [ '4.1.1' ],
+326 silly audit   'object-hash': [ '3.0.0' ],
+326 silly audit   'object-inspect': [ '1.13.4' ],
+326 silly audit   'object-keys': [ '1.1.1' ],
+326 silly audit   'object.assign': [ '4.1.7' ],
+326 silly audit   'object.entries': [ '1.1.9' ],
+326 silly audit   'object.fromentries': [ '2.0.8' ],
+326 silly audit   'object.groupby': [ '1.0.3' ],
+326 silly audit   'object.values': [ '1.2.1' ],
+326 silly audit   once: [ '1.4.0' ],
+326 silly audit   optionator: [ '0.9.4' ],
+326 silly audit   'own-keys': [ '1.0.1' ],
+326 silly audit   'p-limit': [ '3.1.0' ],
+326 silly audit   'p-locate': [ '5.0.0' ],
+326 silly audit   'package-json-from-dist': [ '1.0.1' ],
+326 silly audit   'parent-module': [ '1.0.1' ],
+326 silly audit   'path-exists': [ '4.0.0' ],
+326 silly audit   'path-is-absolute': [ '1.0.1' ],
+326 silly audit   'path-key': [ '3.1.1' ],
+326 silly audit   'path-parse': [ '1.0.7' ],
+326 silly audit   'path-scurry': [ '1.11.1' ],
+326 silly audit   'path-type': [ '4.0.0' ],
+326 silly audit   picocolors: [ '1.1.1' ],
+326 silly audit   picomatch: [ '2.3.1', '4.0.2' ],
+326 silly audit   pify: [ '2.3.0' ],
+326 silly audit   pirates: [ '4.0.7' ],
+326 silly audit   'possible-typed-array-names': [ '1.1.0' ],
+326 silly audit   'postcss-import': [ '15.1.0' ],
+326 silly audit   'postcss-js': [ '4.0.1' ],
+326 silly audit   'postcss-load-config': [ '4.0.2' ],
+326 silly audit   'postcss-nested': [ '6.2.0' ],
+326 silly audit   'postcss-selector-parser': [ '6.1.2' ],
+326 silly audit   'postcss-value-parser': [ '4.2.0' ],
+326 silly audit   'prelude-ls': [ '1.2.1' ],
+326 silly audit   'prop-types': [ '15.8.1' ],
+326 silly audit   punycode: [ '2.3.1' ],
+326 silly audit   'queue-microtask': [ '1.2.3' ],
+326 silly audit   react: [ '18.2.0' ],
+326 silly audit   'react-chartjs-2': [ '5.2.0' ],
+326 silly audit   'react-dom': [ '18.2.0' ],
+326 silly audit   'react-is': [ '16.13.1' ],
+326 silly audit   'read-cache': [ '1.0.0' ],
+326 silly audit   readdirp: [ '3.6.0' ],
+326 silly audit   'reflect.getprototypeof': [ '1.0.10' ],
+326 silly audit   'regexp.prototype.flags': [ '1.5.4' ],
+326 silly audit   'resolve-from': [ '4.0.0' ],
+326 silly audit   'resolve-pkg-maps': [ '1.0.0' ],
+326 silly audit   reusify: [ '1.1.0' ],
+326 silly audit   rimraf: [ '3.0.2' ],
+326 silly audit   'run-parallel': [ '1.2.0' ],
+326 silly audit   'safe-array-concat': [ '1.1.3' ],
+326 silly audit   'safe-push-apply': [ '1.0.0' ],
+326 silly audit   'safe-regex-test': [ '1.1.0' ],
+326 silly audit   scheduler: [ '0.23.2' ],
+326 silly audit   'set-cookie-parser': [ '2.7.1' ],
+326 silly audit   'set-function-length': [ '1.2.2' ],
+326 silly audit   'set-function-name': [ '2.0.2' ],
+326 silly audit   'set-proto': [ '1.0.0' ],
+326 silly audit   'shebang-command': [ '2.0.0' ],
+326 silly audit   'shebang-regex': [ '3.0.0' ],
+326 silly audit   'side-channel': [ '1.1.0' ],
+326 silly audit   'side-channel-list': [ '1.0.0' ],
+326 silly audit   'side-channel-map': [ '1.0.1' ],
+326 silly audit   'side-channel-weakmap': [ '1.0.2' ],
+326 silly audit   'signal-exit': [ '4.1.0' ],
+326 silly audit   slash: [ '3.0.0' ],
+326 silly audit   'type-fest': [ '0.20.2', '4.40.1' ],
+326 silly audit   'source-map-js': [ '1.2.1' ],
+326 silly audit   'stable-hash': [ '0.0.5' ],
+326 silly audit   streamsearch: [ '1.1.0' ],
+326 silly audit   'string-width': [ '5.1.2', '4.2.3' ],
+326 silly audit   'string.prototype.includes': [ '2.0.1' ],
+326 silly audit   'string.prototype.matchall': [ '4.0.12' ],
+326 silly audit   'string.prototype.repeat': [ '1.0.0' ],
+326 silly audit   'string.prototype.trim': [ '1.2.10' ],
+326 silly audit   'string.prototype.trimend': [ '1.0.9' ],
+326 silly audit   'string.prototype.trimstart': [ '1.0.8' ],
+326 silly audit   'strip-bom': [ '3.0.0' ],
+326 silly audit   'strip-json-comments': [ '3.1.1' ],
+326 silly audit   'styled-jsx': [ '5.1.1' ],
+326 silly audit   sucrase: [ '3.35.0' ],
+326 silly audit   'supports-color': [ '7.2.0' ],
+326 silly audit   'supports-preserve-symlinks-flag': [ '1.0.0' ],
+326 silly audit   tailwindcss: [ '3.3.3' ],
+326 silly audit   'text-table': [ '0.2.0' ],
+326 silly audit   thenify: [ '3.3.1' ],
+326 silly audit   'thenify-all': [ '1.6.0' ],
+326 silly audit   tinyglobby: [ '0.2.13' ],
+326 silly audit   'to-regex-range': [ '5.0.1' ],
+326 silly audit   tr46: [ '0.0.3' ],
+326 silly audit   'ts-api-utils': [ '1.4.3' ],
+326 silly audit   'ts-interface-checker': [ '0.1.13' ],
+326 silly audit   'tsconfig-paths': [ '3.15.0' ],
+326 silly audit   'type-check': [ '0.4.0' ],
+326 silly audit   'typed-array-buffer': [ '1.0.3' ],
+326 silly audit   'typed-array-byte-length': [ '1.0.3' ],
+326 silly audit   'typed-array-byte-offset': [ '1.0.4' ],
+326 silly audit   'typed-array-length': [ '1.0.7' ],
+326 silly audit   typescript: [ '5.1.6' ],
+326 silly audit   'unbox-primitive': [ '1.1.0' ],
+326 silly audit   'unrs-resolver': [ '1.7.2' ],
+326 silly audit   'update-browserslist-db': [ '1.1.3' ],
+326 silly audit   'uri-js': [ '4.4.1' ],
+326 silly audit   'util-deprecate': [ '1.0.2' ],
+326 silly audit   'web-streams-polyfill': [ '3.3.3' ],
+326 silly audit   'webidl-conversions': [ '3.0.1' ],
+326 silly audit   'whatwg-url': [ '5.0.0' ],
+326 silly audit   which: [ '2.0.2' ],
+326 silly audit   'which-boxed-primitive': [ '1.1.1' ],
+326 silly audit   'which-builtin-type': [ '1.2.1' ],
+326 silly audit   'which-collection': [ '1.0.2' ],
+326 silly audit   'which-typed-array': [ '1.1.19' ],
+326 silly audit   'word-wrap': [ '1.2.5' ],
+326 silly audit   'wrap-ansi': [ '8.1.0', '7.0.0' ],
+326 silly audit   wrappy: [ '1.0.2' ],
+326 silly audit   ws: [ '8.18.1' ],
+326 silly audit   yaml: [ '2.7.1' ],
+326 silly audit   'yocto-queue': [ '0.1.0' ],
+326 silly audit   '@clerk/nextjs': [ '6.18.4' ],
+326 silly audit   '@supabase/ssr': [ '0.6.1' ],
+326 silly audit   supabase: [ '1.226.4' ],
+326 silly audit   '@clerk/backend': [ '1.31.1' ],
+326 silly audit   '@clerk/clerk-react': [ '5.30.3' ],
+326 silly audit   '@clerk/shared': [ '3.7.7' ],
+326 silly audit   'server-only': [ '0.0.1' ],
+326 silly audit   tslib: [ '2.8.1' ],
+326 silly audit   cookie: [ '1.0.2' ],
+326 silly audit   'snakecase-keys': [ '8.0.1' ],
+326 silly audit   dequal: [ '2.0.3' ],
+326 silly audit   'glob-to-regexp': [ '0.4.1' ],
+326 silly audit   'js-cookie': [ '3.0.5' ],
+326 silly audit   'std-env': [ '3.9.0' ],
+326 silly audit   swr: [ '2.3.3' ],
+326 silly audit   'map-obj': [ '4.3.0' ],
+326 silly audit   'snake-case': [ '3.0.4' ],
+326 silly audit   'dot-case': [ '3.0.4' ],
+326 silly audit   'no-case': [ '3.0.4' ],
+326 silly audit   'lower-case': [ '2.0.2' ],
+326 silly audit   'bin-links': [ '5.0.0' ],
+326 silly audit   'https-proxy-agent': [ '7.0.6' ],
+326 silly audit   tar: [ '7.4.3' ],
+326 silly audit   'cmd-shim': [ '7.0.0' ],
+326 silly audit   'npm-normalize-package-bin': [ '4.0.0' ],
+326 silly audit   'proc-log': [ '5.0.0' ],
+326 silly audit   'read-cmd-shim': [ '5.0.0' ],
+326 silly audit   'write-file-atomic': [ '6.0.0' ],
+326 silly audit   'agent-base': [ '7.1.3' ],
+326 silly audit   'use-sync-external-store': [ '1.5.0' ],
+326 silly audit   '@isaacs/fs-minipass': [ '4.0.1' ],
+326 silly audit   chownr: [ '3.0.0' ],
+326 silly audit   minizlib: [ '3.0.2' ],
+326 silly audit   mkdirp: [ '3.0.1' ],
+326 silly audit   yallist: [ '5.0.0' ]
+326 silly audit }
+327 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\fsevents
+328 silly reify mark deleted [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\fsevents' ]
+329 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-win32-ia32-msvc
+330 silly reify mark deleted [
+330 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-win32-ia32-msvc'
+330 silly reify ]
+331 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-win32-arm64-msvc
+332 silly reify mark deleted [
+332 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-win32-arm64-msvc'
+332 silly reify ]
+333 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-wasm32-wasi
+334 silly reify mark deleted [
+334 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-wasm32-wasi'
+334 silly reify ]
+335 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@napi-rs\wasm-runtime
+336 silly reify mark deleted [
+336 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@napi-rs\\wasm-runtime'
+336 silly reify ]
+337 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@emnapi\core
+338 silly reify mark deleted [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@emnapi\\core' ]
+339 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@emnapi\runtime
+340 silly reify mark deleted [ 'C:\\Users\\akito\\git\\calculator\\node_modules\\@emnapi\\runtime' ]
+341 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@tybys\wasm-util
+342 silly reify mark deleted [
+342 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@tybys\\wasm-util'
+342 silly reify ]
+343 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@emnapi\wasi-threads
+344 silly reify mark deleted [
+344 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@emnapi\\wasi-threads'
+344 silly reify ]
+345 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-x64-musl
+346 silly reify mark deleted [
+346 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-x64-musl'
+346 silly reify ]
+347 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-x64-gnu
+348 silly reify mark deleted [
+348 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-x64-gnu'
+348 silly reify ]
+349 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-s390x-gnu
+350 silly reify mark deleted [
+350 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-s390x-gnu'
+350 silly reify ]
+351 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-riscv64-musl
+352 silly reify mark deleted [
+352 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-riscv64-musl'
+352 silly reify ]
+353 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-riscv64-gnu
+354 silly reify mark deleted [
+354 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-riscv64-gnu'
+354 silly reify ]
+355 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-ppc64-gnu
+356 silly reify mark deleted [
+356 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-ppc64-gnu'
+356 silly reify ]
+357 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-arm64-musl
+358 silly reify mark deleted [
+358 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-arm64-musl'
+358 silly reify ]
+359 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-arm64-gnu
+360 silly reify mark deleted [
+360 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-arm64-gnu'
+360 silly reify ]
+361 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-arm-musleabihf
+362 silly reify mark deleted [
+362 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-arm-musleabihf'
+362 silly reify ]
+363 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-linux-arm-gnueabihf
+364 silly reify mark deleted [
+364 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-linux-arm-gnueabihf'
+364 silly reify ]
+365 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-freebsd-x64
+366 silly reify mark deleted [
+366 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-freebsd-x64'
+366 silly reify ]
+367 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-darwin-x64
+368 silly reify mark deleted [
+368 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-darwin-x64'
+368 silly reify ]
+369 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@unrs\resolver-binding-darwin-arm64
+370 silly reify mark deleted [
+370 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@unrs\\resolver-binding-darwin-arm64'
+370 silly reify ]
+371 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-win32-ia32-msvc
+372 silly reify mark deleted [
+372 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-win32-ia32-msvc'
+372 silly reify ]
+373 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-win32-arm64-msvc
+374 silly reify mark deleted [
+374 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-win32-arm64-msvc'
+374 silly reify ]
+375 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-linux-x64-musl
+376 silly reify mark deleted [
+376 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-linux-x64-musl'
+376 silly reify ]
+377 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-linux-x64-gnu
+378 silly reify mark deleted [
+378 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-linux-x64-gnu'
+378 silly reify ]
+379 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-linux-arm64-musl
+380 silly reify mark deleted [
+380 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-linux-arm64-musl'
+380 silly reify ]
+381 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-linux-arm64-gnu
+382 silly reify mark deleted [
+382 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-linux-arm64-gnu'
+382 silly reify ]
+383 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-darwin-x64
+384 silly reify mark deleted [
+384 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-darwin-x64'
+384 silly reify ]
+385 verbose reify failed optional dependency C:\Users\akito\git\calculator\node_modules\@next\swc-darwin-arm64
+386 silly reify mark deleted [
+386 silly reify   'C:\\Users\\akito\\git\\calculator\\node_modules\\@next\\swc-darwin-arm64'
+386 silly reify ]
+387 http cache minizlib@https://registry.npmjs.org/minizlib/-/minizlib-3.0.2.tgz 0ms (cache hit)
+388 http cache @isaacs/fs-minipass@https://registry.npmjs.org/@isaacs/fs-minipass/-/fs-minipass-4.0.1.tgz 0ms (cache hit)
+389 http cache agent-base@https://registry.npmjs.org/agent-base/-/agent-base-7.1.3.tgz 0ms (cache hit)
+390 http cache https-proxy-agent@https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz 0ms (cache hit)
+391 http cache proc-log@https://registry.npmjs.org/proc-log/-/proc-log-5.0.0.tgz 0ms (cache hit)
+392 http cache std-env@https://registry.npmjs.org/std-env/-/std-env-3.9.0.tgz 0ms (cache hit)
+393 http cache @tybys/wasm-util@https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.9.0.tgz 0ms (cache hit)
+394 http cache @napi-rs/wasm-runtime@https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.9.tgz 0ms (cache hit)
+395 http cache server-only@https://registry.npmjs.org/server-only/-/server-only-0.0.1.tgz 0ms (cache hit)
+396 http cache dequal@https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz 0ms (cache hit)
+397 http cache yallist@https://registry.npmjs.org/yallist/-/yallist-5.0.0.tgz 0ms (cache hit)
+398 http cache write-file-atomic@https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-6.0.0.tgz 0ms (cache hit)
+399 http cache @emnapi/wasi-threads@https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.0.2.tgz 0ms (cache hit)
+400 http cache tslib@https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz 0ms (cache hit)
+401 http cache @emnapi/runtime@https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.4.3.tgz 0ms (cache hit)
+402 http cache @emnapi/core@https://registry.npmjs.org/@emnapi/core/-/core-1.4.3.tgz 0ms (cache hit)
+403 http cache tar@https://registry.npmjs.org/tar/-/tar-7.4.3.tgz 0ms (cache hit)
+404 http cache swr@https://registry.npmjs.org/swr/-/swr-2.3.3.tgz 0ms (cache hit)
+405 http cache type-fest@https://registry.npmjs.org/type-fest/-/type-fest-4.40.1.tgz 0ms (cache hit)
+406 http cache snakecase-keys@https://registry.npmjs.org/snakecase-keys/-/snakecase-keys-8.0.1.tgz 0ms (cache hit)
+407 http cache postcss@https://registry.npmjs.org/postcss/-/postcss-8.5.3.tgz 0ms (cache hit)
+408 http cache read-cmd-shim@https://registry.npmjs.org/read-cmd-shim/-/read-cmd-shim-5.0.0.tgz 0ms (cache hit)
+409 http cache supabase@https://registry.npmjs.org/supabase/-/supabase-1.226.4.tgz 0ms (cache hit)
+410 http cache mkdirp@https://registry.npmjs.org/mkdirp/-/mkdirp-3.0.1.tgz 0ms (cache hit)
+411 http cache npm-normalize-package-bin@https://registry.npmjs.org/npm-normalize-package-bin/-/npm-normalize-package-bin-4.0.0.tgz 0ms (cache hit)
+412 http cache minipass@https://registry.npmjs.org/minipass/-/minipass-7.1.2.tgz 0ms (cache hit)
+413 http cache cookie@https://registry.npmjs.org/cookie/-/cookie-1.0.2.tgz 0ms (cache hit)
+414 http cache js-cookie@https://registry.npmjs.org/js-cookie/-/js-cookie-3.0.5.tgz 0ms (cache hit)
+415 http cache @supabase/ssr@https://registry.npmjs.org/@supabase/ssr/-/ssr-0.6.1.tgz 0ms (cache hit)
+416 http cache cmd-shim@https://registry.npmjs.org/cmd-shim/-/cmd-shim-7.0.0.tgz 0ms (cache hit)
+417 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz 0ms (cache hit)
+418 http cache bin-links@https://registry.npmjs.org/bin-links/-/bin-links-5.0.0.tgz 0ms (cache hit)
+419 http cache @clerk/shared@https://registry.npmjs.org/@clerk/shared/-/shared-3.7.7.tgz 0ms (cache hit)
+420 http cache @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 0ms (cache hit)
+421 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz 0ms (cache hit)
+422 http cache @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 0ms (cache hit)
+423 http cache @clerk/nextjs@https://registry.npmjs.org/@clerk/nextjs/-/nextjs-6.18.4.tgz 0ms (cache hit)
+424 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz 0ms (cache hit)
+425 http cache chownr@https://registry.npmjs.org/chownr/-/chownr-3.0.0.tgz 0ms (cache hit)
+426 http cache @clerk/clerk-react@https://registry.npmjs.org/@clerk/clerk-react/-/clerk-react-5.30.3.tgz 0ms (cache hit)
+427 http cache @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 0ms (cache hit)
+428 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz 0ms (cache hit)
+429 silly tarball no local data for std-env@https://registry.npmjs.org/std-env/-/std-env-3.9.0.tgz. Extracting by manifest.
+430 silly tarball no local data for server-only@https://registry.npmjs.org/server-only/-/server-only-0.0.1.tgz. Extracting by manifest.
+431 silly tarball no local data for dequal@https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz. Extracting by manifest.
+432 http cache @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 0ms (cache hit)
+433 http cache @clerk/backend@https://registry.npmjs.org/@clerk/backend/-/backend-1.31.1.tgz 0ms (cache hit)
+434 silly tarball no local data for swr@https://registry.npmjs.org/swr/-/swr-2.3.3.tgz. Extracting by manifest.
+435 silly tarball no local data for type-fest@https://registry.npmjs.org/type-fest/-/type-fest-4.40.1.tgz. Extracting by manifest.
+436 silly tarball no local data for snakecase-keys@https://registry.npmjs.org/snakecase-keys/-/snakecase-keys-8.0.1.tgz. Extracting by manifest.
+437 silly tarball no local data for supabase@https://registry.npmjs.org/supabase/-/supabase-1.226.4.tgz. Extracting by manifest.
+438 silly tarball no local data for js-cookie@https://registry.npmjs.org/js-cookie/-/js-cookie-3.0.5.tgz. Extracting by manifest.
+439 silly tarball no local data for @clerk/shared@https://registry.npmjs.org/@clerk/shared/-/shared-3.7.7.tgz. Extracting by manifest.
+440 silly tarball no local data for @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz. Extracting by manifest.
+441 silly tarball no local data for @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz. Extracting by manifest.
+442 silly tarball no local data for @clerk/nextjs@https://registry.npmjs.org/@clerk/nextjs/-/nextjs-6.18.4.tgz. Extracting by manifest.
+443 silly tarball no local data for @clerk/clerk-react@https://registry.npmjs.org/@clerk/clerk-react/-/clerk-react-5.30.3.tgz. Extracting by manifest.
+444 silly tarball no local data for @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz. Extracting by manifest.
+445 silly tarball no local data for @clerk/types@https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz. Extracting by manifest.
+446 silly tarball no local data for @clerk/backend@https://registry.npmjs.org/@clerk/backend/-/backend-1.31.1.tgz. Extracting by manifest.
+447 http fetch GET 200 https://registry.npmjs.org/snakecase-keys/-/snakecase-keys-8.0.1.tgz 123ms (cache miss)
+448 http fetch GET 200 https://registry.npmjs.org/supabase/-/supabase-1.226.4.tgz 124ms (cache miss)
+449 http fetch GET 200 https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz 126ms (cache miss)
+450 http fetch GET 200 https://registry.npmjs.org/js-cookie/-/js-cookie-3.0.5.tgz 124ms (cache miss)
+451 http fetch GET 200 https://registry.npmjs.org/server-only/-/server-only-0.0.1.tgz 128ms (cache miss)
+452 http fetch GET 200 https://registry.npmjs.org/std-env/-/std-env-3.9.0.tgz 161ms (cache miss)
+453 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 182ms
+454 silly audit report {}
+455 http fetch GET 200 https://registry.npmjs.org/swr/-/swr-2.3.3.tgz 345ms (cache miss)
+456 http fetch GET 200 https://registry.npmjs.org/type-fest/-/type-fest-4.40.1.tgz 494ms (cache miss)
+457 http fetch GET 200 https://registry.npmjs.org/@clerk/clerk-react/-/clerk-react-5.30.3.tgz 654ms (cache miss)
+458 http fetch GET 200 https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 776ms (cache miss)
+459 http fetch GET 200 https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 778ms (cache miss)
+460 http fetch GET 200 https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 819ms (cache miss)
+461 http fetch GET 200 https://registry.npmjs.org/@clerk/types/-/types-4.56.2.tgz 820ms (cache miss)
+462 http fetch GET 200 https://registry.npmjs.org/@clerk/backend/-/backend-1.31.1.tgz 1210ms (cache miss)
+463 http fetch GET 200 https://registry.npmjs.org/@clerk/nextjs/-/nextjs-6.18.4.tgz 1357ms (cache miss)
+464 http fetch GET 200 https://registry.npmjs.org/@clerk/shared/-/shared-3.7.7.tgz 1378ms (cache miss)
+465 info run @clerk/shared@3.7.7 postinstall node_modules/@clerk/shared node ./scripts/postinstall.mjs
+466 info run supabase@1.226.4 postinstall node_modules/supabase node scripts/postinstall.js
+467 info run @clerk/shared@3.7.7 postinstall { code: 0, signal: null }
+468 info run supabase@1.226.4 postinstall { code: 0, signal: null }
+469 silly ADD node_modules/@isaacs/fs-minipass
+470 silly ADD node_modules/agent-base
+471 silly ADD node_modules/proc-log
+472 silly ADD node_modules/https-proxy-agent
+473 silly ADD node_modules/std-env
+474 silly ADD node_modules/dequal
+475 silly ADD node_modules/server-only
+476 silly ADD
+477 silly ADD
+478 silly ADD
+479 silly ADD
+480 silly ADD
+481 silly ADD
+482 silly ADD
+483 silly ADD
+484 silly ADD
+485 silly ADD
+486 silly ADD
+487 silly ADD
+488 silly ADD
+489 silly ADD
+490 silly ADD
+491 silly ADD
+492 silly ADD
+493 silly ADD
+494 silly ADD
+495 silly ADD
+496 silly ADD
+497 silly ADD
+498 silly ADD
+499 silly ADD
+500 silly ADD
+501 silly ADD
+502 silly ADD
+503 silly ADD
+504 silly ADD
+505 silly ADD
+506 silly CHANGE node_modules/yallist
+507 silly CHANGE node_modules/write-file-atomic
+508 silly REMOVE node_modules/webcrypto-core
+509 silly REMOVE node_modules/webcrypto-core/node_modules/tslib
+510 silly CHANGE node_modules/tslib
+511 silly REMOVE node_modules/to-space-case
+512 silly REMOVE node_modules/to-snake-case
+513 silly REMOVE node_modules/to-no-case
+514 silly CHANGE node_modules/tar
+515 silly CHANGE node_modules/swr
+516 silly CHANGE node_modules/supabase
+517 silly REMOVE node_modules/sucrase/node_modules/minipass
+518 silly CHANGE node_modules/snakecase-keys
+519 silly CHANGE node_modules/snakecase-keys/node_modules/type-fest
+520 silly CHANGE node_modules/read-cmd-shim
+521 silly REMOVE node_modules/ramda
+522 silly REMOVE node_modules/quick-lru
+523 silly REMOVE node_modules/pvutils
+524 silly REMOVE node_modules/pvtsutils
+525 silly REMOVE node_modules/pvtsutils/node_modules/tslib
+526 silly CHANGE node_modules/postcss
+527 silly CHANGE node_modules/npm-normalize-package-bin
+528 silly REMOVE node_modules/node-fetch-native
+529 silly CHANGE node_modules/mkdirp
+530 silly CHANGE node_modules/minizlib
+531 silly REMOVE node_modules/minizlib/node_modules/minipass
+532 silly CHANGE node_modules/minipass
+533 silly REMOVE node_modules/mime-types
+534 silly REMOVE node_modules/mime-db
+535 silly CHANGE node_modules/js-cookie
+536 silly REMOVE node_modules/fs-minipass
+537 silly REMOVE node_modules/fs-minipass/node_modules/minipass
+538 silly REMOVE node_modules/form-data
+539 silly REMOVE node_modules/delayed-stream
+540 silly REMOVE node_modules/deepmerge
+541 silly CHANGE node_modules/cookie
+542 silly REMOVE node_modules/combined-stream
+543 silly CHANGE node_modules/cmd-shim
+544 silly CHANGE node_modules/chownr
+545 silly REMOVE node_modules/camelcase-keys
+546 silly REMOVE node_modules/camelcase
+547 silly CHANGE node_modules/bin-links
+548 silly REMOVE node_modules/asynckit
+549 silly REMOVE node_modules/asn1js
+550 silly REMOVE node_modules/asn1js/node_modules/tslib
+551 silly REMOVE node_modules/@types/serve-static
+552 silly REMOVE node_modules/@types/send
+553 silly REMOVE node_modules/@types/range-parser
+554 silly REMOVE node_modules/@types/qs
+555 silly REMOVE node_modules/@types/node-fetch
+556 silly REMOVE node_modules/@types/mime
+557 silly REMOVE node_modules/@types/keygrip
+558 silly REMOVE node_modules/@types/http-errors
+559 silly REMOVE node_modules/@types/express-serve-static-core
+560 silly REMOVE node_modules/@types/express
+561 silly REMOVE node_modules/@types/cookies
+562 silly REMOVE node_modules/@types/connect
+563 silly REMOVE node_modules/@types/body-parser
+564 silly CHANGE node_modules/@supabase/ssr
+565 silly REMOVE node_modules/@peculiar/webcrypto
+566 silly REMOVE node_modules/@peculiar/json-schema
+567 silly REMOVE node_modules/@peculiar/asn1-schema
+568 silly REMOVE node_modules/@peculiar/asn1-schema/node_modules/tslib
+569 silly CHANGE node_modules/@clerk/shared
+570 silly ADD node_modules/@clerk/shared/node_modules/csstype
+571 silly ADD node_modules/@clerk/shared/node_modules/@clerk/types
+572 silly CHANGE node_modules/@clerk/nextjs
+573 silly ADD node_modules/@clerk/nextjs/node_modules/csstype
+574 silly ADD node_modules/@clerk/nextjs/node_modules/@clerk/types
+575 silly REMOVE node_modules/@clerk/clerk-sdk-node
+576 silly REMOVE node_modules/@clerk/clerk-sdk-node/node_modules/snakecase-keys
+577 silly CHANGE node_modules/@clerk/clerk-react
+578 silly ADD node_modules/@clerk/clerk-react/node_modules/csstype
+579 silly ADD node_modules/@clerk/clerk-react/node_modules/@clerk/types
+580 silly CHANGE node_modules/@clerk/backend
+581 silly ADD node_modules/@clerk/backend/node_modules/csstype
+582 silly ADD node_modules/@clerk/backend/node_modules/@clerk/types
+583 silly REMOVE node_modules/@clerk/backend/node_modules/@types/node
+584 verbose cwd C:\Users\akito\git\calculator
+585 verbose os Windows_NT 10.0.26100
+586 verbose node v22.14.0
+587 verbose npm  v10.9.2
+588 verbose exit 0
+589 info ok
