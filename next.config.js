@@ -18,6 +18,8 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  // 静的エクスポートを無効化
+  output: 'standalone',
   // experimental: {
   //   appDir: true, // Next.js 13.4以降は不要
   // },
