@@ -84,6 +84,8 @@ const nextConfig = {
   },
   basePath: process.env.NODE_ENV === 'production' ? '/calculator' : '',
   trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true,
 };
 
 module.exports = nextConfig; 
