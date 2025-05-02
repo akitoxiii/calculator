@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 静的エクスポートを無効化
-  // output: 'export',
   images: {
     unoptimized: true,
+    domains: ['wocwnfhgwxesafjtiaxc.supabase.co'], // Supabaseのドメインを追加
   },
   trailingSlash: true,
   // experimental: {
