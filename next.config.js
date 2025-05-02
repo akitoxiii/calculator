@@ -18,7 +18,9 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  output: 'export'
+  output: 'export',
+  basePath: process.env.NODE_ENV === 'production' ? '/calculator' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/calculator/' : '',
 };
 
 module.exports = nextConfig; 
