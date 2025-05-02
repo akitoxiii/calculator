@@ -76,7 +76,7 @@ const nextConfig = {
     ];
   },
   experimental: {
-    scrollRestoration: true,
+    appDir: true,
   },
   productionBrowserSourceMaps: true,
   onError: async (err, req, res) => {
