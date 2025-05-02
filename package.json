@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "test": "echo \"No tests specified\" && exit 0"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@clerk/localizations": "1.22.0",
