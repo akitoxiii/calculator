@@ -86,6 +86,14 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   skipMiddlewareUrlNormalize: true,
+  distDir: '.next',
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  exportPathMap: async function () {
+    return {
+      '/': { page: '/' },
+      '/404': { page: '/404' },
+    };
+  },
 };
 
 module.exports = nextConfig; 
