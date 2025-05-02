@@ -36,17 +36,11 @@ jobs:
         NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
 
-    - name: Cache build
-      uses: actions/cache@v3
-      with:
-        path: .next
-        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/*') }}
-
     - name: Run Lighthouse CI
       uses: treosh/lighthouse-ci-action@v9
       with:
         urls: |
-          https://calculator-${GITHUB_SHA}.vercel.app
+          ${{ secrets.VERCEL_DEPLOYMENT_URL }}
         uploadArtifacts: true
         temporaryPublicStorage: true
 
