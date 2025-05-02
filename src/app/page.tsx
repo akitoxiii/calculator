@@ -26,192 +26,87 @@ export default function Home() {
   const [showResetPassword, setShowResetPassword] = useState(false);
 
   useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+        if (user) {
+          const { data: categories } = await supabase
+            .from('categories')
+            .select('id')
+            .eq('user_id', user.id)
+            .limit(1);
+
+          if (!categories || categories.length === 0) {
+            await insertSampleData();
+            window.location.reload();
+          }
+        }
+      } catch (error) {
+        console.error('Error checking user:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     checkUser();
   }, []);
 
-  async function checkUser() {
-    try {
-      console.log('ユーザーチェックを開始...');
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('取得したユーザー情報:', user);
-      
-      setUser(user);
-      if (user) {
-        // ユーザーが存在する場合、カテゴリーの存在チェック
-        console.log('カテゴリーの存在チェックを開始...');
-        const { data: categories, error } = await supabase
-          .from('categories')
-          .select('id')
-          .eq('user_id', user.id)
-          .limit(1);
-
-        if (error) {
-          console.error('カテゴリー取得エラー:', error);
-          return;
-        }
-
-        console.log('既存のカテゴリー:', categories);
-
-        // カテゴリーが存在しない場合、サンプルデータを挿入
-        if (!categories || categories.length === 0) {
-          console.log('カテゴリーが存在しないため、サンプルデータを挿入します...');
-          try {
-            await insertSampleData();
-            console.log('サンプルデータの挿入が完了しました');
-            // サンプルデータ挿入後に画面をリロード
-            window.location.reload();
-          } catch (error) {
-            console.error('サンプルデータの挿入に失敗しました:', error);
-          }
-        } else {
-          console.log('カテゴリーが既に存在するため、サンプルデータは挿入しません');
-        }
-      } else {
-        console.log('ユーザーが見つかりません');
-      }
-    } catch (error) {
-      console.error('ユーザーチェックエラー:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      alert('メールアドレスとパスワードを入力してください。');
+      return;
+    }
+
     try {
-      console.log('ログイン処理を開始...');
-
-      if (!email || !password) {
-        alert('メールアドレスとパスワードを入力してください。');
-        return;
-      }
-
-      console.log('ログイン試行:', { email });
-
-      // セッションの確認
-      const { data: { session: existingSession } } = await supabase.auth.getSession();
-      if (existingSession) {
-        await supabase.auth.signOut();
-      }
-
-      // ログイン処理
       const { data: { session }, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim()
       });
 
       if (error) {
-        console.error('ログインエラー:', error);
-        if (error.message === 'Invalid login credentials') {
-          alert('メールアドレスまたはパスワードが正しくありません。');
-        } else {
-          alert(`ログインエラー: ${error.message}`);
-        }
+        alert(error.message === 'Invalid login credentials' 
+          ? 'メールアドレスまたはパスワードが正しくありません。'
+          : `ログインエラー: ${error.message}`);
         return;
       }
 
-      if (!session || !session.user) {
-        console.error('セッションデータが取得できません');
-        alert('ログインに失敗しました。再度お試しください。');
-        return;
-      }
-
-      console.log('ログイン成功:', session.user);
-      setUser(session.user);
-
-      try {
-        // カテゴリーの存在チェック
-        console.log('カテゴリーの存在チェックを開始...');
-        const { data: categories, error: categoryError } = await supabase
-          .from('categories')
-          .select('id')
-          .eq('user_id', session.user.id)
-          .limit(1);
-
-        if (categoryError) {
-          console.error('カテゴリー取得エラー:', categoryError);
-          return;
-        }
-
-        // カテゴリーが存在しない場合、サンプルデータを挿入
-        if (!categories || categories.length === 0) {
-          console.log('カテゴリーが存在しないため、サンプルデータを挿入します...');
-          await insertSampleData();
-          console.log('サンプルデータの挿入が完了しました');
-        }
-
-        // セッションの永続化を確認
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        if (currentSession) {
-          // ページをリロード
-          window.location.href = '/';
-        } else {
-          throw new Error('セッションが失われました');
-        }
-      } catch (error) {
-        console.error('データ初期化エラー:', error);
-        alert('初期設定中にエラーが発生しました。ページをリロードしてください。');
+      if (session?.user) {
+        window.location.href = '/';
       }
     } catch (error) {
-      console.error('予期せぬエラー:', error);
-      alert('予期せぬエラーが発生しました。');
+      console.error('Login error:', error);
+      alert('ログインに失敗しました。');
     }
   };
 
   const handleSignUp = async () => {
+    if (!email || !password) {
+      alert('メールアドレスとパスワードを入力してください。');
+      return;
+    }
+
     try {
-      // ローカルストレージをクリア
-      localStorage.clear();
-      
-      if (!email || !password) {
-        alert('メールアドレスとパスワードを入力してください。');
-        return;
-      }
-
-      console.log('Attempting signup with:', { email });
-
-      // セッションを明示的にクリア
-      await supabase.auth.signOut();
-
-      // サインアップ処理
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: email.trim(),
-        password: password.trim(),
-        options: {
-          data: {
-            email: email.trim(),
-          }
-        }
+        password: password.trim()
       });
 
-      if (signUpError) {
-        console.error('Error signing up:', signUpError);
-        if (signUpError.message.includes('already registered')) {
-          alert('このメールアドレスは既に登録されています。');
-        } else {
-          alert(`アカウント作成中にエラーが発生しました: ${signUpError.message}`);
-        }
+      if (error) {
+        alert(error.message.includes('already registered')
+          ? 'このメールアドレスは既に登録されています。'
+          : `アカウント作成中にエラーが発生しました: ${error.message}`);
         return;
       }
 
-      if (!signUpData.user) {
-        console.error('No user data received after sign up');
-        alert('アカウント作成に失敗しました。');
-        return;
-      }
-
-      console.log('Sign up successful:', signUpData.user);
       alert('アカウントが作成されました。ログインしてください。');
       setEmail('');
       setPassword('');
-      
-      // 画面をリロード
       window.location.reload();
-      return;
-
     } catch (error) {
-      console.error('Unexpected error:', error);
-      alert('予期せぬエラーが発生しました。');
+      console.error('Signup error:', error);
+      alert('アカウント作成に失敗しました。');
     }
   };
 
