@@ -20,10 +20,7 @@ const nextConfig = {
   },
   output: 'export',
   basePath: process.env.NODE_ENV === 'production' ? '/calculator' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/calculator/' : '',
-  experimental: {
-    appDir: true
-  }
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/calculator/' : ''
 };
 
 module.exports = nextConfig; 
