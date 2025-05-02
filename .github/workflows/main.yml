@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -33,6 +33,8 @@ jobs:
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
 
     - name: Cache build
       uses: actions/cache@v3
@@ -60,8 +62,7 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        NEXT_PUBLIC_SUPABASE_URL: ${{ 'https://wocwnfhgwxesafjtiaxc.supabase.co' }}
-        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvY3duZmhnd3hlc2FmanRpYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MjQyMjQsImV4cCI6MjA2MTUwMDIyNH0._KuWq686W3490kjLQ2UCzBTvDmwlby9LUud1stjR6Vs' }}
-
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     # ここにデプロイ先に応じたデプロイステップを追加
     # 例: Vercel, AWS, Herokuなど 

@@ -9,7 +9,7 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PostgreSQL client
         run: |
@@ -42,7 +42,7 @@ jobs:
             -f "backup_pooled_${BACKUP_TIMESTAMP}.dump"
 
       - name: Upload backups as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: database-backups
           path: backup_*.dump

@@ -3,26 +3,9 @@
 import { useState } from 'react';
 import { format, setMonth, getYear, setYear } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from 'chart.js';
+import { Chart } from 'chart.js/auto';
 import { Pie, Bar } from 'react-chartjs-2';
 import type { Expense } from '../household/HouseholdTab';
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement
-);
 
 const MONTHS = [
   { value: 0, label: '1月' },

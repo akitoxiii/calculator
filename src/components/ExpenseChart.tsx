@@ -1,11 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart } from 'chart.js/auto';
 import { Pie } from 'react-chartjs-2';
 import type { Expense } from '@/types/expense';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface ExpenseChartProps {
   selectedDate: Date;
@@ -78,8 +76,8 @@ export const ExpenseChart = ({ selectedDate, expenses }: ExpenseChartProps) => {
             plugins: {
               tooltip: {
                 callbacks: {
-                  label: (context) => {
-                    const value = context.raw as number;
+                  label: (tooltipItem: any) => {
+                    const value = tooltipItem.raw as number;
                     const percentage = ((value / totalExpense) * 100).toFixed(1);
                     return `¥${value.toLocaleString()} (${percentage}%)`;
                   },
