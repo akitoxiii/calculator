@@ -1,3 +1,5 @@
+'use client';
+
 import { Suspense } from 'react';
 import { AuthCallback } from '@/components/auth';
 
