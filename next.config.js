@@ -5,6 +5,9 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig; 
