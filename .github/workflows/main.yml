@@ -40,7 +40,7 @@ jobs:
       uses: treosh/lighthouse-ci-action@v9
       with:
         urls: |
-          ${{ secrets.VERCEL_DEPLOYMENT_URL }}
+          https://calculator-akitoxiii.vercel.app
         uploadArtifacts: true
         temporaryPublicStorage: true
 
