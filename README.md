@@ -9,6 +9,7 @@ This is a calculator application built with Next.js and Supabase.
 
 ## Deployment Status
 - Latest deployment test: ✅ 
+- Last updated: 2024/05/02
 
 ## Deployment Configuration
 ### Vercel Settings
