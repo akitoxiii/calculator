@@ -7,6 +7,8 @@ import type { Transaction } from '@/types/transaction';
 import { TransactionType } from '@/types/transactionTypes';
 import { storage } from '@/utils/storage';
 import { PAYMENT_METHODS } from '@/data/initialData';
+import { useCategories } from '@/hooks/useCategories';
+import { DailyExpenseForm } from '@/components/DailyExpenseForm';
 
 export const AssetsTab = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -20,6 +22,7 @@ export const AssetsTab = () => {
     available: 0,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { categories } = useCategories();
 
   useEffect(() => {
     const savedTransactions = storage.getTransactions();
@@ -63,6 +66,13 @@ export const AssetsTab = () => {
     setTransactions(updatedTransactions);
     storage.saveTransactions(updatedTransactions);
     calculateBalance(updatedTransactions);
+  };
+
+  const handleExpenseSave = (data: any) => {
+    // Transaction型に合わせて変換・保存
+    // 例:
+    // const newTransaction: Transaction = { ... }
+    // setTransactions([...transactions, newTransaction]);
   };
 
   return (
@@ -126,7 +136,7 @@ export const AssetsTab = () => {
               {transactions.map((transaction) => (
                 <tr key={transaction.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {format(transaction.date, 'yyyy/MM/dd', { locale: ja })}
+                    {format(new Date(transaction.date), 'yyyy/MM/dd', { locale: ja })}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {transaction.type}
@@ -156,6 +166,12 @@ export const AssetsTab = () => {
           </table>
         </div>
       </div>
+
+      <DailyExpenseForm
+        date={new Date()}
+        onSubmit={handleExpenseSave}
+        categories={categories}
+      />
     </div>
   );
 }; 

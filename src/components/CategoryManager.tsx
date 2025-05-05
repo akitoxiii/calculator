@@ -12,6 +12,7 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
     name: '',
     type: 'expense',
     color: '#000000',
+    user_id: '',
   });
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
       name: '',
       type: 'expense',
       color: '#000000',
+      user_id: '',
     });
   };
 

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { AccessibilityProvider } from '@/components/common/AccessibilityProvider';
 import { CookieConsent } from '@/components/common/CookieConsent';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
-import { AuthProvider } from '@/contexts/AuthContext';
 import { ProgressBar } from '@/components/common/ProgressBar';
 import { useLoading } from '@/hooks/useLoading';
 import { Navigation } from '@/components/common/Navigation';
@@ -33,43 +32,41 @@ export function LayoutClient({ children }: LayoutClientProps) {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <AccessibilityProvider>
-          {isLoading && <ProgressBar progress={loadingProgress} />}
-          <div className="min-h-screen flex flex-col bg-gray-50">
-            {/* ヘッダー */}
-            <header className="bg-white shadow-sm">
-              <div className="container mx-auto px-4 py-4">
-                <div className="flex justify-between items-center">
-                  <Link href="/" className="text-xl font-bold text-primary">
-                    家計簿アプリ
-                  </Link>
-                  <div className="flex items-center space-x-4">
-                    <Navigation />
-                  </div>
+      <AccessibilityProvider>
+        {isLoading && <ProgressBar progress={loadingProgress} />}
+        <div className="min-h-screen flex flex-col bg-gray-50">
+          {/* ヘッダー */}
+          <header className="bg-white shadow-sm">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex justify-between items-center">
+                <Link href="/" className="text-xl font-bold text-primary">
+                  家計簿アプリ
+                </Link>
+                <div className="flex items-center space-x-4">
+                  <Navigation />
                 </div>
               </div>
-            </header>
+            </div>
+          </header>
 
-            {/* メインコンテンツ */}
-            <main className="flex-grow container mx-auto px-4 py-8">
-              {children}
-            </main>
+          {/* メインコンテンツ */}
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {children}
+          </main>
 
-            {/* フッター */}
-            <footer className="bg-white border-t">
-              <div className="container mx-auto px-4 py-6">
-                <div className="flex flex-col md:flex-row justify-between items-center">
-                  <div className="text-sm text-gray-600">
-                    © {new Date().getFullYear()} 家計簿アプリ All rights reserved.
-                  </div>
+          {/* フッター */}
+          <footer className="bg-white border-t">
+            <div className="container mx-auto px-4 py-6">
+              <div className="flex flex-col md:flex-row justify-between items-center">
+                <div className="text-sm text-gray-600">
+                  © {new Date().getFullYear()} 家計簿アプリ All rights reserved.
                 </div>
               </div>
-            </footer>
-          </div>
-          <CookieConsent />
-        </AccessibilityProvider>
-      </AuthProvider>
+            </div>
+          </footer>
+        </div>
+        <CookieConsent />
+      </AccessibilityProvider>
     </ErrorBoundary>
   );
 } 

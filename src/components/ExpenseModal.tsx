@@ -1,28 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import type { CategoryType } from '@/types/expense';
+import type { CategoryType, Category, Expense } from '@/types/expense';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
 
-type Props = {
-  date: Date;
+interface Props {
+  isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { amount: number; category: string; memo: string; type: CategoryType }) => void;
-};
+  onSubmit: (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => Promise<void>;
+  selectedDate: Date;
+  categories: Category[];
+  dailyExpenses: Expense[];
+  onDelete?: (id: string) => Promise<void>;
+}
 
-export function ExpenseModal({ date, onClose, onSubmit }: Props) {
+export const ExpenseModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  selectedDate,
+  categories,
+  dailyExpenses,
+  onDelete
+}: Props) => {
+  console.log('ExpenseModal categories:', categories);
   const [type, setType] = useState<CategoryType>('expense');
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('');
+  const [category_id, setCategoryId] = useState('');
   const [memo, setMemo] = useState('');
   const [calculatorDisplay, setCalculatorDisplay] = useState('');
 
+  useEffect(() => {
+    setAmount(calculatorDisplay);
+  }, [calculatorDisplay]);
+
+  // カテゴリ選択肢をtypeでフィルタ
+  const filteredCategories = categories.filter(cat => cat.type === type);
+
+  // 初期値をUUIDでセット（カテゴリがあれば最初のUUIDをセット）
+  useEffect(() => {
+    if (filteredCategories.length > 0) {
+      setCategoryId(filteredCategories[0].id);
+    } else {
+      setCategoryId('');
+    }
+  }, [type, categories]);
+
+  // 本日分の登録済み明細リスト（dateをYYYY-MM-DD文字列で比較）
+  const todayStr = format(selectedDate, 'yyyy-MM-dd');
+  const filteredDailyExpenses = dailyExpenses.filter(item => item.date === todayStr);
+
+  if (!isOpen) return null;
+
   const handleNumberClick = (num: string) => {
-    setCalculatorDisplay(prev => prev + num);
+    setCalculatorDisplay(prev => {
+      const newVal = prev + num;
+      setAmount(newVal);
+      return newVal;
+    });
   };
 
   const handleOperatorClick = (operator: string) => {
-    setCalculatorDisplay(prev => prev + operator);
+    setCalculatorDisplay(prev => {
+      const newVal = prev + operator;
+      setAmount(newVal);
+      return newVal;
+    });
   };
 
   const handleCalculate = () => {
@@ -32,6 +75,7 @@ export function ExpenseModal({ date, onClose, onSubmit }: Props) {
       setAmount(result.toString());
     } catch (error) {
       setCalculatorDisplay('Error');
+      setAmount('');
     }
   };
 
@@ -43,28 +87,27 @@ export function ExpenseModal({ date, onClose, onSubmit }: Props) {
       setAmount(withTax.toString());
     } catch (error) {
       setCalculatorDisplay('Error');
+      setAmount('');
     }
   };
 
   const handleSubmit = () => {
-    if (!amount || !category) return;
-    
+    console.log('ExpenseModal: 保存ボタン押下', { amount, category_id, memo, type });
+    if (!amount || !category_id) return;
     onSubmit({
       amount: parseFloat(amount),
-      category,
+      category_id,
       memo,
       type
     });
   };
 
-  const categories = type === 'expense' ? DEFAULT_EXPENSE_CATEGORIES : DEFAULT_INCOME_CATEGORIES;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center overflow-y-auto max-h-screen w-full p-4 sm:p-8">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md my-8 mx-2">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">
-            {format(date, 'yyyy年MM月dd日', { locale: ja })}の収支を入力
+            {format(selectedDate, 'yyyy年MM月dd日', { locale: ja })}の収支を入力
           </h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             ×
@@ -162,13 +205,13 @@ export function ExpenseModal({ date, onClose, onSubmit }: Props) {
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">カテゴリー</label>
           <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={category_id}
+            onChange={(e) => setCategoryId(e.target.value)}
             className="w-full p-2 border rounded"
           >
             <option value="">選択してください</option>
-            {categories.map(cat => (
-              <option key={cat.id} value={cat.name}>{cat.name}</option>
+            {filteredCategories.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>
@@ -197,7 +240,39 @@ export function ExpenseModal({ date, onClose, onSubmit }: Props) {
             保存
           </button>
         </div>
+
+        {/* 本日分の登録済み明細リスト */}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">本日の明細</h3>
+          {dailyExpenses.length === 0 ? (
+            <p className="text-gray-500">明細はありません</p>
+          ) : (
+            <div className="space-y-2">
+              {dailyExpenses.map((expense) => (
+                <div key={expense.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                  <div>
+                    <div className="font-medium">
+                      {categories.find(cat => cat.id === expense.category_id)?.name || '未分類'}
+                    </div>
+                    <div className="text-sm text-gray-500">{expense.memo}</div>
+                    <div className={`text-sm ${expense.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                      {expense.type === 'income' ? '+' : '-'}¥{expense.amount.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => onDelete?.(expense.id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      削除
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
-} 
+}; 

@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { useAuth } from '@clerk/nextjs';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 console.log('Supabase Configuration:', {
   url: supabaseUrl,
@@ -35,4 +36,16 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       eventsPerSecond: 10
     }
   }
-}); 
+});
+
+// ClerkのJWTを使ってSupabaseのセッションを更新する関数
+export const updateSupabaseSession = async (jwt: string) => {
+  const { data, error } = await supabase.auth.setSession({
+    access_token: jwt,
+    refresh_token: jwt,
+  });
+  if (error) {
+    console.error('Error updating Supabase session:', error);
+  }
+  return data;
+}; 

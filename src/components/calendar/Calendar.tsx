@@ -2,13 +2,15 @@
 
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import type { Expense } from '@/types/expense';
 
 interface Props {
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
+  expenses: Expense[];
 }
 
-export const Calendar = ({ selectedDate, onDateSelect }: Props) => {
+export const Calendar = ({ selectedDate, onDateSelect, expenses }: Props) => {
   const startDate = startOfMonth(selectedDate);
   const endDate = endOfMonth(selectedDate);
   const days = eachDayOfInterval({ start: startDate, end: endDate });

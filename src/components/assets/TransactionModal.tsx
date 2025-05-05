@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { Transaction } from '@/types/transaction';
 import { TRANSACTION_TYPES, TransactionType } from '@/types/transactionTypes';
+import { useCategories } from '@/hooks/useCategories';
 
 type PaymentMethod = typeof PAYMENT_METHODS[number];
 
@@ -24,41 +25,80 @@ interface Props {
   date: Date;
   onClose: () => void;
   onSave: (transaction: Transaction) => void;
+  transaction?: Transaction;
 }
 
-export const TransactionModal = ({ date, onClose, onSave }: Props) => {
-  const [type, setType] = useState<TransactionType>('支払い');
-  const [amount, setAmount] = useState('');
-  const [fromAccount, setFromAccount] = useState('');
-  const [toAccount, setToAccount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PAYMENT_METHODS[0]);
-  const [note, setNote] = useState('');
+export const TransactionModal = ({ date, onClose, onSave, transaction }: Props) => {
+  const [type, setType] = useState<TransactionType>(transaction ? transaction.type : '支払い');
+  const [amount, setAmount] = useState(transaction ? String(transaction.amount) : '');
+  const [fromAccount, setFromAccount] = useState(transaction?.fromAccount || '');
+  const [toAccount, setToAccount] = useState(transaction?.toAccount || '');
+  const initialPaymentMethod = transaction?.paymentMethod && PAYMENT_METHODS.includes(transaction.paymentMethod as PaymentMethod)
+    ? transaction.paymentMethod as PaymentMethod
+    : PAYMENT_METHODS[0];
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(initialPaymentMethod);
+  const [note, setNote] = useState(transaction?.note || '');
+  const [selectedDate, setSelectedDate] = useState(transaction ? new Date(transaction.date) : date);
+  const { categories } = useCategories();
+  const [categoryId, setCategoryId] = useState(transaction?.category_id || '');
+
+  // 日付の範囲（前後2年）
+  const today = new Date();
+  const minDate = new Date(today.getFullYear() - 2, today.getMonth(), today.getDate());
+  const maxDate = new Date(today.getFullYear() + 2, today.getMonth(), today.getDate());
+
+  // カテゴリ選択肢をtypeでフィルタ
+  const filteredCategories = categories.filter(cat => {
+    if (type === '収入') return cat.type === 'income';
+    if (type === '支払い') return cat.type === 'expense';
+    return false;
+  });
+
+  // 初期カテゴリIDセット
+  useEffect(() => {
+    if (filteredCategories.length > 0) {
+      setCategoryId(filteredCategories[0].id);
+    } else {
+      setCategoryId('');
+    }
+  }, [type, categories]);
 
   const handleSave = () => {
     if (!amount) return;
-
-    const transaction: Transaction = {
-      id: Date.now().toString(),
-      date,
+    const newTransaction: Transaction = {
+      id: transaction ? transaction.id : Date.now().toString(),
+      date: format(selectedDate, 'yyyy-MM-dd'),
       type,
       amount: parseFloat(amount),
       fromAccount: fromAccount || undefined,
       toAccount: toAccount || undefined,
       paymentMethod: type === '支払い' ? paymentMethod : undefined,
       note: note || undefined,
+      category_id: categoryId || undefined,
     };
-
-    onSave(transaction);
+    onSave(newTransaction);
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg w-full max-w-md">
         <h2 className="text-xl font-bold mb-4">
-          {format(date, 'yyyy年MM月dd日', { locale: ja })}の取引を追加
+          {format(selectedDate, 'yyyy年MM月dd日', { locale: ja })}の取引を追加
         </h2>
 
         <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">日付</label>
+            <input
+              type="date"
+              value={format(selectedDate, 'yyyy-MM-dd')}
+              min={format(minDate, 'yyyy-MM-dd')}
+              max={format(maxDate, 'yyyy-MM-dd')}
+              onChange={e => setSelectedDate(new Date(e.target.value))}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">取引種別</label>
             <select
@@ -84,6 +124,22 @@ export const TransactionModal = ({ date, onClose, onSave }: Props) => {
               placeholder="金額を入力"
             />
           </div>
+
+          {/* カテゴリ選択欄 */}
+          {(type === '収入' || type === '支払い') && (
+            <div>
+              <label className="block text-sm font-medium mb-1">カテゴリ</label>
+              <select
+                value={categoryId}
+                onChange={e => setCategoryId(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                {filteredCategories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {type === '振替' && (
             <>

@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@clerk/localizations": "1.22.0",
-    "@clerk/nextjs": "6.18.4",
+    "@clerk/nextjs": "^6.18.5",
+    "@sentry/nextjs": "^9.15.0",
     "@supabase/auth-helpers-nextjs": "0.7.4",
     "@supabase/ssr": "0.6.1",
     "@supabase/supabase-js": "2.32.0",
@@ -21,13 +22,15 @@
     "react": "18.2.0",
     "react-chartjs-2": "5.2.0",
     "react-dom": "18.2.0",
-    "supabase": "1.226.4"
+    "supabase": "1.226.4",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/chart.js": "2.9.37",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "10.4.15",
     "eslint": "8.47.0",
     "eslint-config-next": "14.2.28",

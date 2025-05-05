@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/utils/supabase';
+import { useState, useEffect, useCallback } from 'react';
 import { ExpenseModal } from '@/components/ExpenseModal';
 import { AssetsTab } from '@/components/assets/AssetsTab';
-import type { Expense } from '@/types/expense';
+import type { Expense, CategoryType } from '@/types/expense';
 import { storage } from '@/utils/storage';
+import { supabase } from '@/utils/supabase';
 import { CalendarTab } from '@/components/calendar/CalendarTab';
 import StatisticsTab from '@/components/statistics/StatisticsTab';
 import { CategoryTab } from '@/components/category/CategoryTab';
-import { ResetPassword } from '@/components/auth/ResetPassword';
-import { insertSampleData } from '@/utils/insertSampleData';
+import { useUser, useAuth, SignIn, SignUp, useSignIn, useClerk } from '@clerk/nextjs';
+import { useCategories } from '@/hooks/useCategories';
+import { format } from 'date-fns';
 
 type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
 
@@ -19,125 +20,120 @@ export default function Home() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('calendar');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
+
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { categories } = useCategories();
+  const { getToken } = useAuth();
+  const { signIn, isLoaded: signInLoaded } = useSignIn();
+  const { signOut } = useClerk();
+
+  console.log({ isLoaded, isSignedIn, user });
+
+  const fetchExpenses = useCallback(async () => {
+    if (!isLoaded || !isSignedIn || !user) return;
+    try {
+      // supabaseから取得
+      const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id);
+      const formattedExpenses = (data || []).map(expense => ({
+        ...expense,
+        date: expense.date
+      }));
+      // storageの取引もExpense型に変換してマージ
+      const transactions = storage.getTransactions();
+      const txExpenses = transactions.map(convertTransactionToExpense);
+      // idでユニーク化
+      const all = [...formattedExpenses, ...txExpenses];
+      const unique = Array.from(new Map(all.map(e => [e.id, e])).values());
+      setExpenses(unique);
+    } catch (error) {
+      console.error('fetchExpensesエラー:', error);
+    }
+  }, [isLoaded, isSignedIn, user, categories]);
+
+  // 初回マウント時のみfetchExpensesを呼ぶ
+  useEffect(() => {
+    if (isLoaded && isSignedIn && user) {
+      fetchExpenses();
+    }
+  }, [isLoaded, isSignedIn, user, fetchExpenses, activeTab]);
 
   useEffect(() => {
-    const checkUser = async () => {
+    const updateSession = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-        if (user) {
-          const { data: categories } = await supabase
-            .from('categories')
-            .select('id')
-            .eq('user_id', user.id)
-            .limit(1);
-
-          if (!categories || categories.length === 0) {
-            await insertSampleData();
-            window.location.reload();
+        const token = await getToken();
+        if (token) {
+          const { error } = await supabase.auth.setSession({
+            access_token: token,
+            refresh_token: token
+          });
+          if (error) {
+            console.error('Error setting session:', error);
           }
         }
       } catch (error) {
-        console.error('Error checking user:', error);
-      } finally {
-        setLoading(false);
+        console.error('Error updating session:', error);
       }
     };
-
-    checkUser();
-  }, []);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      alert('メールアドレスとパスワードを入力してください。');
-      return;
-    }
-
-    try {
-      const { data: { session }, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password.trim()
-      });
-
-      if (error) {
-        alert(error.message === 'Invalid login credentials' 
-          ? 'メールアドレスまたはパスワードが正しくありません。'
-          : `ログインエラー: ${error.message}`);
-        return;
-      }
-
-      if (session?.user) {
-        window.location.href = '/';
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('ログインに失敗しました。');
-    }
-  };
-
-  const handleSignUp = async () => {
-    if (!email || !password) {
-      alert('メールアドレスとパスワードを入力してください。');
-      return;
-    }
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password: password.trim()
-      });
-
-      if (error) {
-        alert(error.message.includes('already registered')
-          ? 'このメールアドレスは既に登録されています。'
-          : `アカウント作成中にエラーが発生しました: ${error.message}`);
-        return;
-      }
-
-      alert('アカウントが作成されました。ログインしてください。');
-      setEmail('');
-      setPassword('');
-      window.location.reload();
-    } catch (error) {
-      console.error('Signup error:', error);
-      alert('アカウント作成に失敗しました。');
-    }
-  };
+    updateSession();
+  }, [getToken]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     setIsModalOpen(true);
   };
 
-  const handleExpenseSubmit = (data: Omit<Expense, 'id' | 'date'>) => {
-    const newExpense: Expense = {
-      id: Date.now().toString(),
-      date: selectedDate,
-      ...data,
-    };
-    const updatedExpenses = [...expenses, newExpense];
-    setExpenses(updatedExpenses);
-    storage.saveExpenses(updatedExpenses);
+  const handleExpenseSubmit = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
+    if (!user || !data) return;
+    const categoryObj = categories.find(cat => cat.id === data.category_id);
+    if (!categoryObj) {
+      alert('カテゴリーが見つかりません');
+      return;
+    }
+    console.log('handleExpenseSubmit insert payload:', {
+      user_id: user.id,
+      category_id: categoryObj.id,
+      amount: data.amount,
+      type: data.type,
+      memo: data.memo,
+      date: format(selectedDate, 'yyyy-MM-dd'),
+    });
+    const { error } = await supabase.from('expenses').insert([
+      {
+        user_id: user.id,
+        category_id: categoryObj.id,
+        amount: data.amount,
+        type: data.type,
+        memo: data.memo,
+        date: format(selectedDate, 'yyyy-MM-dd'),
+      }
+    ]);
+    if (error) {
+      alert('保存に失敗しました: ' + error.message);
+      return;
+    }
+    await fetchExpenses();
+    setIsModalOpen(false);
   };
 
-  const handleExpenseDelete = (id: string) => {
-    const updatedExpenses = expenses.filter((expense) => expense.id !== id);
-    setExpenses(updatedExpenses);
-    storage.saveExpenses(updatedExpenses);
+  const handleExpenseDelete = async (id: string) => {
+    if (!user) return;
+    const { error } = await supabase.from('expenses').delete().eq('id', id).eq('user_id', user.id);
+    if (error) {
+      alert('削除に失敗しました: ' + error.message);
+      return;
+    }
+    await fetchExpenses();
   };
 
   const getDailyExpenses = (date: Date) => {
+    const target = format(date, 'yyyy-MM-dd');
     return expenses.filter(
-      (expense) =>
-        expense.date.getFullYear() === date.getFullYear() &&
-        expense.date.getMonth() === date.getMonth() &&
-        expense.date.getDate() === date.getDate()
+      (expense) => expense.date === target
     );
   };
 
@@ -149,69 +145,302 @@ export default function Home() {
     .filter((expense) => expense.type === 'expense')
     .reduce((sum, expense) => sum + expense.amount, 0);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleExpensesUpdate = (_updatedExpenses: Expense[]) => {
+    fetchExpenses();
+  };
 
-  if (!user) {
+  const getDefaultCategoryId = (type: CategoryType) => {
+    if (categories.length === 0) return '';
+    if (type === 'income') {
+      const other = categories.find(cat => cat.type === 'income' && (cat.name.includes('その他') || cat.name.includes('未分類')));
+      if (other) return other.id;
+      const firstIncome = categories.find(cat => cat.type === 'income');
+      if (firstIncome) return firstIncome.id;
+    } else {
+      const other = categories.find(cat => cat.type === 'expense' && (cat.name.includes('その他') || cat.name.includes('未分類')));
+      if (other) return other.id;
+      const firstExpense = categories.find(cat => cat.type === 'expense');
+      if (firstExpense) return firstExpense.id;
+    }
+    return categories[0].id; // どれもなければ最初
+  };
+
+  const convertTransactionToExpense = (tx: any): Expense => {
+    const type: CategoryType = tx.type === '収入' ? 'income' : 'expense';
+    return {
+      id: tx.id,
+      user_id: '',
+      category_id: tx.category_id ? tx.category_id : getDefaultCategoryId(type),
+      amount: tx.amount,
+      type,
+      memo: tx.note || '',
+      date: typeof tx.date === 'string' ? tx.date : format(tx.date, 'yyyy-MM-dd'),
+    };
+  };
+
+  useEffect(() => {
+    const transactions = storage.getTransactions();
+    const txExpenses = transactions.map(convertTransactionToExpense);
+    setExpenses(prev => {
+      const all = [...prev, ...txExpenses];
+      const unique = Array.from(new Map(all.map(e => [e.id, e])).values());
+      return unique;
+    });
+  }, [activeTab, categories]);
+
+  // ゲストログイン処理
+  const handleGuestLogin = () => {
+    setIsGuest(true);
+    setShowSignIn(false);
+    setShowSignUp(false);
+  };
+
+  // 未ログインかつゲストでない場合はLPを表示
+  if ((!isSignedIn || !user) && !isGuest) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <h1 className="text-3xl font-bold text-center mb-8">家計簿アプリ</h1>
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">メールアドレス</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">パスワード</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                required
-              />
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-2 sm:px-4">
+        <header className="w-full max-w-3xl mx-auto py-6 flex justify-center md:justify-between items-center">
+          <div className="text-2xl font-bold">Pomo! 家計簿</div>
+        </header>
+        <main className="flex flex-col md:flex-row items-center justify-center w-full max-w-4xl gap-8 md:gap-12 py-4 md:py-8">
+          {/* 左：説明 */}
+          <div className="flex-1 w-full max-w-lg space-y-6 text-center md:text-left mx-auto">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+              自分に合った <span className="text-primary">家計管理スタイル</span> を作れる<br className="hidden md:block" />家計簿アプリ
+            </h1>
+            <p className="text-base sm:text-lg text-gray-700 mb-4">
+              カレンダー・統計・資産管理・カテゴリ編集など、<br className="hidden sm:block" />必要な機能だけONにして自由にカスタマイズ。<br className="hidden sm:block" />シンプル＆直感的な操作で毎日続く！
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start w-full">
               <button
-                type="button"
-                onClick={() => setShowResetPassword(true)}
-                className="text-sm text-primary hover:text-primary/80 mt-1"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-primary text-white font-semibold hover:bg-primary/90 text-base"
+                onClick={() => setShowSignUp(true)}
               >
-                パスワードをお忘れの方
+                ユーザー登録
+              </button>
+              <button
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border border-primary text-primary font-semibold hover:bg-primary/10 text-base"
+                onClick={() => setShowSignIn(true)}
+              >
+                ログイン
+              </button>
+              <button
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border border-gray-400 text-gray-700 font-semibold hover:bg-gray-100 text-base"
+                onClick={handleGuestLogin}
+              >
+                ゲストログイン
               </button>
             </div>
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-            >
-              ログイン
-            </button>
-          </form>
-          <div className="mt-4 pt-4 border-t">
-            <button
-              onClick={handleSignUp}
-              className="w-full px-4 py-2 text-primary border border-primary rounded hover:bg-primary/10"
-            >
-              新規登録
-            </button>
           </div>
-        </div>
-        {showResetPassword && (
-          <ResetPassword onClose={() => setShowResetPassword(false)} />
+          {/* 右：スマホUIイメージ */}
+          <div className="flex-1 flex justify-center w-full max-w-xs mx-auto mt-8 md:mt-0">
+            <img
+              src="/lp-demo-mobile.png"
+              alt="家計簿アプリのスマホUIイメージ"
+              className="w-full max-w-xs h-auto rounded-xl shadow-lg border"
+              style={{ background: '#fff' }}
+            />
+          </div>
+        </main>
+        {/* SignIn/SignUpモーダル */}
+        {showSignIn && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
+              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignIn(false)}>&times;</button>
+              <SignIn afterSignInUrl="/" />
+            </div>
+          </div>
+        )}
+        {showSignUp && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
+              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignUp(false)}>&times;</button>
+              <SignUp afterSignUpUrl="/" />
+            </div>
+          </div>
         )}
       </div>
     );
   }
 
+  // ゲストモード時のUI
+  if (isGuest) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <header className="w-full flex justify-end items-center px-4 py-2">
+          <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded font-bold">ゲストモード</span>
+        </header>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex space-x-4 mb-8">
+            <button
+              onClick={() => setActiveTab('calendar')}
+              className={`px-4 py-2 rounded ${
+                activeTab === 'calendar'
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-gray-700'
+              }`}
+            >
+              カレンダー
+            </button>
+            <button
+              onClick={() => setActiveTab('statistics')}
+              className={`px-4 py-2 rounded ${
+                activeTab === 'statistics'
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-gray-700'
+              }`}
+            >
+              統計
+            </button>
+            <button
+              onClick={() => setActiveTab('category')}
+              className={`px-4 py-2 rounded ${
+                activeTab === 'category'
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-gray-700'
+              }`}
+            >
+              カテゴリー
+            </button>
+            <button
+              onClick={() => setActiveTab('assets')}
+              className={`px-4 py-2 rounded ${
+                activeTab === 'assets'
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-gray-700'
+              }`}
+            >
+              資産
+            </button>
+          </div>
+          {/* 各タブの中身はローカルストレージのみで動作するように、今後修正 */}
+          {activeTab === 'calendar' && (
+            <CalendarTab
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+              expenses={expenses}
+              onExpenseDelete={async () => {}}
+              onExpensesUpdate={() => {}}
+              onExpensesReload={async () => {}}
+              year={selectedYear}
+              month={selectedMonth}
+              setYear={setSelectedYear}
+              setMonth={setSelectedMonth}
+            />
+          )}
+          {activeTab === 'statistics' && (
+            <StatisticsTab
+              expenses={expenses}
+              year={selectedYear}
+              month={selectedMonth}
+              setYear={setSelectedYear}
+              setMonth={setSelectedMonth}
+            />
+          )}
+          {activeTab === 'category' && <CategoryTab />}
+          {activeTab === 'assets' && <AssetsTab />}
+          <ExpenseModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSubmit={async () => {}}
+            selectedDate={selectedDate}
+            categories={categories}
+            dailyExpenses={[]}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Calculator App</h1>
-    </main>
+    <div className="min-h-screen bg-gray-50">
+      <header className="w-full flex justify-end items-center px-4 py-2">
+        <button
+          onClick={() => signOut()}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        >
+          ログアウト
+        </button>
+      </header>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex space-x-4 mb-8">
+          <button
+            onClick={() => setActiveTab('calendar')}
+            className={`px-4 py-2 rounded ${
+              activeTab === 'calendar'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            カレンダー
+          </button>
+          <button
+            onClick={() => setActiveTab('statistics')}
+            className={`px-4 py-2 rounded ${
+              activeTab === 'statistics'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            統計
+          </button>
+          <button
+            onClick={() => setActiveTab('category')}
+            className={`px-4 py-2 rounded ${
+              activeTab === 'category'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            カテゴリー
+          </button>
+          <button
+            onClick={() => setActiveTab('assets')}
+            className={`px-4 py-2 rounded ${
+              activeTab === 'assets'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            資産
+          </button>
+        </div>
+
+        {activeTab === 'calendar' && (
+          <CalendarTab
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            expenses={expenses}
+            onExpenseDelete={handleExpenseDelete}
+            onExpensesUpdate={handleExpensesUpdate}
+            onExpensesReload={fetchExpenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+          />
+        )}
+        {activeTab === 'statistics' && (
+          <StatisticsTab
+            expenses={expenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+          />
+        )}
+        {activeTab === 'category' && <CategoryTab />}
+        {activeTab === 'assets' && <AssetsTab />}
+
+        <ExpenseModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleExpenseSubmit}
+          selectedDate={selectedDate}
+          categories={categories}
+          dailyExpenses={dailyExpenses}
+        />
+      </div>
+    </div>
   );
 } 

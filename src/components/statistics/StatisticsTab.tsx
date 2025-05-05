@@ -3,9 +3,20 @@
 import { useState } from 'react';
 import { format, setMonth, getYear, setYear } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { Chart } from 'chart.js/auto';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
-import type { Expense } from '../household/HouseholdTab';
+import type { Expense } from '@/types/expense';
+import { useCategories } from '@/hooks/useCategories';
+
+ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const MONTHS = [
   { value: 0, label: '1月' },
@@ -22,22 +33,39 @@ const MONTHS = [
   { value: 11, label: '12月' },
 ];
 
-export default function StatisticsTab() {
-  const currentYear = getYear(new Date());
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [expenses] = useState<Expense[]>([]); // 実際にはpropsまたはグローバルステートから取得
+interface StatisticsTabProps {
+  expenses: Expense[];
+  year: number;
+  month: number;
+  setYear: (year: number) => void;
+  setMonth: (month: number) => void;
+}
 
-  const filteredExpenses = expenses.filter(expense => {
-    const expenseDate = new Date(expense.date);
+export default function StatisticsTab({ expenses, year, month, setYear, setMonth }: StatisticsTabProps) {
+  const { categories } = useCategories();
+  const currentYear = new Date().getFullYear();
+  const [localExpenses, setLocalExpenses] = useState<Expense[]>(expenses);
+
+  // 受け取ったexpensesのdateを必ずDate型に変換
+  const normalizedExpenses = expenses.map(expense => ({
+    ...expense,
+    date: typeof expense.date === 'string' ? new Date(expense.date) : expense.date,
+  }));
+
+  // 月間支出データのみ抽出
+  const monthlyExpenses = normalizedExpenses.filter(expense => {
+    const d = expense.date;
     return (
-      getYear(expenseDate) === selectedYear &&
-      expenseDate.getMonth() === selectedMonth
+      expense.type === 'expense' &&
+      d.getFullYear() === year &&
+      d.getMonth() === month
     );
   });
 
-  const categoryData = filteredExpenses.reduce((acc, expense) => {
-    acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
+  const categoryData = monthlyExpenses.reduce((acc, expense) => {
+    const category = categories.find(cat => cat.id === expense.category_id);
+    const categoryName = category?.name || '未分類';
+    acc[categoryName] = (acc[categoryName] || 0) + expense.amount;
     return acc;
   }, {} as Record<string, number>);
 
@@ -58,7 +86,7 @@ export default function StatisticsTab() {
     ],
   };
 
-  const monthlyData = filteredExpenses.reduce((acc, expense) => {
+  const monthlyData = monthlyExpenses.reduce((acc, expense) => {
     const month = format(expense.date, 'yyyy-MM');
     acc[month] = (acc[month] || 0) + expense.amount;
     return acc;
@@ -77,23 +105,33 @@ export default function StatisticsTab() {
     ],
   };
 
+  const handleExpenseSave = (data: Omit<Expense, 'id' | 'date'>) => {
+    const newExpense: Expense = {
+      id: Date.now().toString(),
+      date: format(new Date(), 'yyyy-MM-dd'),
+      ...data,
+    };
+    setLocalExpenses([...localExpenses, newExpense]);
+    // 必要に応じてlocalStorage等にも保存
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-end gap-4">
         <select
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+          value={year}
+          onChange={(e) => setYear(parseInt(e.target.value))}
           className="p-2 border rounded"
         >
-          {Array.from({ length: 5 }, (_, i) => currentYear - 2 + i).map((year) => (
-            <option key={year} value={year}>
-              {year}年
+          {Array.from({ length: 5 }, (_, i) => currentYear - 2 + i).map((yearOption) => (
+            <option key={yearOption} value={yearOption}>
+              {yearOption}年
             </option>
           ))}
         </select>
         <select
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+          value={month}
+          onChange={(e) => setMonth(parseInt(e.target.value))}
           className="p-2 border rounded"
         >
           {MONTHS.map(({ value, label }) => (
@@ -137,15 +175,15 @@ export default function StatisticsTab() {
           <div className="p-4 bg-gray-50 rounded">
             <div className="text-sm text-gray-600">総支出</div>
             <div className="text-2xl font-bold">
-              ¥{filteredExpenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString()}
+              ¥{monthlyExpenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString()}
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded">
             <div className="text-sm text-gray-600">平均支出（日）</div>
             <div className="text-2xl font-bold">
               ¥{Math.round(
-                filteredExpenses.reduce((sum, exp) => sum + exp.amount, 0) / 
-                (filteredExpenses.length || 1)
+                monthlyExpenses.reduce((sum, exp) => sum + exp.amount, 0) / 
+                (monthlyExpenses.length || 1)
               ).toLocaleString()}
             </div>
           </div>
@@ -157,6 +195,12 @@ export default function StatisticsTab() {
           </div>
         </div>
       </div>
+
+      {/* <DailyExpenseForm
+        date={new Date()}
+        onSubmit={handleExpenseSave}
+        categories={categories}
+      /> */}
     </div>
   );
 } 

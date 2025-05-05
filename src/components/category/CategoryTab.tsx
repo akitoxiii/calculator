@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Category, CategoryType } from '@/types/expense';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
 import { storage } from '@/utils/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export const CategoryTab = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -25,10 +26,11 @@ export const CategoryTab = () => {
     if (!newCategory.trim()) return;
 
     const category: Category = {
-      id: Date.now().toString(),
+      id: uuidv4(),
       name: newCategory.trim(),
       type: activeTab,
-      color: '#' + Math.floor(Math.random()*16777215).toString(16)
+      color: '#' + Math.floor(Math.random()*16777215).toString(16),
+      user_id: '',
     };
 
     const updatedCategories = [...categories, category];

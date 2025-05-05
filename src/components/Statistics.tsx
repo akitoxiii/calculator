@@ -21,17 +21,21 @@ export const Statistics = ({ selectedDate }: StatisticsProps) => {
     const start = startOfMonth(selectedDate);
     const end = endOfMonth(selectedDate);
     
+    const startStr = format(start, 'yyyy-MM-dd');
+    const endStr = format(end, 'yyyy-MM-dd');
     return expenses.filter(
-      (expense) => expense.date >= start && expense.date <= end
+      (expense) => expense.date >= startStr && expense.date <= endStr
     );
   };
 
   const getYearlyData = () => {
     const start = new Date(selectedDate.getFullYear(), 0, 1);
     const end = new Date(selectedDate.getFullYear(), 11, 31);
+    const startStr = format(start, 'yyyy-MM-dd');
+    const endStr = format(end, 'yyyy-MM-dd');
     
     return expenses.filter(
-      (expense) => expense.date >= start && expense.date <= end
+      (expense) => expense.date >= startStr && expense.date <= endStr
     );
   };
 
@@ -45,12 +49,11 @@ export const Statistics = ({ selectedDate }: StatisticsProps) => {
       .reduce((sum, expense) => sum + expense.amount, 0);
 
     const balance = income - expense;
-
     const categoryBreakdown = data.reduce((acc, expense) => {
-      if (!acc[expense.category]) {
-        acc[expense.category] = { income: 0, expense: 0 };
+      if (!acc[expense.category_id]) {
+        acc[expense.category_id] = { income: 0, expense: 0 };
       }
-      acc[expense.category][expense.type] += expense.amount;
+      acc[expense.category_id][expense.type] += expense.amount;
       return acc;
     }, {} as Record<string, { income: number; expense: number }>);
 

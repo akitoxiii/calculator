@@ -4,30 +4,40 @@ import { useMemo } from 'react';
 import { Chart } from 'chart.js/auto';
 import { Pie } from 'react-chartjs-2';
 import type { Expense } from '@/types/expense';
+import { useCategories } from '@/hooks/useCategories';
 
 interface ExpenseChartProps {
-  selectedDate: Date;
   expenses: Expense[];
+  year: number;
+  month: number;
 }
 
-export const ExpenseChart = ({ selectedDate, expenses }: ExpenseChartProps) => {
+export const ExpenseChart = ({ expenses, year, month }: ExpenseChartProps) => {
+  const { categories } = useCategories();
+
   const monthlyExpenses = useMemo(() => {
     return expenses.filter(
-      (expense) =>
-        expense.date.getFullYear() === selectedDate.getFullYear() &&
-        expense.date.getMonth() === selectedDate.getMonth() &&
-        expense.type === 'expense' // 支出のみを表示
+      (expense) => {
+        const d = typeof expense.date === 'string'
+          ? new Date(expense.date + 'T00:00:00')
+          : new Date(expense.date);
+        return (
+          d.getFullYear() === year &&
+          d.getMonth() === month &&
+          expense.type === 'expense'
+        );
+      }
     );
-  }, [selectedDate, expenses]);
+  }, [expenses, year, month]);
 
   const categoryData = useMemo(() => {
     return monthlyExpenses.reduce((acc, expense) => {
-      if (expense.category) {
-        acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
-      }
+      const category = categories.find(cat => cat.id === expense.category_id);
+      const categoryName = category?.name || '未分類';
+      acc[categoryName] = (acc[categoryName] || 0) + expense.amount;
       return acc;
     }, {} as Record<string, number>);
-  }, [monthlyExpenses]);
+  }, [monthlyExpenses, categories]);
 
   const data = {
     labels: Object.keys(categoryData),
@@ -69,7 +79,7 @@ export const ExpenseChart = ({ selectedDate, expenses }: ExpenseChartProps) => {
       <div className="text-xl font-bold text-gray-900 mb-4">
         月間総支出: ¥{totalExpense.toLocaleString()}
       </div>
-      <div className="aspect-square">
+      <div className="aspect-square max-w-xs mx-auto">
         <Pie
           data={data}
           options={{

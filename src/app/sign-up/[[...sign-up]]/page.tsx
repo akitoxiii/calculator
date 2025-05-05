@@ -1,14 +1,6 @@
-import { SignUpComponent } from '../../../components/auth/SignUpComponent';
+'use client';
+import { SignUp } from '@clerk/nextjs';
 
 export default function SignUpPage() {
-  return <SignUpComponent />;
-}
-
-export function generateStaticParams() {
-  return [
-    { "sign-up": [] },
-    { "sign-up": ["start"] },
-    { "sign-up": ["verify"] },
-    { "sign-up": ["complete"] }
-  ];
+  return <SignUp />;
 } 

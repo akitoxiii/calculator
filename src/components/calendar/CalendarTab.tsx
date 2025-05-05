@@ -4,60 +4,133 @@ import { useState, useEffect, useMemo } from 'react';
 import { Calendar } from './Calendar';
 import { ExpenseModal } from '../ExpenseModal';
 import { ExpenseChart } from '../ExpenseChart';
-import type { Expense } from '@/types/expense';
+import type { Expense, CategoryType } from '@/types/expense';
 import { supabase } from '@/utils/supabase';
 import { insertSampleData } from '@/utils/insertSampleData';
+import { useCategories } from '@/hooks/useCategories';
+import { storage } from '@/utils/storage';
+import { useUser } from "@clerk/nextjs";
+import type { Category } from '@/types/category';
+import { format } from 'date-fns';
 
-export const CalendarTab = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(() => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    return now;
-  });
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+interface CalendarTabProps {
+  selectedDate: Date;
+  onDateSelect: (date: Date) => void;
+  expenses: Expense[];
+  onExpenseDelete: (id: string) => void;
+  onExpensesUpdate: (expenses: Expense[]) => void;
+  onExpensesReload: () => Promise<void>;
+  year: number;
+  month: number;
+  setYear: (year: number) => void;
+  setMonth: (month: number) => void;
+}
+
+export const CalendarTab = ({
+  selectedDate: propSelectedDate,
+  onDateSelect,
+  expenses,
+  onExpenseDelete,
+  onExpensesUpdate,
+  onExpensesReload,
+  year,
+  month,
+  setYear,
+  setMonth
+}: CalendarTabProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date>(propSelectedDate);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const { categories } = useCategories();
+  const { isLoaded, isSignedIn, user } = useUser();
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+  // 年月の状態をpropsで管理
+  const currentYear = year;
+  const currentMonth = month;
+  const setCurrentYear = setYear;
+  const setCurrentMonth = setMonth;
 
-  const checkUser = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      if (user) {
-        await fetchExpenses(user.id);
+  // 前後2年の範囲
+  const today = new Date();
+  const minYear = today.getFullYear() - 2;
+  const maxYear = today.getFullYear() + 2;
+
+  // 指定年月のカレンダー配列を生成
+  const getCalendarMatrix = (year: number, month: number) => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const firstDay = new Date(`${year}-${pad(month + 1)}-01T00:00:00`);
+    const lastDay = new Date(year, month + 1, 0);
+    const matrix: (Date | null)[][] = [];
+    let week: (Date | null)[] = [];
+    for (let i = 0; i < firstDay.getDay(); i++) week.push(null);
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      week.push(new Date(`${year}-${pad(month + 1)}-${pad(d)}T00:00:00`));
+      if (week.length === 7) {
+        matrix.push(week);
+        week = [];
       }
-    } catch (error) {
-      console.error('Error checking user:', error);
-    } finally {
-      setIsLoading(false);
     }
+    if (week.length > 0) {
+      while (week.length < 7) week.push(null);
+      matrix.push(week);
+    }
+    return matrix;
+  };
+
+  const calendarMatrix = getCalendarMatrix(currentYear, currentMonth);
+
+  // 月送り
+  const handlePrevMonth = () => {
+    if (currentYear === minYear && currentMonth === 0) return;
+    if (currentMonth === 0) {
+      setCurrentYear(currentYear - 1);
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+  const handleNextMonth = () => {
+    if (currentYear === maxYear && currentMonth === 11) return;
+    if (currentMonth === 11) {
+      setCurrentYear(currentYear + 1);
+      setCurrentMonth(0);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+
+  // 日付クリック
+  const handleDayClick = (date: Date) => {
+    setSelectedDate(date);
+    setIsModalOpen(true);
   };
 
   const formatDate = (date: Date | string): Date => {
     try {
-      const d = new Date(date);
-      if (isNaN(d.getTime())) {
-        throw new Error('Invalid date format');
+      if (typeof date === 'string') {
+        const d = new Date(date + 'T00:00:00');
+        if (isNaN(d.getTime())) {
+          throw new Error('Invalid date format');
+        }
+        d.setHours(0, 0, 0, 0);
+        return d;
       }
+      const d = new Date(date);
       d.setHours(0, 0, 0, 0);
       return d;
     } catch (error) {
       console.error('Error formatting date:', error);
-      return new Date(); // デフォルト値として現在の日付を返す
+      return new Date();
     }
   };
 
-  const isSameDay = (date1: Date, date2: Date): boolean => {
+  const isSameDay = (date1: Date | string, date2: Date | string): boolean => {
     const d1 = formatDate(date1);
     const d2 = formatDate(date2);
     return d1.getTime() === d2.getTime();
   };
 
-  const isSameMonth = (date1: Date, date2: Date): boolean => {
+  const isSameMonth = (date1: Date | string, date2: Date | string): boolean => {
     const d1 = formatDate(date1);
     const d2 = formatDate(date2);
     return (
@@ -69,9 +142,11 @@ export const CalendarTab = () => {
   const useFilteredExpenses = (expenses: Expense[], selectedDate: Date) => {
     return useMemo(() => {
       try {
+        const normalizedSelectedDate = formatDate(selectedDate);
+        
         const daily = expenses.filter(expense => {
           try {
-            return isSameDay(expense.date, selectedDate);
+            return isSameDay(expense.date, normalizedSelectedDate);
           } catch (error) {
             console.error('Error filtering daily expenses:', error);
             return false;
@@ -80,7 +155,7 @@ export const CalendarTab = () => {
 
         const monthly = expenses.filter(expense => {
           try {
-            return isSameMonth(expense.date, selectedDate);
+            return isSameMonth(expense.date, normalizedSelectedDate);
           } catch (error) {
             console.error('Error filtering monthly expenses:', error);
             return false;
@@ -117,216 +192,73 @@ export const CalendarTab = () => {
     }, [expenses, selectedDate]);
   };
 
-  const fetchExpenses = async (userId: string) => {
-    try {
-      setIsLoading(true);
-
-      const { data: expensesData, error: expensesError } = await supabase
-        .from('expenses')
-        .select('*')
-        .eq('user_id', userId);
-
-      if (expensesError) {
-        console.error('Error fetching expenses:', expensesError);
-        // エラー時のフォールバック処理
-        const localExpenses = localStorage.getItem('expenses');
-        if (localExpenses) {
-          try {
-            const parsedExpenses = JSON.parse(localExpenses);
-            setExpenses(parsedExpenses);
-          } catch (error) {
-            console.error('Error parsing local expenses:', error);
-          }
-        }
-        return;
-      }
-
-      if (expensesData && expensesData.length > 0) {
-        const categoryIds = Array.from(new Set(expensesData.map(e => e.category_id)));
-        const { data: categories, error: categoriesError } = await supabase
-          .from('categories')
-          .select('*')
-          .in('id', categoryIds);
-
-        if (categoriesError) {
-          console.error('Error fetching categories:', categoriesError);
-          return;
-        }
-
-        const categoryMap = categories?.reduce((acc, cat) => {
-          acc[cat.id] = cat;
-          return acc;
-        }, {} as Record<string, any>) || {};
-
-        const formattedExpenses: Expense[] = expensesData
-          .map(expense => {
-            try {
-              return {
-                id: expense.id,
-                date: formatDate(expense.date),
-                amount: expense.amount,
-                category: categoryMap[expense.category_id]?.name || 'Unknown',
-                type: expense.type,
-                memo: expense.memo || undefined
-              };
-            } catch (error) {
-              console.error('Error formatting expense:', error);
-              return null;
-            }
-          })
-          .filter((expense): expense is NonNullable<typeof expense> => expense !== null);
-
-        setExpenses(formattedExpenses);
-        // ローカルストレージにバックアップ
-        try {
-          localStorage.setItem('expenses', JSON.stringify(formattedExpenses));
-        } catch (error) {
-          console.error('Error saving to localStorage:', error);
-        }
-      } else {
-        setExpenses([]);
-      }
-    } catch (error) {
-      console.error('Error in fetchExpenses:', error);
-      // エラー時のフォールバック処理
-      const localExpenses = localStorage.getItem('expenses');
-      if (localExpenses) {
-        try {
-          const parsedExpenses = JSON.parse(localExpenses);
-          setExpenses(parsedExpenses);
-        } catch (error) {
-          console.error('Error parsing local expenses:', error);
-        }
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const { daily: dailyExpenses, monthly: monthlyExpenses, monthlyTotal } = useFilteredExpenses(expenses, selectedDate);
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    setIsModalOpen(true);
-  };
-
-  const handleExpenseSave = async (data: { amount: number; category: string; memo: string; type: "income" | "expense" }) => {
-    if (!user) return;
-
+  const handleExpenseSave = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
+    console.log('handleExpenseSave called', data);
+    if (!isLoaded || !isSignedIn || !user || !data) return;
     try {
-      const { data: categoryData, error: categoryError } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('name', data.category)
-        .single();
-
-      if (categoryError || !categoryData) {
-        console.error('Category error:', categoryError);
+      const categoryObj: Category | undefined = categories.find(cat => cat.id === data.category_id);
+      console.log('保存時 user.id:', user.id);
+      console.log('保存時 category_id:', data.category_id, '（型:', typeof data.category_id, '）');
+      if (!data.category_id) {
+        alert('カテゴリーIDが指定されていません');
         return;
       }
-
-      const { error } = await supabase
-        .from('expenses')
-        .insert({
-          user_id: user.id,
-          category_id: categoryData.id,
-          amount: data.amount,
-          type: data.type,
-          memo: data.memo,
-          date: selectedDate.toISOString().split('T')[0]
-        });
-
+      if (!categoryObj) {
+        alert('カテゴリーが見つかりません');
+        return;
+      }
+      // insert直前の値を出力
+      const insertData = {
+        user_id: user.id,
+        category_id: data.category_id, // uuid
+        amount: Number(data.amount), // numeric
+        type: data.type,
+        memo: data.memo,
+        date: format(selectedDate, 'yyyy-MM-dd'), // ←ここを修正
+      };
+      console.log('insertData:', insertData, '（category_id型:', typeof insertData.category_id, '）');
+      const { error, data: inserted } = await supabase.from('expenses').insert([
+        insertData
+      ]).select();
       if (error) {
-        console.error('Error saving expense:', error);
+        console.error('Error inserting expense:', error, insertData);
+        alert('保存に失敗しました: ' + error.message);
         return;
       }
-
-      await fetchExpenses(user.id);
+      const insertedExpense = Array.isArray(inserted) ? inserted[0] : null;
+      if (!insertedExpense) {
+        alert('保存後のデータ取得に失敗しました');
+        return;
+      }
+      await onExpensesReload();
       setIsModalOpen(false);
     } catch (error) {
       console.error('Error saving expense:', error);
+      alert('保存時にエラーが発生しました');
     }
   };
 
   const handleExpenseDelete = async (id: string) => {
-    if (!user) return;
-
     try {
+      if (!isLoaded || !isSignedIn || !user) return;
       const { error } = await supabase
         .from('expenses')
         .delete()
-        .eq('id', id);
-
+        .eq('id', id)
+        .eq('user_id', user.id);
       if (error) {
-        throw error;
+        console.error('Error deleting expense:', error);
+        alert('削除に失敗しました: ' + error.message);
+        return;
       }
-
-      await fetchExpenses(user.id);
+      await onExpensesReload();
     } catch (error) {
       console.error('Error deleting expense:', error);
+      alert('削除時にエラーが発生しました');
     }
   };
-
-  // テスト用のモックデータを生成
-  useEffect(() => {
-    const generateMockData = async () => {
-      if (!user) return;
-
-      try {
-        // カテゴリーを取得
-        const { data: categories } = await supabase
-          .from('categories')
-          .select('*')
-          .eq('user_id', user.id);
-
-        if (!categories || categories.length === 0) return;
-
-        // 1日から30日までのモックデータを生成
-        const mockData = [];
-        const currentMonth = new Date().getMonth();
-        const mockCategories = categories.filter(cat => cat.type === 'expense');
-        const amounts = [1000, 2000, 3000, 5000, 8000, 10000, 15000];
-
-        for (let day = 1; day <= 30; day++) {
-          const date = new Date(2024, currentMonth, day);
-          const randomCategory = mockCategories[Math.floor(Math.random() * mockCategories.length)];
-          const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
-
-          mockData.push({
-            user_id: user.id,
-            category_id: randomCategory.id,
-            amount: randomAmount,
-            type: 'expense',
-            memo: `テストデータ ${day}日`,
-            date: date.toISOString().split('T')[0]
-          });
-        }
-
-        // 既存のデータを削除
-        await supabase
-          .from('expenses')
-          .delete()
-          .eq('user_id', user.id);
-
-        // モックデータを挿入
-        const { error } = await supabase
-          .from('expenses')
-          .insert(mockData);
-
-        if (error) {
-          console.error('Error inserting mock data:', error);
-          return;
-        }
-
-        // データを再取得
-        await fetchExpenses(user.id);
-      } catch (error) {
-        console.error('Error generating mock data:', error);
-      }
-    };
-
-    generateMockData();
-  }, [user]);
 
   console.log('Expenses summary:', {
     total: expenses.length,
@@ -337,153 +269,94 @@ export const CalendarTab = () => {
     monthlyExpenses
   });
 
-  if (isLoading) {
+  if (!isLoaded) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div>読み込み中...</div>
       </div>
     );
   }
 
-  if (!user) {
+  if (!isSignedIn || !user) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="text-center">
           <p className="text-gray-600 mb-4">ログインが必要です</p>
-          <button
-            onClick={checkUser}
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-          >
-            再読み込み
-          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <Calendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="w-full mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-        >
-          収支を追加
-        </button>
-
-        {/* 月別サマリーを追加 */}
-        <div className="mt-4 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">{selectedDate.getMonth() + 1}月の収支サマリー</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-green-600">月間収入</span>
-              <span className="text-green-600">¥{monthlyTotal.income.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-red-600">月間支出</span>
-              <span className="text-red-600">¥{monthlyTotal.expense.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between font-bold">
-              <span>月間収支</span>
-              <span className={monthlyTotal.income - monthlyTotal.expense >= 0 ? 'text-green-600' : 'text-red-600'}>
-                ¥{(monthlyTotal.income - monthlyTotal.expense).toLocaleString()}
-              </span>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-8 max-w-full px-2">
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={handlePrevMonth} disabled={currentYear === minYear && currentMonth === 0} className="px-2 py-1 rounded bg-gray-200">前月</button>
+        <div className="text-lg font-semibold">{currentYear}年{currentMonth + 1}月</div>
+        <button onClick={handleNextMonth} disabled={currentYear === maxYear && currentMonth === 11} className="px-2 py-1 rounded bg-gray-200">次月</button>
       </div>
-
-      <div>
-        {dailyExpenses.length > 0 && (
-          <div className="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">本日の収支</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-green-600">収入合計</span>
-                <span className="text-green-600">
-                  ¥{monthlyExpenses.filter((expense) => expense.type === 'income').reduce((sum, expense) => sum + expense.amount, 0).toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-red-600">支出合計</span>
-                <span className="text-red-600">
-                  ¥{monthlyExpenses.filter((expense) => expense.type === 'expense').reduce((sum, expense) => sum + expense.amount, 0).toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between font-bold">
-                <span>差引</span>
-                <span
-                  className={
-                    monthlyExpenses.filter((expense) => expense.type === 'income').reduce((sum, expense) => sum + expense.amount, 0) -
-                    monthlyExpenses.filter((expense) => expense.type === 'expense').reduce((sum, expense) => sum + expense.amount, 0) >= 0
-                      ? 'text-green-600'
-                      : 'text-red-600'
-                  }
-                >
-                  ¥{(monthlyExpenses.filter((expense) => expense.type === 'income').reduce((sum, expense) => sum + expense.amount, 0) -
-                    monthlyExpenses.filter((expense) => expense.type === 'expense').reduce((sum, expense) => sum + expense.amount, 0)).toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-2">明細</h3>
-              <div className="space-y-2">
-                {dailyExpenses.map((expense) => (
-                  <div
-                    key={expense.id}
-                    className="flex justify-between items-center p-2 bg-gray-50 rounded"
-                  >
-                    <div>
-                      <span
-                        className={`font-medium ${
-                          expense.type === 'income'
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        }`}
-                      >
-                        {expense.category}
-                      </span>
-                      {expense.memo && (
-                        <span className="text-gray-500 text-sm ml-2">
-                          ({expense.memo})
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`font-medium ${
-                          expense.type === 'income'
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        }`}
-                      >
-                        ¥{expense.amount.toLocaleString()}
-                      </span>
+      <div className="overflow-x-auto w-full">
+        <table className="w-full min-w-[600px] text-center">
+          <thead>
+            <tr>
+              <th className="text-gray-500">日</th>
+              <th className="text-gray-500">月</th>
+              <th className="text-gray-500">火</th>
+              <th className="text-gray-500">水</th>
+              <th className="text-gray-500">木</th>
+              <th className="text-gray-500">金</th>
+              <th className="text-gray-500">土</th>
+            </tr>
+          </thead>
+          <tbody>
+            {calendarMatrix.map((week, i) => (
+              <tr key={i}>
+                {week.map((date, j) => (
+                  <td key={j} className="h-16 align-top">
+                    {date && (
                       <button
-                        onClick={() => handleExpenseDelete(expense.id)}
-                        className="text-red-500 hover:text-red-700"
+                        className={`w-10 h-10 rounded-full ${isSameDay(date, selectedDate) ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
+                        onClick={() => handleDayClick(date)}
                       >
-                        削除
+                        {date.getDate()}
                       </button>
-                    </div>
-                  </div>
+                    )}
+                    {/* 支出・収入サマリー */}
+                    {date && (
+                      <div className="text-xs mt-1">
+                        {(() => {
+                          const dayExpenses = expenses.filter(e => isSameDay(e.date, date));
+                          const totalExpense = dayExpenses.filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
+                          const totalIncome = dayExpenses.filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
+                          return (
+                            <>
+                              {totalExpense > 0 && <div className="text-red-500">-¥{totalExpense.toLocaleString()}</div>}
+                              {totalIncome > 0 && <div className="text-green-500">+¥{totalIncome.toLocaleString()}</div>}
+                            </>
+                          );
+                        })()}
+                      </div>
+                    )}
+                  </td>
                 ))}
-              </div>
-            </div>
-          </div>
-        )}
-        <ExpenseChart selectedDate={selectedDate} expenses={monthlyExpenses} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-
-      {isModalOpen && (
-        <ExpenseModal
-          date={selectedDate}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleExpenseSave}
-        />
-      )}
+      <ExpenseModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleExpenseSave}
+        selectedDate={selectedDate}
+        categories={categories}
+        dailyExpenses={dailyExpenses}
+        onDelete={handleExpenseDelete}
+      />
+      <ExpenseChart
+        expenses={expenses}
+        year={currentYear}
+        month={currentMonth}
+      />
     </div>
   );
 };
