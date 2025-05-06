@@ -15,6 +15,7 @@ import {
 import { Pie, Bar } from 'react-chartjs-2';
 import type { Expense } from '@/types/expense';
 import { useCategories } from '@/hooks/useCategories';
+import { normalizeUUID } from '@/utils/uuid';
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -63,8 +64,15 @@ export default function StatisticsTab({ expenses, year, month, setYear, setMonth
   });
 
   const categoryData = monthlyExpenses.reduce((acc, expense) => {
-    const category = categories.find(cat => cat.id === expense.category_id);
-    const categoryName = category?.name || '未分類';
+    const category = categories.find(cat => normalizeUUID(cat.id) === normalizeUUID(expense.category_id));
+    let categoryName = '';
+    if (category) {
+      categoryName = category.name;
+    } else if (!expense.category_id) {
+      categoryName = '未分類';
+    } else {
+      categoryName = `ID不一致(${expense.category_id})`;
+    }
     acc[categoryName] = (acc[categoryName] || 0) + expense.amount;
     return acc;
   }, {} as Record<string, number>);

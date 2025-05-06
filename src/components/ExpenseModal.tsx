@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { CategoryType, Category, Expense } from '@/types/expense';
@@ -14,6 +14,19 @@ interface Props {
   onDelete?: (id: string) => Promise<void>;
 }
 
+// UUID正規化関数
+function normalizeUUID(id: string): string {
+  const hex = id.replace(/-/g, '');
+  if (hex.length !== 32) return id;
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20)
+  ].join('-');
+}
+
 export const ExpenseModal = ({
   isOpen,
   onClose,
@@ -26,25 +39,38 @@ export const ExpenseModal = ({
   console.log('ExpenseModal categories:', categories);
   const [type, setType] = useState<CategoryType>('expense');
   const [amount, setAmount] = useState('');
-  const [category_id, setCategoryId] = useState('');
   const [memo, setMemo] = useState('');
+  const [category_id, setCategoryId] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [calculatorDisplay, setCalculatorDisplay] = useState('');
 
   useEffect(() => {
     setAmount(calculatorDisplay);
   }, [calculatorDisplay]);
 
-  // カテゴリ選択肢をtypeでフィルタ
-  const filteredCategories = categories.filter(cat => cat.type === type);
+  // categories配列を正規化
+  const normalizedCategories = useMemo(
+    () => categories.map(cat => ({ ...cat, id: normalizeUUID(cat.id) })),
+    [categories]
+  );
 
-  // 初期値をUUIDでセット（カテゴリがあれば最初のUUIDをセット）
+  const filteredCategories = useMemo(() => {
+    return normalizedCategories.filter(cat => cat.type === type);
+  }, [normalizedCategories, type]);
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = e.target.value;
+    setCategoryId(categoryId);
+    const normalizedId = normalizeUUID(categoryId);
+    const category = normalizedCategories.find(cat => cat.id === normalizedId);
+    console.log('選択されたID:', categoryId, '正規化ID:', normalizedId, '該当カテゴリー:', category);
+    setSelectedCategory(category || null);
+  };
+
+  // 初期値を空文字列にセット
   useEffect(() => {
-    if (filteredCategories.length > 0) {
-      setCategoryId(filteredCategories[0].id);
-    } else {
-      setCategoryId('');
-    }
-  }, [type, categories]);
+    setCategoryId('');
+  }, [type]);
 
   // 本日分の登録済み明細リスト（dateをYYYY-MM-DD文字列で比較）
   const todayStr = format(selectedDate, 'yyyy-MM-dd');
@@ -91,15 +117,33 @@ export const ExpenseModal = ({
     }
   };
 
-  const handleSubmit = () => {
-    console.log('ExpenseModal: 保存ボタン押下', { amount, category_id, memo, type });
-    if (!amount || !category_id) return;
-    onSubmit({
-      amount: parseFloat(amount),
-      category_id,
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!amount || !selectedCategory) return;
+
+    console.log('ExpenseModal: 保存ボタン押下', {
+      amount,
+      availableCategories: categories,
+      category_id: selectedCategory.id,
+      filteredCategories,
       memo,
+      selectedCategory,
       type
     });
+
+    try {
+      const data = {
+        amount: Number(amount),
+        category_id: normalizeUUID(selectedCategory.id),
+        memo,
+        type
+      };
+      await onSubmit(data);
+      onClose();
+    } catch (error) {
+      console.error('Error saving expense:', error);
+      alert('保存に失敗しました');
+    }
   };
 
   return (
@@ -206,7 +250,7 @@ export const ExpenseModal = ({
           <label className="block text-sm font-medium mb-1">カテゴリー</label>
           <select
             value={category_id}
-            onChange={(e) => setCategoryId(e.target.value)}
+            onChange={handleCategoryChange}
             className="w-full p-2 border rounded"
           >
             <option value="">選択してください</option>
@@ -248,27 +292,38 @@ export const ExpenseModal = ({
             <p className="text-gray-500">明細はありません</p>
           ) : (
             <div className="space-y-2">
-              {dailyExpenses.map((expense) => (
-                <div key={expense.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                  <div>
-                    <div className="font-medium">
-                      {categories.find(cat => cat.id === expense.category_id)?.name || '未分類'}
+              {dailyExpenses.map((expense) => {
+                console.log('Expense category debug:', {
+                  expense_id: expense.id,
+                  expense_category_id: expense.category_id,
+                  found_category: normalizedCategories.find(cat => cat.id === normalizeUUID(expense.category_id)),
+                  all_categories: normalizedCategories
+                });
+                return (
+                  <div key={expense.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div>
+                      <div className="font-medium">
+                        {(() => {
+                          const category = normalizedCategories.find(cat => cat.id === normalizeUUID(expense.category_id));
+                          return category ? category.name : '未分類';
+                        })()}
+                      </div>
+                      <div className="text-sm text-gray-500">{expense.memo}</div>
+                      <div className={`text-sm ${expense.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                        {expense.type === 'income' ? '+' : '-'}¥{expense.amount.toLocaleString()}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500">{expense.memo}</div>
-                    <div className={`text-sm ${expense.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
-                      {expense.type === 'income' ? '+' : '-'}¥{expense.amount.toLocaleString()}
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => onDelete?.(expense.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        削除
+                      </button>
                     </div>
                   </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => onDelete?.(expense.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      削除
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

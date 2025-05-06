@@ -7,7 +7,7 @@
 6 silly config load:file:C:\Users\akito\AppData\Roaming\npm\etc\npmrc
 7 verbose title npm run dev
 8 verbose argv "run" "dev"
-9 verbose logfile logs-max:10 dir:C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-05T00_43_50_288Z-
-10 verbose logfile C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-05T00_43_50_288Z-debug-0.log
+9 verbose logfile logs-max:10 dir:C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-06T03_02_44_109Z-
+10 verbose logfile C:\Users\akito\git\calculator\%APPDATA%\npm-cache\_logs\2025-05-06T03_02_44_109Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly logfile done cleaning log files

@@ -12,6 +12,7 @@ import { storage } from '@/utils/storage';
 import { useUser } from "@clerk/nextjs";
 import type { Category } from '@/types/category';
 import { format } from 'date-fns';
+import { normalizeUUID } from '@/utils/uuid';
 
 interface CalendarTabProps {
   selectedDate: Date;
@@ -194,13 +195,21 @@ export const CalendarTab = ({
 
   const { daily: dailyExpenses, monthly: monthlyExpenses, monthlyTotal } = useFilteredExpenses(expenses, selectedDate);
 
+  // categoriesを正規化し、ID重複を除去
+  const normalizedCategories = useMemo(() => {
+    const normalized = categories.map(cat => ({ ...cat, id: normalizeUUID(cat.id) }));
+    // IDでユニーク化
+    return Array.from(new Map(normalized.map(cat => [cat.id, cat])).values());
+  }, [categories]);
+
   const handleExpenseSave = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
     console.log('handleExpenseSave called', data);
     if (!isLoaded || !isSignedIn || !user || !data) return;
     try {
-      const categoryObj: Category | undefined = categories.find(cat => cat.id === data.category_id);
+      const categoryObj: Category | undefined = normalizedCategories.find(cat => cat.id === data.category_id);
       console.log('保存時 user.id:', user.id);
       console.log('保存時 category_id:', data.category_id, '（型:', typeof data.category_id, '）');
+      console.log('保存時 categoryObj:', categoryObj);
       if (!data.category_id) {
         alert('カテゴリーIDが指定されていません');
         return;
@@ -212,11 +221,11 @@ export const CalendarTab = ({
       // insert直前の値を出力
       const insertData = {
         user_id: user.id,
-        category_id: data.category_id, // uuid
-        amount: Number(data.amount), // numeric
+        category_id: data.category_id,
+        amount: Number(data.amount),
         type: data.type,
         memo: data.memo,
-        date: format(selectedDate, 'yyyy-MM-dd'), // ←ここを修正
+        date: format(selectedDate, 'yyyy-MM-dd'),
       };
       console.log('insertData:', insertData, '（category_id型:', typeof insertData.category_id, '）');
       const { error, data: inserted } = await supabase.from('expenses').insert([
@@ -232,6 +241,7 @@ export const CalendarTab = ({
         alert('保存後のデータ取得に失敗しました');
         return;
       }
+      console.log('保存されたデータ:', insertedExpense);
       await onExpensesReload();
       setIsModalOpen(false);
     } catch (error) {
@@ -348,7 +358,7 @@ export const CalendarTab = ({
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleExpenseSave}
         selectedDate={selectedDate}
-        categories={categories}
+        categories={normalizedCategories}
         dailyExpenses={dailyExpenses}
         onDelete={handleExpenseDelete}
       />
@@ -356,6 +366,7 @@ export const CalendarTab = ({
         expenses={expenses}
         year={currentYear}
         month={currentMonth}
+        categories={normalizedCategories}
       />
     </div>
   );

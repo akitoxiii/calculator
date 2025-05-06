@@ -19,6 +19,7 @@ const PAYMENT_METHODS = [
   '後払い',
   '代金引換',
   '携帯キャリア決済',
+  '現金',
 ] as const;
 
 interface Props {
@@ -26,6 +27,19 @@ interface Props {
   onClose: () => void;
   onSave: (transaction: Transaction) => void;
   transaction?: Transaction;
+}
+
+// UUID正規化関数
+function normalizeUUID(id: string): string {
+  const hex = id.replace(/-/g, '');
+  if (hex.length !== 32) return id;
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20)
+  ].join('-');
 }
 
 export const TransactionModal = ({ date, onClose, onSave, transaction }: Props) => {
@@ -74,7 +88,7 @@ export const TransactionModal = ({ date, onClose, onSave, transaction }: Props) 
       toAccount: toAccount || undefined,
       paymentMethod: type === '支払い' ? paymentMethod : undefined,
       note: note || undefined,
-      category_id: categoryId || undefined,
+      category_id: categoryId ? normalizeUUID(categoryId) : undefined,
     };
     onSave(newTransaction);
   };
