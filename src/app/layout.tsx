@@ -15,6 +15,8 @@ export default function RootLayout({
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="ja">
         <head>
+          {/* Google Search Console認証用メタタグ */}
+          <meta name="google-site-verification" content="fESBTT9zZ5bNTgf3HVVDN6mAtCeXdgwU5buol6LHvps" />
           {/* Google Analyticsタグ */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}
