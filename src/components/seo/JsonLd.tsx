@@ -28,8 +28,8 @@ export function JsonLd({ type, data }: JsonLdProps) {
 
 export function WebsiteJsonLd() {
   const data = {
-    name: '家計簿アプリ',
-    description: 'シンプルで使いやすい家計簿アプリ。収支の管理や予算の設定、グラフによる分析機能を提供します。',
+    name: 'Pomo! 家計簿',
+    description: '完全無料で使える、シンプルで使いやすい家計簿アプリ。収支の管理や予算の設定、グラフによる分析機能を提供します。',
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com',
     potentialAction: {
       '@type': 'SearchAction',
@@ -59,7 +59,7 @@ export function WebPageJsonLd({
     url: `${process.env.NEXT_PUBLIC_APP_URL}${path}`,
     isPartOf: {
       '@type': 'WebSite',
-      name: '家計簿アプリ',
+      name: 'Pomo! 家計簿',
       url: process.env.NEXT_PUBLIC_APP_URL
     }
   };
