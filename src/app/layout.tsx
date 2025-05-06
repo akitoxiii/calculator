@@ -17,6 +17,8 @@ export default function RootLayout({
         <head>
           {/* Google Search Console認証用メタタグ */}
           <meta name="google-site-verification" content="fESBTT9zZ5bNTgf3HVVDN6mAtCeXdgwU5buol6LHvps" />
+          {/* ファビコン */}
+          <link rel="icon" href="/favicon.ico" />
           {/* Google Analyticsタグ */}
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}

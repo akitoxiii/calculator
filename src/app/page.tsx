@@ -200,7 +200,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-2 sm:px-4">
         <header className="w-full max-w-3xl mx-auto py-6 flex justify-center md:justify-between items-center">
-          <div className="text-2xl font-bold">Pomo! 家計簿</div>
+          <div className="text-2xl font-bold">マイリー家計簿!</div>
         </header>
         <main className="flex flex-col md:flex-row items-center justify-center w-full max-w-4xl gap-8 md:gap-12 py-4 md:py-8">
           {/* 左：説明 */}
