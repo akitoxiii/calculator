@@ -313,14 +313,6 @@ export const ExpenseModal = ({
                         {expense.type === 'income' ? '+' : '-'}¥{expense.amount.toLocaleString()}
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => onDelete?.(expense.id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        削除
-                      </button>
-                    </div>
                   </div>
                 );
               })}
