@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -9,6 +9,26 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'マイリー家計簿 - 自分に合った家計管理スタイルを作れる家計簿アプリ',
   description: 'カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。シンプル＆直感的な操作で毎日続く家計簿アプリです。',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  themeColor: '#ffffff',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: 'https://myly-app.vercel.app',
+    title: 'マイリー家計簿 - 自分に合った家計管理スタイルを作れる家計簿アプリ',
+    description: 'カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。シンプル＆直感的な操作で毎日続く家計簿アプリです。',
+    siteName: 'マイリー家計簿',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'マイリー家計簿 - 自分に合った家計管理スタイルを作れる家計簿アプリ',
+    description: 'カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。シンプル＆直感的な操作で毎日続く家計簿アプリです。',
+  },
 };
 
 export default function RootLayout({
@@ -16,8 +36,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    import('../instrumentation-client');
+  }, []);
+
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider 
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: undefined,
+        elements: {
+          formButtonPrimary: 'bg-primary hover:bg-primary/90',
+          footerActionLink: 'text-primary hover:text-primary/90'
+        }
+      }}
+    >
       <html lang="ja">
         <head>
           {/* Google Search Console認証用メタタグ */}
@@ -39,7 +72,14 @@ export default function RootLayout({
               });
             `}
           </Script>
-          <link rel="preload" as="image" href="/lp-demo-mobile.webp" imageSrcSet="/lp-demo-mobile.webp 1x" />
+          {/* LCP画像のプリロード */}
+          <link
+            rel="preload"
+            as="image"
+            href="/lp-demo-mobile.webp"
+            type="image/webp"
+            fetchPriority="high"
+          />
         </head>
         <body className={inter.className}>
           {children}
