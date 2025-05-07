@@ -246,7 +246,7 @@ export default function Home() {
               style={{ background: '#fff' }}
               width={375}
               height={812}
-              loading="eager"
+              loading="lazy"
             />
           </div>
         </main>
