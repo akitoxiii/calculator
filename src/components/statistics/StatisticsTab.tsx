@@ -47,7 +47,14 @@ interface StatisticsTabProps {
 export default function StatisticsTab({ expenses, year, month, setYear, setMonth }: StatisticsTabProps) {
   const { categories } = useCategories();
   const currentYear = new Date().getFullYear();
-  const [localExpenses, setLocalExpenses] = useState<Expense[]>(expenses);
+  const [localExpenses, setLocalExpenses] = useState<Expense[]>(expenses ?? []);
+
+  // null/undefinedガード
+  if (!expenses || !Array.isArray(expenses) || !categories || !Array.isArray(categories)) {
+    return (
+      <div className="p-8 text-center text-gray-500">データがありません</div>
+    );
+  }
 
   // 受け取ったexpensesのdateを必ずDate型に変換
   const normalizedExpenses = expenses.map(expense => ({
@@ -156,25 +163,33 @@ export default function StatisticsTab({ expenses, year, month, setYear, setMonth
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-bold mb-4">カテゴリ別支出</h3>
           <div className="aspect-square">
-            <Pie data={pieData} />
+            {pieData.labels.length > 0 ? (
+              <Pie data={pieData} />
+            ) : (
+              <div className="text-center text-gray-400 py-8">データがありません</div>
+            )}
           </div>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-bold mb-4">月別支出推移</h3>
           <div className="aspect-[4/3]">
-            <Bar
-              data={barData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  y: {
-                    beginAtZero: true,
+            {barData.labels.length > 0 ? (
+              <Bar
+                data={barData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+            ) : (
+              <div className="text-center text-gray-400 py-8">データがありません</div>
+            )}
           </div>
         </div>
       </div>
