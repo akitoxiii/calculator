@@ -1,4 +1,4 @@
-# Pomo! 家計簿
+# マイリー家計簿!'
 
 Next.js + TypeScriptで実装された、使いやすく機能的な家計簿Webアプリケーションです。日々の支出管理から資産管理まで、シンプルで直感的なインターフェースで家計を管理できます。
 
@@ -196,6 +196,7 @@ MITライセンスの下で公開されています。
 ## 謝辞
 
 ### 立川 修平 様  
+
 - YouTube: [@bubecode](https://www.youtube.com/@bubecode)  
 - Instagram: [instagram.com/bube.code](https://instagram.com/bube.code)  
 - X（旧Twitter）: [@bubekichi](https://x.com/bubekichi)  
@@ -203,6 +204,7 @@ MITライセンスの下で公開されています。
 - 運営スクール: [shiftb.dev](https://shiftb.dev)
 
 ### Shin 様  
+
 - YouTube: [@programming_tutorial_youtube](https://www.youtube.com/@programming_tutorial_youtube)  
 - X（旧Twitter）: [@Shin_Engineer](https://twitter.com/Shin_Engineer)  
 - Udemy: [Shin様のUdemyページ](https://www.udemy.com/user/jin-tuo-hai/)

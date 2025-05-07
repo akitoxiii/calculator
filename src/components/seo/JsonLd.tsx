@@ -28,7 +28,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
 
 export function WebsiteJsonLd() {
   const data = {
-    name: 'Pomo! 家計簿',
+    name: 'マイリー家計簿!',
     description: '完全無料で使える、シンプルで使いやすい家計簿アプリ。収支の管理や予算の設定、グラフによる分析機能を提供します。',
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com',
     potentialAction: {

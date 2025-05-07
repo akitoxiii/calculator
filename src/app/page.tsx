@@ -218,19 +218,19 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start w-full">
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-primary text-white font-semibold hover:bg-primary/90 text-base shadow-md"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 text-base shadow-md"
                 onClick={() => setShowSignUp(true)}
               >
                 ユーザー登録
               </button>
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-primary text-primary font-semibold hover:bg-primary/10 text-base shadow-md"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-blue-700 text-blue-700 font-semibold hover:bg-blue-50 text-base shadow-md"
                 onClick={() => setShowSignIn(true)}
               >
                 ログイン
               </button>
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-gray-600 text-gray-800 font-semibold hover:bg-gray-100 text-base shadow-md"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-gray-800 text-gray-900 font-semibold hover:bg-gray-200 text-base shadow-md"
                 onClick={handleGuestLogin}
               >
                 ゲストログイン
