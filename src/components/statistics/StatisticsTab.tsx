@@ -7,19 +7,11 @@ import type { Expense } from '@/types/expense';
 import { useCategories } from '@/hooks/useCategories';
 import { normalizeUUID } from '@/utils/uuid';
 import dynamic from 'next/dynamic';
+import { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
 // Chart.jsのコンポーネントを動的インポート
 const Pie = dynamic(() => import('react-chartjs-2').then(mod => mod.Pie), { ssr: false });
 const Bar = dynamic(() => import('react-chartjs-2').then(mod => mod.Bar), { ssr: false });
-
-// Chart.jsの登録を動的インポート内で行う
-useEffect(() => {
-  const registerChart = async () => {
-    const { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
-    Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
-  };
-  registerChart();
-}, []);
 
 const MONTHS = [
   { value: 0, label: '1月' },
@@ -43,6 +35,9 @@ interface StatisticsTabProps {
   setYear: (year: number) => void;
   setMonth: (month: number) => void;
 }
+
+// Chart.jsのグローバル登録（1回だけ）
+Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export default function StatisticsTab({ expenses, year, month, setYear, setMonth }: StatisticsTabProps) {
   const { categories } = useCategories();
