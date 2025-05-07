@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import type { Database } from '@/lib/supabase';
 
 type AssetType = Database['public']['Tables']['assets']['Row']['type'];
-type PaymentMethod = 'デビットカード' | 'クレジットカード' | 'プリペイドカード' | 'QRコード決済' | '銀行振込' | 'コンビニ決済' | '後払い' | '代金引換' | '携帯キャリア決済';
+type PaymentMethod = 'デビットカード' | 'クレジットカード' | 'プリペイドカード' | 'QRコード決済' | '銀行振込' | 'コンビニ決済' | '後払い' | '代金引換' | '携帯キャリア決済' | 'PayPay';
 
 interface Props {
   isOpen: boolean;
@@ -92,6 +92,7 @@ export default function AssetModal({ isOpen, onClose, onSave }: Props) {
               <option value="クレジットカード">クレジットカード</option>
               <option value="プリペイドカード">プリペイドカード</option>
               <option value="QRコード決済">QRコード決済</option>
+              <option value="PayPay">PayPay</option>
               <option value="銀行振込">銀行振込</option>
               <option value="コンビニ決済">コンビニ決済</option>
               <option value="後払い">後払い</option>

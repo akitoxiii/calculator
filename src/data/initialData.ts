@@ -28,6 +28,7 @@ export const PAYMENT_METHODS = [
   'クレジットカード',
   'プリペイドカード',
   'QRコード決済',
+  'PayPay',
   '銀行振込',
   'コンビニ決済',
   '後払い',
