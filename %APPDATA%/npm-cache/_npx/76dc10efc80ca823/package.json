@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "sharp-cli": "^5.1.0"
+  },
+  "_npx": {
+    "packages": [
+      "sharp-cli"
+    ]
+  }
+}

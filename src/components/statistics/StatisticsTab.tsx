@@ -1,23 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { format, setMonth, getYear, setYear } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
 import type { Expense } from '@/types/expense';
 import { useCategories } from '@/hooks/useCategories';
 import { normalizeUUID } from '@/utils/uuid';
+import dynamic from 'next/dynamic';
 
-ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+// Chart.jsのコンポーネントを動的インポート
+const Pie = dynamic(() => import('react-chartjs-2').then(mod => mod.Pie), { ssr: false });
+const Bar = dynamic(() => import('react-chartjs-2').then(mod => mod.Bar), { ssr: false });
+
+// Chart.jsの登録を動的インポート内で行う
+useEffect(() => {
+  const registerChart = async () => {
+    const { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
+    Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+  };
+  registerChart();
+}, []);
 
 const MONTHS = [
   { value: 0, label: '1月' },

@@ -36,6 +36,10 @@ export default function Home() {
   const { getToken } = useAuth();
   const { signOut } = useClerk();
 
+  useEffect(() => {
+    import('../instrumentation-client');
+  }, []);
+
   console.log({ isLoaded, isSignedIn, user });
 
   const fetchExpenses = useCallback(async () => {
@@ -255,7 +259,7 @@ export default function Home() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
               <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignIn(false)}>&times;</button>
-              <SignIn afterSignInUrl="/" />
+              <SignIn afterSignInUrl="/" routing="hash" />
             </div>
           </div>
         )}
@@ -263,7 +267,7 @@ export default function Home() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
               <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignUp(false)}>&times;</button>
-              <SignUp afterSignUpUrl="/" />
+              <SignUp afterSignUpUrl="/" routing="hash" />
             </div>
           </div>
         )}
@@ -359,10 +363,6 @@ export default function Home() {
       </div>
     );
   }
-
-  useEffect(() => {
-    import('../instrumentation-client');
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

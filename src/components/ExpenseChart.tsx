@@ -1,11 +1,16 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Chart } from 'chart.js/auto';
-import { Pie } from 'react-chartjs-2';
+import { useMemo, useEffect } from 'react';
 import type { Expense } from '@/types/expense';
 import { useCategories } from '@/hooks/useCategories';
 import { normalizeUUID } from '@/utils/uuid';
+import dynamic from 'next/dynamic';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+
+Chart.register(ArcElement, Tooltip, Legend);
+
+// Chart.jsのコンポーネントを動的インポート
+const Pie = dynamic(() => import('react-chartjs-2').then(mod => mod.Pie), { ssr: false });
 
 interface ExpenseChartProps {
   expenses: Expense[];
