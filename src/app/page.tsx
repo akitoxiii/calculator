@@ -73,16 +73,17 @@ export default function Home() {
   useEffect(() => {
     const updateSession = async () => {
       try {
-        const token = await getToken();
-        if (token) {
-          const { error } = await supabase.auth.setSession({
-            access_token: token,
-            refresh_token: token
-          });
-          if (error) {
-            console.error('Error setting session:', error);
-          }
-        }
+        // ClerkのJWTをSupabaseに渡すのを一旦やめる
+        // const token = await getToken();
+        // if (token) {
+        //   const { error } = await supabase.auth.setSession({
+        //     access_token: token,
+        //     refresh_token: token
+        //   });
+        //   if (error) {
+        //     console.error('Error setting session:', error);
+        //   }
+        // }
       } catch (error) {
         console.error('Error updating session:', error);
       }
