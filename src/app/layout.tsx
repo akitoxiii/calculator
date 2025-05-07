@@ -6,6 +6,11 @@ import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const metadata = {
+  title: 'マイリー家計簿 - 自分に合った家計管理スタイルを作れる家計簿アプリ',
+  description: 'カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。シンプル＆直感的な操作で毎日続く家計簿アプリです。',
+};
+
 export default function RootLayout({
   children,
 }: {

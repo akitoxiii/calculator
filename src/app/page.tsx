@@ -12,6 +12,11 @@ import { CategoryTab } from '@/components/category/CategoryTab';
 import { useUser, useAuth, SignIn, SignUp, useSignIn, useClerk } from '@clerk/nextjs';
 import { useCategories } from '@/hooks/useCategories';
 import { format } from 'date-fns';
+import dynamic from 'next/dynamic';
+
+// 動的インポートを使用してモーダルを遅延読み込み
+const SignInModal = dynamic(() => import('../components/SignInModal'), { ssr: false });
+const SignUpModal = dynamic(() => import('../components/SignUpModal'), { ssr: false });
 
 type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
 
@@ -213,19 +218,19 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start w-full">
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-primary text-white font-semibold hover:bg-primary/90 text-base"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-primary text-white font-semibold hover:bg-primary/90 text-base shadow-md"
                 onClick={() => setShowSignUp(true)}
               >
                 ユーザー登録
               </button>
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border border-primary text-primary font-semibold hover:bg-primary/10 text-base"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-primary text-primary font-semibold hover:bg-primary/10 text-base shadow-md"
                 onClick={() => setShowSignIn(true)}
               >
                 ログイン
               </button>
               <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border border-gray-400 text-gray-700 font-semibold hover:bg-gray-100 text-base"
+                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-gray-600 text-gray-800 font-semibold hover:bg-gray-100 text-base shadow-md"
                 onClick={handleGuestLogin}
               >
                 ゲストログイン
@@ -235,10 +240,13 @@ export default function Home() {
           {/* 右：スマホUIイメージ */}
           <div className="flex-1 flex justify-center w-full max-w-xs mx-auto mt-8 md:mt-0">
             <img
-              src="/lp-demo-mobile.png"
+              src="/lp-demo-mobile.webp"
               alt="家計簿アプリのスマホUIイメージ"
               className="w-full max-w-xs h-auto rounded-xl shadow-lg border"
               style={{ background: '#fff' }}
+              width={375}
+              height={812}
+              loading="eager"
             />
           </div>
         </main>
