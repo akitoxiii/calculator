@@ -2,14 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ExpenseModal } from '@/components/ExpenseModal';
-import { AssetsTab } from '@/components/assets/AssetsTab';
 import type { Expense, CategoryType } from '@/types/expense';
 import { storage } from '@/utils/storage';
 import { supabase } from '@/utils/supabase';
-import { CalendarTab } from '@/components/calendar/CalendarTab';
-import StatisticsTab from '@/components/statistics/StatisticsTab';
-import { CategoryTab } from '@/components/category/CategoryTab';
-import { useUser, useAuth, SignIn, SignUp, useSignIn, useClerk } from '@clerk/nextjs';
+import { useUser, useAuth, SignIn, SignUp, useClerk } from '@clerk/nextjs';
 import { useCategories } from '@/hooks/useCategories';
 import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
@@ -17,6 +13,10 @@ import dynamic from 'next/dynamic';
 // 動的インポートを使用してモーダルを遅延読み込み
 const SignInModal = dynamic(() => import('../components/SignInModal'), { ssr: false });
 const SignUpModal = dynamic(() => import('../components/SignUpModal'), { ssr: false });
+const StatisticsTab = dynamic(() => import('../components/statistics/StatisticsTab'), { ssr: false });
+const CategoryTab = dynamic(() => import('../components/category/CategoryTab').then(mod => mod.CategoryTab), { ssr: false });
+const AssetsTab = dynamic(() => import('../components/assets/AssetsTab').then(mod => mod.AssetsTab), { ssr: false });
+const CalendarTab = dynamic(() => import('../components/calendar/CalendarTab').then(mod => mod.CalendarTab), { ssr: false });
 
 type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
 
@@ -34,7 +34,6 @@ export default function Home() {
   const { isLoaded, isSignedIn, user } = useUser();
   const { categories } = useCategories();
   const { getToken } = useAuth();
-  const { signIn, isLoaded: signInLoaded } = useSignIn();
   const { signOut } = useClerk();
 
   console.log({ isLoaded, isSignedIn, user });
@@ -247,6 +246,7 @@ export default function Home() {
               width={375}
               height={812}
               loading="eager"
+              decoding="async"
             />
           </div>
         </main>
@@ -359,6 +359,10 @@ export default function Home() {
       </div>
     );
   }
+
+  useEffect(() => {
+    import('../instrumentation-client');
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
