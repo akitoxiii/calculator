@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     // 管理者宛てのメール送信
     await resend.emails.send({
-      from: 'マイリー家計簿 <noreply@myly-app.vercel.app>',
+      from: 'マイリー家計簿 <noreply@myly-kakeibo.com>',
       to: process.env.ADMIN_EMAIL || '',
       subject: `【お問い合わせ】${subject}`,
       text: `
@@ -24,7 +24,7 @@ ${message}
 
     // 自動返信メール送信
     await resend.emails.send({
-      from: 'マイリー家計簿 <noreply@myly-app.vercel.app>',
+      from: 'マイリー家計簿 <noreply@myly-kakeibo.com>',
       to: email,
       subject: '【自動返信】お問い合わせありがとうございます',
       text: `
