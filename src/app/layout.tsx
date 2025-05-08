@@ -52,7 +52,7 @@ export default function RootLayout({
       <html lang="ja">
         <head>
           {/* Google Search Console認証用メタタグ */}
-          <meta name="google-site-verification" content="fESBTT9zZ5bNTgf3HVVDN6mAtCeXdgwU5buol6LHvps" />
+          <meta name="google-site-verification" content="5hpRcKnJq14HnYg6gbZtBGym66SkrPBmKKcwS6i9Y1E" />
           {/* Google AdSense */}
           <meta name="google-adsense-account" content="ca-pub-6336722634649007" />
           {/* ファビコン */}
