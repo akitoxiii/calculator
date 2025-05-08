@@ -44,9 +44,6 @@ export const AssetsTab = () => {
 
   useEffect(() => {
     const fetchAllTransactions = async () => {
-      // ローカルstorageのTransaction
-      const localTransactions = storage.getTransactions();
-      // supabaseのexpenses（カレンダー画面のデータ）
       let supabaseTransactions: Transaction[] = [];
       if (user) {
         const { data: expenses, error } = await supabase
@@ -57,11 +54,7 @@ export const AssetsTab = () => {
           supabaseTransactions = (expenses as Expense[]).map(expenseToTransaction);
         }
       }
-      // idで重複排除してマージ
-      const merged = [...localTransactions, ...supabaseTransactions].filter(
-        (t, i, arr) => arr.findIndex(x => x.id === t.id) === i
-      );
-      setTransactions(merged);
+      setTransactions(supabaseTransactions);
     };
     fetchAllTransactions();
   }, [isModalOpen, user]);

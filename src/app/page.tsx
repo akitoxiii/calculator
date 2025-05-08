@@ -51,13 +51,7 @@ export default function Home() {
         ...expense,
         date: expense.date
       }));
-      // storageの取引もExpense型に変換してマージ
-      const transactions = storage.getTransactions();
-      const txExpenses = transactions.map(convertTransactionToExpense);
-      // idでユニーク化
-      const all = [...formattedExpenses, ...txExpenses];
-      const unique = Array.from(new Map(all.map(e => [e.id, e])).values());
-      setExpenses(unique);
+      setExpenses(formattedExpenses);
     } catch (error) {
       console.error('fetchExpensesエラー:', error);
     }

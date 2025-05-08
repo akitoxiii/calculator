@@ -1,21 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { Expense } from '@/types/expense';
-import { storage } from '@/utils/storage';
 
 interface StatisticsProps {
   selectedDate: Date;
+  expenses: Expense[];
 }
 
-export const Statistics = ({ selectedDate }: StatisticsProps) => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+export const Statistics = ({ selectedDate, expenses }: StatisticsProps) => {
   const [period, setPeriod] = useState<'month' | 'year'>('month');
-
-  useEffect(() => {
-    const savedExpenses = storage.getExpenses();
-    setExpenses(savedExpenses);
-  }, []);
 
   const getMonthlyData = () => {
     const start = startOfMonth(selectedDate);
