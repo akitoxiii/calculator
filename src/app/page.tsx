@@ -73,17 +73,16 @@ export default function Home() {
   useEffect(() => {
     const updateSession = async () => {
       try {
-        // ClerkのJWTをSupabaseに渡すのを一旦やめる
-        // const token = await getToken();
-        // if (token) {
-        //   const { error } = await supabase.auth.setSession({
-        //     access_token: token,
-        //     refresh_token: token
-        //   });
-        //   if (error) {
-        //     console.error('Error setting session:', error);
-        //   }
-        // }
+         const token = await getToken();
+         if (token) {
+           const { error } = await supabase.auth.setSession({
+             access_token: token,
+             refresh_token: token
+           });
+           if (error) {
+             console.error('Error setting session:', error);
+           }
+         }
       } catch (error) {
         console.error('Error updating session:', error);
       }
@@ -239,6 +238,10 @@ export default function Home() {
               >
                 ゲストログイン
               </button>
+            </div>
+            {/* お問い合わせリンク追加 */}
+            <div className="mt-6 text-center">
+              <a href="/contact" className="text-blue-600 hover:underline text-base font-medium">お問い合わせ</a>
             </div>
           </div>
           {/* 右：スマホUIイメージ */}
