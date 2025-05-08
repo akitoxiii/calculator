@@ -73,7 +73,8 @@ export default function Home() {
   useEffect(() => {
     const updateSession = async () => {
       try {
-         const token = await getToken();
+         // ClerkのSupabase用JWTを取得
+         const token = await getToken({ template: 'supabase' });
          if (token) {
            const { error } = await supabase.auth.setSession({
              access_token: token,
