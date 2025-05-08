@@ -5,6 +5,8 @@ import type { Category, CategoryType } from '@/types/expense';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
 import { storage } from '@/utils/storage';
 import { v4 as uuidv4 } from 'uuid';
+import { useUser } from '@clerk/nextjs';
+import { supabase } from '@/utils/supabase';
 
 export const CategoryTab = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,6 +14,7 @@ export const CategoryTab = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
   const [activeTab, setActiveTab] = useState<CategoryType>('expense');
+  const { user, isSignedIn } = useUser();
 
   useEffect(() => {
     loadCategories();
@@ -22,17 +25,24 @@ export const CategoryTab = () => {
     setCategories(savedCategories);
   };
 
-  const handleAddCategory = () => {
-    if (!newCategory.trim()) return;
+  const handleAddCategory = async () => {
+    if (!newCategory.trim() || !user) return;
 
     const category: Category = {
       id: uuidv4(),
       name: newCategory.trim(),
       type: activeTab,
       color: '#' + Math.floor(Math.random()*16777215).toString(16),
-      user_id: '',
+      user_id: user.id,
     };
 
+    // Supabaseにinsert
+    const { error } = await supabase.from('categories').insert([category]);
+    if (error) {
+      alert('カテゴリーの追加に失敗しました: ' + error.message);
+      return;
+    }
+    // ローカルにも保存
     const updatedCategories = [...categories, category];
     setCategories(updatedCategories);
     storage.saveCategories(updatedCategories);
