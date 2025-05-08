@@ -17,12 +17,22 @@ export const CategoryTab = () => {
   const { user, isSignedIn } = useUser();
 
   useEffect(() => {
-    loadCategories();
-  }, []);
+    if (user) {
+      loadCategories();
+    }
+  }, [user]);
 
-  const loadCategories = () => {
-    const savedCategories = storage.getCategories();
-    setCategories(savedCategories);
+  const loadCategories = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('user_id', user.id);
+    if (error) {
+      alert('カテゴリの取得に失敗しました: ' + error.message);
+      return;
+    }
+    setCategories(data || []);
   };
 
   const handleAddCategory = async () => {
@@ -36,16 +46,12 @@ export const CategoryTab = () => {
       user_id: user.id,
     };
 
-    // Supabaseにinsert
     const { error } = await supabase.from('categories').insert([category]);
     if (error) {
       alert('カテゴリーの追加に失敗しました: ' + error.message);
       return;
     }
-    // ローカルにも保存
-    const updatedCategories = [...categories, category];
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+    await loadCategories();
     setNewCategory('');
   };
 
@@ -54,37 +60,57 @@ export const CategoryTab = () => {
     setEditingName(category.name);
   };
 
-  const handleEditSave = () => {
-    if (!editingId || !editingName.trim()) return;
-
-    const updatedCategories = categories.map((category) =>
-      category.id === editingId
-        ? { ...category, name: editingName.trim() }
-        : category
-    );
-
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+  const handleEditSave = async () => {
+    if (!editingId || !editingName.trim() || !user) return;
+    const { error } = await supabase
+      .from('categories')
+      .update({ name: editingName.trim() })
+      .eq('id', editingId)
+      .eq('user_id', user.id);
+    if (error) {
+      alert('カテゴリーの編集に失敗しました: ' + error.message);
+      return;
+    }
+    await loadCategories();
     setEditingId(null);
     setEditingName('');
   };
 
-  const handleDelete = (id: string) => {
-    if (!confirm('このカテゴリーを削除してもよろしいですか？')) return;
-
-    const updatedCategories = categories.filter(
-      (category) => category.id !== id
-    );
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+  const handleDelete = async (id: string) => {
+    if (!confirm('このカテゴリーを削除してもよろしいですか？') || !user) return;
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+    if (error) {
+      alert('カテゴリーの削除に失敗しました: ' + error.message);
+      return;
+    }
+    await loadCategories();
   };
 
-  const handleResetCategories = () => {
-    if (!confirm('カテゴリーをデフォルトの状態にリセットしてもよろしいですか？')) return;
-
-    const defaultCategories = [...DEFAULT_EXPENSE_CATEGORIES, ...DEFAULT_INCOME_CATEGORIES];
-    setCategories(defaultCategories);
-    storage.saveCategories(defaultCategories);
+  const handleResetCategories = async () => {
+    if (!confirm('カテゴリーをデフォルトの状態にリセットしてもよろしいですか？') || !user) return;
+    // 既存カテゴリを全削除
+    const { error: delError } = await supabase
+      .from('categories')
+      .delete()
+      .eq('user_id', user.id);
+    if (delError) {
+      alert('リセット時の削除に失敗しました: ' + delError.message);
+      return;
+    }
+    // デフォルトカテゴリをuser_id付きで挿入
+    const defaultCategories = [...DEFAULT_EXPENSE_CATEGORIES, ...DEFAULT_INCOME_CATEGORIES].map(cat => ({ ...cat, user_id: user.id, id: uuidv4() }));
+    const { error: insError } = await supabase
+      .from('categories')
+      .insert(defaultCategories);
+    if (insError) {
+      alert('リセット時の追加に失敗しました: ' + insError.message);
+      return;
+    }
+    await loadCategories();
   };
 
   const filteredCategories = categories.filter(

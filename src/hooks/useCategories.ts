@@ -1,48 +1,78 @@
 import { useState, useEffect } from 'react';
-import { Category } from '@/types/expense';
-import { storage } from '@/utils/storage';
-import { DEFAULT_CATEGORIES } from '@/data/initialData';
+import { Category, DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
+import { supabase } from '@/utils/supabase';
+import { useUser } from '@clerk/nextjs';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Category>>({});
+  const { user } = useUser();
 
   useEffect(() => {
-    const savedCategories = storage.getCategories();
-    if (savedCategories.length === 0) {
-      // 初期カテゴリーを設定
-      storage.saveCategories(DEFAULT_CATEGORIES);
-      setCategories(DEFAULT_CATEGORIES);
-    } else {
-      setCategories(savedCategories);
+    if (user) {
+      loadCategories();
     }
-  }, []);
+  }, [user]);
 
-  const addCategory = (category: Omit<Category, 'id'>) => {
-    const newCategory: Category = {
-      ...category,
-      id: Date.now().toString(),
-    };
-    const updatedCategories = [...categories, newCategory];
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+  const loadCategories = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('user_id', user.id);
+
+    // カテゴリが0件なら初期データを自動挿入
+    if (!error && data && data.length === 0) {
+      const defaultCategories = [
+        ...DEFAULT_EXPENSE_CATEGORIES,
+        ...DEFAULT_INCOME_CATEGORIES,
+      ].map(cat => ({
+        ...cat,
+        user_id: user.id,
+        id: undefined, // idはDB側で自動生成
+      }));
+      await supabase.from('categories').insert(defaultCategories);
+      // 再取得
+      const { data: newData } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('user_id', user.id);
+      setCategories(newData || []);
+      return;
+    }
+
+    if (!error) setCategories(data || []);
   };
 
-  const updateCategory = (id: string, data: Partial<Category>) => {
-    const updatedCategories = categories.map((category) =>
-      category.id === id ? { ...category, ...data } : category
-    );
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+  const addCategory = async (category: Omit<Category, 'id'>) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('categories')
+      .insert([{ ...category, user_id: user.id }]);
+    if (!error) loadCategories();
+  };
+
+  const updateCategory = async (id: string, data: Partial<Category>) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('categories')
+      .update(data)
+      .eq('id', id)
+      .eq('user_id', user.id);
+    if (!error) loadCategories();
     setIsEditing(null);
     setEditData({});
   };
 
-  const deleteCategory = (id: string) => {
-    const updatedCategories = categories.filter((category) => category.id !== id);
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
+  const deleteCategory = async (id: string) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+    if (!error) loadCategories();
   };
 
   const startEditing = (category: Category) => {

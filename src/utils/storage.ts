@@ -10,14 +10,7 @@ const STORAGE_KEYS = {
 
 class Storage {
   constructor() {
-    // 初回起動時にデフォルトカテゴリーを設定
-    if (typeof window !== 'undefined') {
-      const savedCategories = this.getCategories();
-      if (savedCategories.length === 0) {
-        const defaultCategories = [...DEFAULT_EXPENSE_CATEGORIES, ...DEFAULT_INCOME_CATEGORIES];
-        this.saveCategories(defaultCategories);
-      }
-    }
+    // 初回起動時のカテゴリ初期化処理を削除
   }
 
   private parseDate(item: any): any {
@@ -49,21 +42,6 @@ class Storage {
 
   saveExpenses(expenses: Expense[]): void {
     localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
-  }
-
-  // カテゴリーの操作
-  getCategories(): Category[] {
-    try {
-      const categories = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
-      if (!categories) return [];
-      return JSON.parse(categories);
-    } catch {
-      return [];
-    }
-  }
-
-  saveCategories(categories: Category[]): void {
-    localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
   }
 
   // 取引データの操作

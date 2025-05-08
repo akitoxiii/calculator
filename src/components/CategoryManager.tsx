@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Category } from '@/types/expense';
-import { storage } from '@/utils/storage';
+import { supabase } from '@/utils/supabase';
+import { useUser } from '@clerk/nextjs';
 
 interface CategoryManagerProps {
   onCategoryChange: (categories: Category[]) => void;
@@ -14,24 +15,32 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
     color: '#000000',
     user_id: '',
   });
+  const { user } = useUser();
 
   useEffect(() => {
-    const savedCategories = storage.getCategories();
-    setCategories(savedCategories);
-  }, []);
+    if (user) {
+      loadCategories();
+    }
+  }, [user]);
 
-  const handleAddCategory = () => {
-    if (!newCategory.name) return;
+  const loadCategories = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('user_id', user.id);
+    if (!error) {
+      setCategories(data || []);
+      onCategoryChange(data || []);
+    }
+  };
 
-    const category: Category = {
-      ...newCategory,
-      id: Date.now().toString(),
-    };
-
-    const updatedCategories = [...categories, category];
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
-    onCategoryChange(updatedCategories);
+  const handleAddCategory = async () => {
+    if (!newCategory.name || !user) return;
+    const { error } = await supabase
+      .from('categories')
+      .insert([{ ...newCategory, user_id: user.id }]);
+    if (!error) loadCategories();
     setNewCategory({
       name: '',
       type: 'expense',
@@ -40,11 +49,14 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
     });
   };
 
-  const handleDeleteCategory = (id: string) => {
-    const updatedCategories = categories.filter((cat) => cat.id !== id);
-    setCategories(updatedCategories);
-    storage.saveCategories(updatedCategories);
-    onCategoryChange(updatedCategories);
+  const handleDeleteCategory = async (id: string) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+    if (!error) loadCategories();
   };
 
   return (
