@@ -10,7 +10,22 @@ const nextConfig = {
         hostname: 'wocwnfhgwxesafjtiaxc.supabase.co',
       },
     ],
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.myly-kakeibo.com',
+          },
+        ],
+        destination: 'https://myly-kakeibo.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 const sentryWebpackPluginOptions = {
