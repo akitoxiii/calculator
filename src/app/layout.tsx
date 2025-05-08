@@ -80,6 +80,12 @@ export default function RootLayout({
             type="image/webp"
             fetchPriority="high"
           />
+          {/* Google AdSense自動広告スクリプト */}
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6336722634649007"
+            crossOrigin="anonymous"
+          />
         </head>
         <body className={inter.className}>
           {children}
