@@ -25,7 +25,7 @@ export default function CookieConsent() {
       <div className="container mx-auto max-w-4xl flex flex-col md:flex-row items-center justify-between gap-2">
         <div className="text-xs text-gray-600">
           <p>
-            当サイトでは、ユーザー体験の向上とサービスの改善のためにクッキーを使用しています。
+            当サイトでは、ログイン機能の提供のために必須クッキーを使用しています。
             詳細は
             <Link href="/privacy-policy" className="text-primary hover:underline">
               プライバシーポリシー
@@ -38,7 +38,7 @@ export default function CookieConsent() {
             onClick={acceptCookies}
             className="px-3 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 transition-colors"
           >
-            同意する
+            了解しました
           </button>
         </div>
       </div>
