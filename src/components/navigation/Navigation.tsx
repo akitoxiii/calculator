@@ -12,6 +12,9 @@ export function Navigation() {
         <Link href="/settings" className="text-gray-600 hover:text-gray-900">
           設定
         </Link>
+        <Link href="/contact" className="text-gray-600 hover:text-gray-900">
+          お問い合わせ
+        </Link>
       </nav>
     ),
     FooterNav: () => (
