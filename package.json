@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "postinstall": "supabase db push --db-url $SUPABASE_DB_URL",
+    "db:push": "supabase db push --db-url $SUPABASE_DB_URL"
   },
   "dependencies": {
     "@clerk/localizations": "1.22.0",
