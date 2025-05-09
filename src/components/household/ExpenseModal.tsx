@@ -64,7 +64,7 @@ export default function ExpenseModal({ date, onClose, onSave }: Props) {
     
     const expense: Expense = {
       id: Date.now().toString(),
-      date,
+      date: typeof date === 'string' ? date : format(date, 'yyyy-MM-dd'),
       category,
       amount: parseFloat(amount),
       paymentMethod,
