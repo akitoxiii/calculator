@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "postinstall": "supabase db push --project-id $SUPABASE_PROJECT_ID",
-    "db:push": "supabase db push --project-id $SUPABASE_PROJECT_ID"
+    "postinstall": "supabase db push --linked",
+    "db:push": "supabase db push --linked"
   },
   "dependencies": {
     "@clerk/localizations": "1.22.0",
