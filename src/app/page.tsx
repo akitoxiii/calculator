@@ -21,6 +21,20 @@ const CalendarTab = dynamic(() => import('../components/calendar/CalendarTab').t
 type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
 
 export default function Home() {
+  // メンテナンスモードの場合は503エラーページを表示
+  const isMaintenanceMode = true;
+  if (isMaintenanceMode) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">503 Service Unavailable</h1>
+          <p className="text-xl text-gray-600 mb-4">申し訳ありませんが、現在サービスを停止しております。</p>
+          <p className="text-gray-500">メンテナンス作業が完了次第、サービスを再開いたします。</p>
+        </div>
+      </div>
+    );
+  }
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
