@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "postinstall": "if [ -n \"$SUPABASE_DB_URL\" ]; then supabase db push --db-url $SUPABASE_DB_URL; else echo \"Skipping database push: SUPABASE_DB_URL not set\"; fi",
+    "postinstall": "if [ -n \"$SUPABASE_DB_URL\" ]; then supabase db push --db-url \"$SUPABASE_DB_URL\" || echo \"Database push failed, but continuing build\"; else echo \"Skipping database push: SUPABASE_DB_URL not set\"; fi",
     "db:push": "supabase db push --db-url $SUPABASE_DB_URL"
   },
   "dependencies": {
