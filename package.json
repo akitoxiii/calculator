@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "postinstall": "supabase db push --db-url $SUPABASE_DB_URL",
+    "postinstall": "if [ -n \"$SUPABASE_DB_URL\" ]; then supabase db push --db-url $SUPABASE_DB_URL; else echo \"Skipping database push: SUPABASE_DB_URL not set\"; fi",
     "db:push": "supabase db push --db-url $SUPABASE_DB_URL"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/localizations": "1.22.0",
     "@clerk/nextjs": "^6.18.5",
     "@hookform/resolvers": "^5.0.1",
@@ -22,6 +23,7 @@
     "chart.js": "4.4.0",
     "date-fns": "2.30.0",
     "next": "14.2.28",
+    "node-fetch": "^3.3.2",
     "react": "18.2.0",
     "react-chartjs-2": "5.2.0",
     "react-dom": "18.2.0",

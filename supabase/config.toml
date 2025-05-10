@@ -1,6 +1,7 @@
 [db]
 port = 5432
 major_version = 15
+project_id = "calculator"
 
 [api]
 port = 54321
