@@ -25,6 +25,7 @@ export const useCategories = () => {
     try {
       setIsLoading(true);
       const token = await getToken({ template: 'supabase' });
+      console.log('JWT token (loadCategories):', token);
       if (!token) {
         console.error('認証トークンの取得に失敗しました');
         return;
@@ -91,6 +92,7 @@ export const useCategories = () => {
     try {
       setIsLoading(true);
       const token = await getToken({ template: 'supabase' });
+      console.log('JWT token (addCategory):', token);
       if (!token) {
         alert('認証トークンの取得に失敗しました。再ログインしてください。');
         return;
