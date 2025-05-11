@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 // 動的インポートを使用してモーダルを遅延読み込み
 const StatisticsTab = dynamic(() => import('../components/statistics/StatisticsTab'), { ssr: false });
 const CategoryTab = dynamic(() => import('../components/category/CategoryTab').then(mod => mod.CategoryTab), { ssr: false });
-const AssetsTab = dynamic(() => import('../components/assets/AssetsTab').then(mod => mod.AssetsTab), { ssr: false });
+const AssetsTab = dynamic(() => import('../components/AssetsTab').then(mod => mod.AssetsTab), { ssr: false });
 const CalendarTab = dynamic(() => import('../components/calendar/CalendarTab').then(mod => mod.CalendarTab), { ssr: false });
 
 type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
@@ -218,6 +218,12 @@ export default function Home() {
     }
   }, [user, isGuest, isLoading, router]);
 
+  // ログアウト処理
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/sign-in');
+  };
+
   if ((!user) && !isGuest) {
     return <div className="min-h-screen flex items-center justify-center">読み込み中...</div>;
   }
@@ -282,6 +288,12 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <header className="w-full flex justify-end items-center px-4 py-2">
         <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
+        <button
+          onClick={handleLogout}
+          className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+        >
+          ログアウト
+        </button>
       </header>
       <div className="container mx-auto px-4 py-8">
         <div className="flex space-x-4 mb-8">
