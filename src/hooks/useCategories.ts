@@ -59,9 +59,11 @@ export const useCategories = () => {
     if (!user) return;
     const token = await getToken({ template: 'supabase' });
     const supabase = createBrowserSupabaseClient(token ?? undefined);
+    const payload = { ...category, user_id: user.id, id: uuidv4() };
+    console.log('addCategory payload:', payload);
     const { error } = await supabase
       .from('categories')
-      .insert([{ ...category, user_id: user.id }]);
+      .insert([payload]);
     if (!error) loadCategories();
   };
 
