@@ -39,7 +39,7 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
     if (!newCategory.name || !user) return;
     const { error } = await supabase
       .from('categories')
-      .insert([{ ...newCategory, user_id: user.id }]);
+      .insert([{ ...newCategory, user_id: user.id || '' }]);
     if (!error) loadCategories();
     setNewCategory({
       name: '',

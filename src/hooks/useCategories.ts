@@ -29,7 +29,7 @@ export const useCategories = () => {
         ...DEFAULT_INCOME_CATEGORIES,
       ].map(cat => ({
         ...cat,
-        user_id: user.id,
+        user_id: user.id || '', // Clerkのuser.idを必ずセット
         id: undefined, // idはDB側で自動生成
       }));
       await supabase.from('categories').insert(defaultCategories);

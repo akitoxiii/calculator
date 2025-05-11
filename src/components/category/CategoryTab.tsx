@@ -102,7 +102,7 @@ export const CategoryTab = () => {
       return;
     }
     // デフォルトカテゴリをuser_id付きで挿入
-    const defaultCategories = [...DEFAULT_EXPENSE_CATEGORIES, ...DEFAULT_INCOME_CATEGORIES].map(cat => ({ ...cat, user_id: user.id, id: uuidv4() }));
+    const defaultCategories = [...DEFAULT_EXPENSE_CATEGORIES, ...DEFAULT_INCOME_CATEGORIES].map(cat => ({ ...cat, user_id: user.id || '', id: uuidv4() }));
     const { error: insError } = await supabase
       .from('categories')
       .insert(defaultCategories);
