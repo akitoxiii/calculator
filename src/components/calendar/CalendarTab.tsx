@@ -24,6 +24,7 @@ interface CalendarTabProps {
   month: number;
   setYear: (year: number) => void;
   setMonth: (month: number) => void;
+  user_id: string;
 }
 
 export const CalendarTab = ({
@@ -36,7 +37,8 @@ export const CalendarTab = ({
   year,
   month,
   setYear,
-  setMonth
+  setMonth,
+  user_id
 }: CalendarTabProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(propSelectedDate);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -228,7 +230,7 @@ export const CalendarTab = ({
 
       // insert直前の値を出力
       const insertData = {
-        user_id: '',
+        user_id: user_id,
         category_id: data.category_id,
         amount: Number(data.amount),
         type: data.type,
@@ -270,7 +272,7 @@ export const CalendarTab = ({
         .from('expenses')
         .delete()
         .eq('id', id)
-        .eq('user_id', '');
+        .eq('user_id', user_id);
       if (error) {
         console.error('Error deleting expense:', error);
         alert('削除に失敗しました: ' + error.message);

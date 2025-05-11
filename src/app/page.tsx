@@ -323,6 +323,7 @@ export default function Home() {
             month={selectedMonth}
             setYear={setSelectedYear}
             setMonth={setSelectedMonth}
+            user_id={user?.id || ''}
           />
         )}
         {activeTab === 'statistics' && (
