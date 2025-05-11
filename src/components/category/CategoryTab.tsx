@@ -5,7 +5,6 @@ import type { Category, CategoryType } from '@/types/expense';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
 import { storage } from '@/utils/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { useUser } from '@clerk/nextjs';
 import { supabase } from '@/utils/supabase';
 
 export const CategoryTab = () => {
@@ -14,7 +13,15 @@ export const CategoryTab = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
   const [activeTab, setActiveTab] = useState<CategoryType>('expense');
-  const { user, isSignedIn } = useUser();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (user) {

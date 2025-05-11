@@ -9,7 +9,6 @@ import { PAYMENT_METHODS } from '@/data/initialData';
 import { useCategories } from '@/hooks/useCategories';
 import { DailyExpenseForm } from '@/components/DailyExpenseForm';
 import { supabase } from '@/utils/supabase';
-import { useUser } from '@clerk/nextjs';
 import type { Expense } from '@/types/expense';
 
 export const AssetsTab = () => {
@@ -25,7 +24,7 @@ export const AssetsTab = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { categories } = useCategories();
-  const { user, isSignedIn } = useUser();
+  const [user, setUser] = useState<any>(null);
 
   // Expense型→Transaction型変換
   const expenseToTransaction = (expense: Expense): Transaction => {
@@ -38,6 +37,14 @@ export const AssetsTab = () => {
       note: expense.memo || undefined,
     };
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     const fetchTransactions = async () => {
