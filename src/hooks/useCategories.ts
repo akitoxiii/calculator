@@ -40,7 +40,7 @@ export const useCategories = () => {
       console.log('defaultCategories:', defaultCategories);
       const { error: insertError } = await supabase.from('categories').insert(defaultCategories);
       if (insertError) {
-        console.error('カテゴリ挿入エラー:', insertError);
+        console.error('カテゴリ挿入エラー:', JSON.stringify(insertError, null, 2));
       }
       // 再取得
       const { data: newData } = await supabase
