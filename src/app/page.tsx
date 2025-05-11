@@ -314,6 +314,12 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="mt-auto w-full">
+          <CookieConsent />
+          <footer className="w-full text-center text-xs text-gray-500 py-4">
+            <a href="/privacy-policy" className="underline hover:text-primary">プライバシーポリシー</a>
+          </footer>
+        </div>
       </div>
     );
   }
@@ -389,6 +395,12 @@ export default function Home() {
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}
+      <div className="mt-auto w-full">
+        <CookieConsent />
+        <footer className="w-full text-center text-xs text-gray-500 py-4">
+          <a href="/privacy-policy" className="underline hover:text-primary">プライバシーポリシー</a>
+        </footer>
+      </div>
     </div>
   );
 }
