@@ -1,29 +1,34 @@
 import { useState, useEffect } from 'react';
 import { Category } from '@/types/expense';
 import { supabase } from '@/utils/supabase';
-import { useUser } from '@clerk/nextjs';
 
 interface CategoryManagerProps {
   onCategoryChange: (categories: Category[]) => void;
 }
 
-export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
+export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [user, setUser] = useState<any>(null);
   const [newCategory, setNewCategory] = useState<Omit<Category, 'id'>>({
     name: '',
     type: 'expense',
     color: '#000000',
     user_id: '',
   });
-  const { user } = useUser();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data?.user ?? null);
+    });
+  }, []);
 
   useEffect(() => {
     if (user) {
-      loadCategories();
+      fetchCategories();
     }
   }, [user]);
 
-  const loadCategories = async () => {
+  const fetchCategories = async () => {
     if (!user) return;
     const { data, error } = await supabase
       .from('categories')
@@ -40,7 +45,7 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
     const { error } = await supabase
       .from('categories')
       .insert([{ ...newCategory, user_id: user.id || '' }]);
-    if (!error) loadCategories();
+    if (!error) fetchCategories();
     setNewCategory({
       name: '',
       type: 'expense',
@@ -56,7 +61,7 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
       .delete()
       .eq('id', id)
       .eq('user_id', user.id);
-    if (!error) loadCategories();
+    if (!error) fetchCategories();
   };
 
   return (
@@ -131,4 +136,4 @@ export const CategoryManager = ({ onCategoryChange }: CategoryManagerProps) => {
       </div>
     </div>
   );
-}; 
+} 

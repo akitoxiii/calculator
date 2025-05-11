@@ -5,14 +5,11 @@ import { ExpenseModal } from '@/components/ExpenseModal';
 import type { Expense, CategoryType } from '@/types/expense';
 import { storage } from '@/utils/storage';
 import { supabase } from '@/utils/supabase';
-import { useUser, useAuth, SignIn, SignUp, useClerk } from '@clerk/nextjs';
 import { useCategories } from '@/hooks/useCategories';
 import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
 
 // 動的インポートを使用してモーダルを遅延読み込み
-const SignInModal = dynamic(() => import('../components/SignInModal'), { ssr: false });
-const SignUpModal = dynamic(() => import('../components/SignUpModal'), { ssr: false });
 const StatisticsTab = dynamic(() => import('../components/statistics/StatisticsTab'), { ssr: false });
 const CategoryTab = dynamic(() => import('../components/category/CategoryTab').then(mod => mod.CategoryTab), { ssr: false });
 const AssetsTab = dynamic(() => import('../components/assets/AssetsTab').then(mod => mod.AssetsTab), { ssr: false });
@@ -45,19 +42,25 @@ export default function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
 
-  const { isLoaded, isSignedIn, user } = useUser();
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { categories } = useCategories();
-  const { getToken } = useAuth();
-  const { signOut } = useClerk();
 
   useEffect(() => {
     import('../instrumentation-client');
   }, []);
 
-  console.log({ isLoaded, isSignedIn, user });
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data, error }) => {
+      setUser(data?.user ?? null);
+      setIsLoading(false);
+    });
+  }, []);
+
+  console.log({ user });
 
   const fetchExpenses = useCallback(async () => {
-    if (!isLoaded || !isSignedIn || !user) return;
+    if (!user) return;
     try {
       // supabaseから取得
       const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id);
@@ -69,14 +72,14 @@ export default function Home() {
     } catch (error) {
       console.error('fetchExpensesエラー:', error);
     }
-  }, [isLoaded, isSignedIn, user, categories]);
+  }, [user]);
 
   // 初回マウント時のみfetchExpensesを呼ぶ
   useEffect(() => {
-    if (isLoaded && isSignedIn && user) {
+    if (user) {
       fetchExpenses();
     }
-  }, [isLoaded, isSignedIn, user, fetchExpenses, activeTab]);
+  }, [user, fetchExpenses, activeTab]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -192,77 +195,21 @@ export default function Home() {
   };
 
   // 未ログインかつゲストでない場合はLPを表示
-  if ((!isSignedIn || !user) && !isGuest) {
+  if ((!user) && !isGuest) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-2 sm:px-4">
         <header className="w-full max-w-3xl mx-auto py-6 flex justify-center md:justify-between items-center">
           <div className="text-2xl font-bold">マイリー家計簿!</div>
         </header>
-        <main className="flex flex-col md:flex-row items-center justify-center w-full max-w-4xl gap-8 md:gap-12 py-4 md:py-8">
-          {/* 左：説明 */}
-          <div className="flex-1 w-full max-w-lg space-y-6 text-center md:text-left mx-auto">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
-              自分に合った <span className="text-primary">家計管理スタイル</span> を作れる<br className="hidden md:block" />家計簿アプリ
-            </h1>
-            <p className="text-base sm:text-lg text-gray-700 mb-4">
-              カレンダー・統計・資産管理・カテゴリ編集など、<br className="hidden sm:block" />必要な機能だけONにして自由にカスタマイズ。<br className="hidden sm:block" />シンプル＆直感的な操作で毎日続く！
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start w-full">
-              <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 text-base shadow-md"
-                onClick={() => setShowSignUp(true)}
-              >
-                ユーザー登録
-              </button>
-              <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-blue-700 text-blue-700 font-semibold hover:bg-blue-50 text-base shadow-md"
-                onClick={() => setShowSignIn(true)}
-              >
-                ログイン
-              </button>
-              <button
-                className="w-full sm:w-auto px-4 py-2 sm:px-6 sm:py-3 rounded border-2 border-gray-800 text-gray-900 font-semibold hover:bg-gray-200 text-base shadow-md"
-                onClick={handleGuestLogin}
-              >
-                ゲストログイン
-              </button>
-            </div>
-            {/* お問い合わせリンク追加 */}
-            <div className="mt-6 text-center">
-              <a href="/contact" className="text-blue-600 hover:underline text-base font-medium">お問い合わせ</a>
-            </div>
-          </div>
-          {/* 右：スマホUIイメージ */}
-          <div className="flex-1 flex justify-center w-full max-w-xs mx-auto mt-8 md:mt-0">
-            <img
-              src="/lp-demo-mobile.webp"
-              alt="家計簿アプリのスマホUIイメージ"
-              className="w-full max-w-xs h-auto rounded-xl shadow-lg border"
-              style={{ background: '#fff' }}
-              width={375}
-              height={812}
-              loading="eager"
-              decoding="async"
-            />
+        <main className="flex-1 w-full max-w-3xl mx-auto flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-bold mb-4">家計簿アプリへようこそ</h1>
+          <p className="mb-6">ご利用にはログインが必要です。</p>
+          <div className="flex gap-4">
+            <a href="/sign-in" className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90">ログイン</a>
+            <a href="/sign-up" className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">新規登録</a>
+            <button onClick={handleGuestLogin} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">ゲストで試す</button>
           </div>
         </main>
-        {/* SignIn/SignUpモーダル */}
-        {showSignIn && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignIn(false)}>&times;</button>
-              <SignIn afterSignInUrl="/" routing="hash" />
-            </div>
-          </div>
-        )}
-        {showSignUp && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white p-8 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowSignUp(false)}>&times;</button>
-              <SignUp afterSignUpUrl="/" routing="hash" />
-            </div>
-          </div>
-        )}
       </div>
     );
   }
@@ -317,134 +264,8 @@ export default function Home() {
               資産
             </button>
           </div>
-          {/* 各タブの中身はローカルストレージのみで動作するように、今後修正 */}
-          {activeTab === 'calendar' && (
-            <CalendarTab
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
-              expenses={expenses}
-              onExpenseDelete={async () => {}}
-              onExpensesUpdate={() => {}}
-              onExpensesReload={async () => {}}
-              year={selectedYear}
-              month={selectedMonth}
-              setYear={setSelectedYear}
-              setMonth={setSelectedMonth}
-            />
-          )}
-          {activeTab === 'statistics' && (
-            <StatisticsTab
-              expenses={expenses}
-              year={selectedYear}
-              month={selectedMonth}
-              setYear={setSelectedYear}
-              setMonth={setSelectedMonth}
-            />
-          )}
-          {activeTab === 'category' && <CategoryTab />}
-          {activeTab === 'assets' && <AssetsTab />}
-          <ExpenseModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSubmit={async () => {}}
-            selectedDate={selectedDate}
-            categories={categories}
-            dailyExpenses={[]}
-          />
         </div>
       </div>
     );
   }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="w-full flex justify-end items-center px-4 py-2">
-        <button
-          onClick={() => signOut()}
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-        >
-          ログアウト
-        </button>
-      </header>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex space-x-4 mb-8">
-          <button
-            onClick={() => setActiveTab('calendar')}
-            className={`px-4 py-2 rounded ${
-              activeTab === 'calendar'
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-700'
-            }`}
-          >
-            カレンダー
-          </button>
-          <button
-            onClick={() => setActiveTab('statistics')}
-            className={`px-4 py-2 rounded ${
-              activeTab === 'statistics'
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-700'
-            }`}
-          >
-            統計
-          </button>
-          <button
-            onClick={() => setActiveTab('category')}
-            className={`px-4 py-2 rounded ${
-              activeTab === 'category'
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-700'
-            }`}
-          >
-            カテゴリー
-          </button>
-          <button
-            onClick={() => setActiveTab('assets')}
-            className={`px-4 py-2 rounded ${
-              activeTab === 'assets'
-                ? 'bg-primary text-white'
-                : 'bg-white text-gray-700'
-            }`}
-          >
-            資産
-          </button>
-        </div>
-
-        {activeTab === 'calendar' && (
-          <CalendarTab
-            selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
-            expenses={expenses}
-            onExpenseDelete={handleExpenseDelete}
-            onExpensesUpdate={handleExpensesUpdate}
-            onExpensesReload={fetchExpenses}
-            year={selectedYear}
-            month={selectedMonth}
-            setYear={setSelectedYear}
-            setMonth={setSelectedMonth}
-          />
-        )}
-        {activeTab === 'statistics' && (
-          <StatisticsTab
-            expenses={expenses}
-            year={selectedYear}
-            month={selectedMonth}
-            setYear={setSelectedYear}
-            setMonth={setSelectedMonth}
-          />
-        )}
-        {activeTab === 'category' && <CategoryTab />}
-        {activeTab === 'assets' && <AssetsTab />}
-
-        <ExpenseModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleExpenseSubmit}
-          selectedDate={selectedDate}
-          categories={categories}
-          dailyExpenses={dailyExpenses}
-        />
-      </div>
-    </div>
-  );
-} 
+}
