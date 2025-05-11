@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Category, DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
-import { supabase } from '@/utils/supabase';
+import { createBrowserSupabaseClient } from '@/utils/supabase';
 import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Category>>({});
   const { user } = useUser();
+  const { getToken } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -17,6 +19,8 @@ export const useCategories = () => {
 
   const loadCategories = async () => {
     if (!user) return;
+    const token = await getToken({ template: 'supabase' });
+    const supabase = createBrowserSupabaseClient(token ?? undefined);
     const { data, error } = await supabase
       .from('categories')
       .select('*')
@@ -52,6 +56,8 @@ export const useCategories = () => {
 
   const addCategory = async (category: Omit<Category, 'id'>) => {
     if (!user) return;
+    const token = await getToken({ template: 'supabase' });
+    const supabase = createBrowserSupabaseClient(token ?? undefined);
     const { error } = await supabase
       .from('categories')
       .insert([{ ...category, user_id: user.id }]);
@@ -60,6 +66,8 @@ export const useCategories = () => {
 
   const updateCategory = async (id: string, data: Partial<Category>) => {
     if (!user) return;
+    const token = await getToken({ template: 'supabase' });
+    const supabase = createBrowserSupabaseClient(token ?? undefined);
     const { error } = await supabase
       .from('categories')
       .update(data)
@@ -72,6 +80,8 @@ export const useCategories = () => {
 
   const deleteCategory = async (id: string) => {
     if (!user) return;
+    const token = await getToken({ template: 'supabase' });
+    const supabase = createBrowserSupabaseClient(token ?? undefined);
     const { error } = await supabase
       .from('categories')
       .delete()

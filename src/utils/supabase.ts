@@ -26,4 +26,21 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       eventsPerSecond: 10
     }
   }
-}); 
+});
+
+export const createBrowserSupabaseClient = (accessToken?: string) =>
+  createClient(supabaseUrl, supabaseAnonKey, {
+    db: {
+      schema: 'public'
+    },
+    global: {
+      headers: accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : {},
+    },
+    realtime: {
+      params: {
+        eventsPerSecond: 10
+      }
+    }
+  }); 
