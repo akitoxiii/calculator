@@ -1,20 +1,30 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/utils/supabase';
 
 export default function DashboardPage() {
-  const { isLoaded, isSignedIn } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsSignedIn(!!user);
+      setIsLoading(false);
+    };
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !isSignedIn) {
       router.push('/sign-in');
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoading, isSignedIn, router]);
 
-  if (!isLoaded) {
+  if (isLoading) {
     return <div>読み込み中...</div>;
   }
   if (!isSignedIn) {
