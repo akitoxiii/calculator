@@ -9,66 +9,114 @@ export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Category>>({});
+  const [isLoading, setIsLoading] = useState(false);
   const { isLoaded, isSignedIn, user } = useUser();
   const { getToken } = useAuth();
 
   useEffect(() => {
-    if (user) {
+    if (isLoaded && isSignedIn && user) {
       loadCategories();
     }
-  }, [user]);
+  }, [isLoaded, isSignedIn, user]);
 
   const loadCategories = async () => {
-    if (!user) return;
-    const token = await getToken({ template: 'supabase' });
-    const supabase = createBrowserSupabaseClient(token ?? undefined);
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('user_id', user.id);
-
-    // カテゴリが0件なら初期データを自動挿入
-    if (!error && data && data.length === 0) {
-      console.log('user.id:', user.id);
-      const defaultCategories = [
-        ...DEFAULT_EXPENSE_CATEGORIES,
-        ...DEFAULT_INCOME_CATEGORIES,
-      ].map(cat => ({
-        ...cat,
-        user_id: user.id || '',
-        id: uuidv4(), // idを必ずuuidで生成
-      }));
-      console.log('defaultCategories:', defaultCategories);
-      const { error: insertError } = await supabase.from('categories').insert(defaultCategories);
-      if (insertError) {
-        console.error('カテゴリ挿入エラー:', JSON.stringify(insertError, null, 2));
+    if (!isLoaded || !isSignedIn || !user || isLoading) return;
+    
+    try {
+      setIsLoading(true);
+      const token = await getToken({ template: 'supabase' });
+      if (!token) {
+        console.error('認証トークンの取得に失敗しました');
+        return;
       }
-      // 再取得
-      const { data: newData } = await supabase
+
+      const supabase = createBrowserSupabaseClient(token);
+      const { data, error } = await supabase
         .from('categories')
         .select('*')
         .eq('user_id', user.id);
-      setCategories(newData || []);
-      return;
-    }
 
-    if (!error) setCategories(data || []);
+      if (error) {
+        console.error('カテゴリ取得エラー:', error);
+        return;
+      }
+
+      // カテゴリが0件なら初期データを自動挿入
+      if (data && data.length === 0) {
+        console.log('user.id:', user.id);
+        const defaultCategories = [
+          ...DEFAULT_EXPENSE_CATEGORIES,
+          ...DEFAULT_INCOME_CATEGORIES,
+        ].map(cat => ({
+          ...cat,
+          user_id: user.id,
+          id: uuidv4(),
+        }));
+        console.log('defaultCategories:', defaultCategories);
+        
+        const { error: insertError } = await supabase
+          .from('categories')
+          .insert(defaultCategories);
+        
+        if (insertError) {
+          console.error('カテゴリ挿入エラー:', insertError);
+          return;
+        }
+
+        // 再取得
+        const { data: newData, error: newError } = await supabase
+          .from('categories')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (newError) {
+          console.error('カテゴリ再取得エラー:', newError);
+          return;
+        }
+
+        setCategories(newData || []);
+      } else {
+        setCategories(data || []);
+      }
+    } catch (error) {
+      console.error('カテゴリ操作エラー:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addCategory = async (category: Omit<Category, 'id'>) => {
-    if (!isLoaded || !isSignedIn || !user) return;
-    const token = await getToken({ template: 'supabase' });
-    if (!token) {
-      alert('認証トークンの取得に失敗しました。再ログインしてください。');
-      return;
+    if (!isLoaded || !isSignedIn || !user || isLoading) return;
+    
+    try {
+      setIsLoading(true);
+      const token = await getToken({ template: 'supabase' });
+      if (!token) {
+        alert('認証トークンの取得に失敗しました。再ログインしてください。');
+        return;
+      }
+
+      const supabase = createBrowserSupabaseClient(token);
+      const payload = { ...category, user_id: user.id, id: uuidv4() };
+      console.log('addCategory payload:', payload);
+
+      const { error } = await supabase
+        .from('categories')
+        .insert([payload]);
+
+      if (error) {
+        console.error('カテゴリ追加エラー:', error);
+        alert('カテゴリの追加に失敗しました。');
+        return;
+      }
+
+      await loadCategories();
+    } catch (error) {
+      console.error('カテゴリ追加エラー:', error);
+      alert('カテゴリの追加に失敗しました。');
+    } finally {
+      setIsLoading(false);
     }
-    const supabase = createBrowserSupabaseClient(token);
-    const payload = { ...category, user_id: user.id, id: uuidv4() };
-    console.log('addCategory payload:', payload);
-    const { error } = await supabase
-      .from('categories')
-      .insert([payload]);
-    if (!error) loadCategories();
   };
 
   const updateCategory = async (id: string, data: Partial<Category>) => {
@@ -111,6 +159,7 @@ export const useCategories = () => {
     categories,
     isEditing,
     editData,
+    isLoading,
     addCategory,
     updateCategory,
     deleteCategory,
