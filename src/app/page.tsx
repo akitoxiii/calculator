@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { ExpenseModal } from '@/components/ExpenseModal';
 import type { Expense, CategoryType } from '@/types/expense';
 import { storage } from '@/utils/storage';
 import { supabase } from '@/utils/supabase';
@@ -55,6 +54,7 @@ export default function Home() {
     (async () => {
       try {
         const { data, error } = await supabase.auth.getUser();
+        console.log('[DEBUG] Auth getUser result:', { data, error });
         setUser(data?.user ?? null);
       } finally {
         setIsLoading(false);
@@ -62,11 +62,15 @@ export default function Home() {
     })();
   }, []);
 
-  console.log({ user });
+  console.log('[DEBUG] Current user state:', user);
 
   const fetchExpenses = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('[DEBUG] fetchExpenses: user is null');
+      return;
+    }
     try {
+      console.log('[DEBUG] fetchExpenses: fetching for user:', user.id);
       // supabaseから取得
       const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id);
       const formattedExpenses = (data || []).map(expense => ({
@@ -75,7 +79,7 @@ export default function Home() {
       }));
       setExpenses(formattedExpenses);
     } catch (error) {
-      console.error('fetchExpensesエラー:', error);
+      console.error('[DEBUG] fetchExpenses error:', error);
     }
   }, [user]);
 
@@ -91,34 +95,44 @@ export default function Home() {
   };
 
   const handleExpenseSubmit = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
-    if (!user || !data) return;
+    console.log('[DEBUG] handleExpenseSubmit called with:', { user, data });
+    
+    if (!user || !data) {
+      console.log('[DEBUG] handleExpenseSubmit: user or data is null', { user, data });
+      alert('ユーザー情報が取得できていません。再度ログインしてください。');
+      return;
+    }
+
+    if (!user.id) {
+      console.log('[DEBUG] handleExpenseSubmit: user.id is empty', { user });
+      alert('ユーザーIDが不正です。');
+      return;
+    }
+
     const categoryObj = categories.find(cat => cat.id === data.category_id);
     if (!categoryObj) {
+      console.log('[DEBUG] handleExpenseSubmit: category not found', { category_id: data.category_id, categories });
       alert('カテゴリーが見つかりません');
       return;
     }
-    console.log('handleExpenseSubmit insert payload:', {
+
+    const insertData = {
       user_id: user.id,
       category_id: categoryObj.id,
       amount: data.amount,
       type: data.type,
       memo: data.memo,
       date: format(selectedDate, 'yyyy-MM-dd'),
-    });
-    const { error } = await supabase.from('expenses').insert([
-      {
-        user_id: user.id,
-        category_id: categoryObj.id,
-        amount: data.amount,
-        type: data.type,
-        memo: data.memo,
-        date: format(selectedDate, 'yyyy-MM-dd'),
-      }
-    ]);
+    };
+    console.log('[DEBUG] handleExpenseSubmit: inserting data:', insertData);
+
+    const { error } = await supabase.from('expenses').insert([insertData]);
     if (error) {
+      console.error('[DEBUG] handleExpenseSubmit: insert error:', error);
       alert('保存に失敗しました: ' + error.message);
       return;
     }
+    console.log('[DEBUG] handleExpenseSubmit: insert successful');
     await fetchExpenses();
   };
 

@@ -201,20 +201,31 @@ export const CalendarTab = ({
   }, [categories]);
 
   const handleExpenseSave = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
-    console.log('handleExpenseSave called', data);
-    if (!data) return;
+    console.log('[DEBUG] CalendarTab handleExpenseSave called with:', data);
+    if (!data) {
+      console.log('[DEBUG] CalendarTab handleExpenseSave: data is null');
+      return;
+    }
     try {
       const categoryObj: Category | undefined = normalizedCategories.find(cat => cat.id === data.category_id);
-      console.log('保存時 category_id:', data.category_id, '（型:', typeof data.category_id, '）');
-      console.log('保存時 categoryObj:', categoryObj);
+      console.log('[DEBUG] CalendarTab handleExpenseSave: category details:', {
+        category_id: data.category_id,
+        category_id_type: typeof data.category_id,
+        categoryObj,
+        normalizedCategories
+      });
+
       if (!data.category_id) {
+        console.log('[DEBUG] CalendarTab handleExpenseSave: category_id is empty');
         alert('カテゴリーIDが指定されていません');
         return;
       }
       if (!categoryObj) {
+        console.log('[DEBUG] CalendarTab handleExpenseSave: category not found');
         alert('カテゴリーが見つかりません');
         return;
       }
+
       // insert直前の値を出力
       const insertData = {
         user_id: '',
@@ -224,25 +235,31 @@ export const CalendarTab = ({
         memo: data.memo,
         date: format(selectedDate, 'yyyy-MM-dd'),
       };
-      console.log('insertData:', insertData, '（category_id型:', typeof insertData.category_id, '）');
+      console.log('[DEBUG] CalendarTab handleExpenseSave: attempting to insert:', insertData);
+
       const { error, data: inserted } = await supabase.from('expenses').insert([
         insertData
       ]).select();
+      
       if (error) {
-        console.error('Error inserting expense:', error, insertData);
+        console.error('[DEBUG] CalendarTab handleExpenseSave: insert error:', error);
         alert('保存に失敗しました: ' + error.message);
         return;
       }
+
       const insertedExpense = Array.isArray(inserted) ? inserted[0] : null;
+      console.log('[DEBUG] CalendarTab handleExpenseSave: insert successful:', insertedExpense);
+
       if (!insertedExpense) {
+        console.log('[DEBUG] CalendarTab handleExpenseSave: no inserted data returned');
         alert('保存後のデータ取得に失敗しました');
         return;
       }
-      console.log('保存されたデータ:', insertedExpense);
+
       await onExpensesReload();
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Error saving expense:', error);
+      console.error('[DEBUG] CalendarTab handleExpenseSave: unexpected error:', error);
       alert('保存時にエラーが発生しました');
     }
   };
