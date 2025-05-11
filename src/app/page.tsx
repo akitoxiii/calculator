@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import CookieConsent from '../components/CookieConsent';
 import { Inter } from 'next/font/google';
+import { CalendarIcon, ChartBarIcon, Cog6ToothIcon, BanknotesIcon, UserPlusIcon, ArrowRightOnRectangleIcon, UserIcon } from '@heroicons/react/24/outline';
+import { Toast } from '../components/Toast';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -50,6 +52,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const { categories } = useCategories();
   const router = useRouter();
+  const [toast, setToast] = useState<{ message: string; type?: 'success' | 'error' | 'info' } | null>(null);
 
   useEffect(() => {
     import('../instrumentation-client');
@@ -104,20 +107,20 @@ export default function Home() {
     
     if (!user || !data) {
       console.log('[DEBUG] handleExpenseSubmit: user or data is null', { user, data });
-      alert('ユーザー情報が取得できていません。再度ログインしてください。');
+      showToast('ユーザー情報が取得できていません。再度ログインしてください。', 'error');
       return;
     }
 
     if (!user.id) {
       console.log('[DEBUG] handleExpenseSubmit: user.id is empty', { user });
-      alert('ユーザーIDが不正です。');
+      showToast('ユーザーIDが不正です。', 'error');
       return;
     }
 
     const categoryObj = categories.find(cat => cat.id === data.category_id);
     if (!categoryObj) {
       console.log('[DEBUG] handleExpenseSubmit: category not found', { category_id: data.category_id, categories });
-      alert('カテゴリーが見つかりません');
+      showToast('カテゴリーが見つかりません', 'error');
       return;
     }
 
@@ -134,7 +137,7 @@ export default function Home() {
     const { error } = await supabase.from('expenses').insert([insertData]);
     if (error) {
       console.error('[DEBUG] handleExpenseSubmit: insert error:', error);
-      alert('保存に失敗しました: ' + error.message);
+      showToast('保存に失敗しました: ' + error.message, 'error');
       return;
     }
     console.log('[DEBUG] handleExpenseSubmit: insert successful');
@@ -145,7 +148,7 @@ export default function Home() {
     if (!user) return;
     const { error } = await supabase.from('expenses').delete().eq('id', id).eq('user_id', user.id);
     if (error) {
-      alert('削除に失敗しました: ' + error.message);
+      showToast('削除に失敗しました: ' + error.message, 'error');
       return;
     }
     await fetchExpenses();
@@ -229,58 +232,78 @@ export default function Home() {
     router.push('/sign-in');
   };
 
-  if ((!user) && !isGuest) {
-    return <div className="min-h-screen flex items-center justify-center">読み込み中...</div>;
+  const showToast = (message: string, type?: 'success' | 'error' | 'info') => {
+    setToast({ message, type });
+  };
+
+  // スケルトンスクリーン
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-full max-w-2xl mx-auto p-8">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4" />
+            <div className="h-6 bg-gray-200 rounded w-1/2 mb-2" />
+            <div className="h-40 bg-gray-200 rounded mb-4" />
+            <div className="h-10 bg-gray-200 rounded w-full mb-2" />
+            <div className="h-10 bg-gray-200 rounded w-full mb-2" />
+            <div className="h-10 bg-gray-200 rounded w-full" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // ゲストモード時のUI
   if (isGuest) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
         <header className="w-full flex justify-end items-center px-4 py-2">
           <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded font-bold">ゲストモード</span>
         </header>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex space-x-4 mb-8">
+        <div className="max-w-2xl w-full mx-auto mt-8 mb-8">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-center text-primary mb-4">家計簿アプリ Myly</h1>
+          <p className="text-center text-lg text-gray-700 mb-8">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+              <CalendarIcon className="h-10 w-10 text-primary mb-2" />
+              <div className="font-bold mb-1">カレンダー</div>
+              <div className="text-sm text-gray-600 text-center">日々の支出・収入をカレンダー形式で直感的に記録・確認できます。</div>
+            </div>
+            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+              <ChartBarIcon className="h-10 w-10 text-primary mb-2" />
+              <div className="font-bold mb-1">統計</div>
+              <div className="text-sm text-gray-600 text-center">月ごとの収支やカテゴリー別のグラフで、お金の流れを可視化します。</div>
+            </div>
+            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+              <Cog6ToothIcon className="h-10 w-10 text-primary mb-2" />
+              <div className="font-bold mb-1">カテゴリ編集</div>
+              <div className="text-sm text-gray-600 text-center">自分好みに支出・収入カテゴリを追加・編集できます。</div>
+            </div>
+            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+              <BanknotesIcon className="h-10 w-10 text-primary mb-2" />
+              <div className="font-bold mb-1">資産管理</div>
+              <div className="text-sm text-gray-600 text-center">口座や現金、電子マネーなどの資産をまとめて管理できます。</div>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
             <button
-              onClick={() => setActiveTab('calendar')}
-              className={`px-4 py-2 rounded ${
-                activeTab === 'calendar'
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-gray-700'
-              }`}
+              onClick={handleGuestLogin}
+              className="flex items-center justify-center px-6 py-3 bg-primary text-white text-lg font-bold rounded shadow hover:bg-primary/90 transition"
             >
-              カレンダー
+              <UserIcon className="h-6 w-6 mr-2" /> ゲスト体験
             </button>
             <button
-              onClick={() => setActiveTab('statistics')}
-              className={`px-4 py-2 rounded ${
-                activeTab === 'statistics'
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-gray-700'
-              }`}
+              onClick={() => router.push('/sign-up')}
+              className="flex items-center justify-center px-6 py-3 bg-white border border-primary text-primary text-lg font-bold rounded shadow hover:bg-primary/10 transition"
             >
-              統計
+              <UserPlusIcon className="h-6 w-6 mr-2" /> 新規登録
             </button>
             <button
-              onClick={() => setActiveTab('category')}
-              className={`px-4 py-2 rounded ${
-                activeTab === 'category'
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-gray-700'
-              }`}
+              onClick={() => router.push('/sign-in')}
+              className="flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 text-lg font-bold rounded shadow hover:bg-gray-300 transition"
             >
-              カテゴリー
-            </button>
-            <button
-              onClick={() => setActiveTab('assets')}
-              className={`px-4 py-2 rounded ${
-                activeTab === 'assets'
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-gray-700'
-              }`}
-            >
-              資産
+              <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2" /> ログイン
             </button>
           </div>
         </div>
@@ -290,113 +313,75 @@ export default function Home() {
 
   // ログイン済みユーザー用のトップページUI
   return (
-    <html lang="ja">
-      <head>
-        {/* Google Search Console認証用メタタグ */}
-        <meta name="google-site-verification" content="5hpRcKnJq14HnYg6gbZtBGym66SkrPBmKKcwS6i9Y1E" />
-        {/* Google AdSense */}
-        <meta name="google-adsense-account" content="ca-pub-6336722634649007" />
-        {/* ファビコン */}
-        <link rel="icon" href="/favicon.ico" />
-        {/* Google Analyticsタグ */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}
-          strategy="lazyOnload"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-V64XBFC7WZ', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-        {/* LCP画像のプリロード */}
-        <link
-          rel="preload"
-          as="image"
-          href="/lp-demo-mobile.webp"
-          type="image/webp"
-          fetchPriority="high"
-        />
-        {/* Google AdSense自動広告スクリプト */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6336722634649007"
-          crossOrigin="anonymous"
-        />
-      </head>
-      <body className={inter.className}>
-        <div className="min-h-screen bg-gray-50">
-          <header className="w-full flex justify-end items-center px-4 py-2">
-            <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
-            <button
-              onClick={handleLogout}
-              className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-            >
-              ログアウト
-            </button>
-          </header>
-          <div className="container mx-auto px-4 py-8">
-            <div className="flex space-x-4 mb-8">
-              <button
-                onClick={() => setActiveTab('calendar')}
-                className={`px-4 py-2 rounded ${activeTab === 'calendar' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-              >
-                カレンダー
-              </button>
-              <button
-                onClick={() => setActiveTab('statistics')}
-                className={`px-4 py-2 rounded ${activeTab === 'statistics' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-              >
-                統計
-              </button>
-              <button
-                onClick={() => setActiveTab('category')}
-                className={`px-4 py-2 rounded ${activeTab === 'category' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-              >
-                カテゴリー
-              </button>
-              <button
-                onClick={() => setActiveTab('assets')}
-                className={`px-4 py-2 rounded ${activeTab === 'assets' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-              >
-                資産
-              </button>
-            </div>
-            {/* タブごとのコンテンツ表示 */}
-            {activeTab === 'calendar' && (
-              <CalendarTab
-                selectedDate={selectedDate}
-                onDateSelect={handleDateSelect}
-                expenses={expenses}
-                onExpenseDelete={handleExpenseDelete}
-                onExpensesUpdate={handleExpensesUpdate}
-                onExpensesReload={fetchExpenses}
-                year={selectedYear}
-                month={selectedMonth}
-                setYear={setSelectedYear}
-                setMonth={setSelectedMonth}
-                user_id={user?.id || ''}
-              />
-            )}
-            {activeTab === 'statistics' && (
-              <StatisticsTab
-                expenses={expenses}
-                year={selectedYear}
-                month={selectedMonth}
-                setYear={setSelectedYear}
-                setMonth={setSelectedMonth}
-              />
-            )}
-            {activeTab === 'category' && <CategoryTab />}
-            {activeTab === 'assets' && <AssetsTab />}
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      <header className="w-full flex justify-end items-center px-4 py-2">
+        <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
+        <button
+          onClick={handleLogout}
+          className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+        >
+          ログアウト
+        </button>
+      </header>
+      <div className="container mx-auto px-4 py-8">
+        {/* タブUI */}
+        <div className="flex space-x-2 mb-8 overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setActiveTab('calendar')}
+            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'calendar' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+          >
+            <CalendarIcon className="h-5 w-5" /> カレンダー
+          </button>
+          <button
+            onClick={() => setActiveTab('statistics')}
+            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'statistics' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+          >
+            <ChartBarIcon className="h-5 w-5" /> 統計
+          </button>
+          <button
+            onClick={() => setActiveTab('category')}
+            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'category' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+          >
+            <Cog6ToothIcon className="h-5 w-5" /> カテゴリー
+          </button>
+          <button
+            onClick={() => setActiveTab('assets')}
+            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'assets' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+          >
+            <BanknotesIcon className="h-5 w-5" /> 資産
+          </button>
         </div>
-        <CookieConsent />
-      </body>
-    </html>
+        {/* タブごとのコンテンツ表示 */}
+        {activeTab === 'calendar' && (
+          <CalendarTab
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            expenses={expenses}
+            onExpenseDelete={handleExpenseDelete}
+            onExpensesUpdate={handleExpensesUpdate}
+            onExpensesReload={fetchExpenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+            user_id={user?.id || ''}
+          />
+        )}
+        {activeTab === 'statistics' && (
+          <StatisticsTab
+            expenses={expenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+          />
+        )}
+        {activeTab === 'category' && <CategoryTab />}
+        {activeTab === 'assets' && <AssetsTab />}
+      </div>
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      )}
+    </div>
   );
 }
