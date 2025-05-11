@@ -33,7 +33,13 @@ export const TransactionList = ({ transactions, onEdit, onDelete }: Props) => {
                   <td className="px-4 py-2">
                     {format(new Date(transaction.date), 'yyyy/MM/dd', { locale: ja })}
                   </td>
-                  <td className="px-4 py-2">{transaction.type}</td>
+                  <td className="px-4 py-2">
+                    {String(transaction.type) === 'expense' || String(transaction.type) === '支払い'
+                      ? '支払い'
+                      : String(transaction.type) === 'income' || String(transaction.type) === '収入'
+                      ? '収入'
+                      : transaction.type}
+                  </td>
                   <td className="px-4 py-2">
                     <span
                       className={
