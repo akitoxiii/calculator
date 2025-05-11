@@ -17,9 +17,11 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   });
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
-    });
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
   }, []);
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
     if (!newCategory.name || !user) return;
     const { error } = await supabase
       .from('categories')
-      .insert([{ ...newCategory, user_id: user.id || '' }]);
+      .insert([{ ...newCategory, user_id: user.id }]);
     if (!error) fetchCategories();
     setNewCategory({
       name: '',

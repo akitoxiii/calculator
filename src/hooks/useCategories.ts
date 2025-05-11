@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Category, DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
-import { createBrowserSupabaseClient } from '@/utils/supabase';
-import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/utils/supabase';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,9 +11,11 @@ export const useCategories = () => {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
-    });
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
   }, []);
 
   useEffect(() => {
