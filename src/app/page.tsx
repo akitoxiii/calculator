@@ -8,6 +8,7 @@ import { supabase } from '@/utils/supabase';
 import { useCategories } from '@/hooks/useCategories';
 import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
 // 動的インポートを使用してモーダルを遅延読み込み
 const StatisticsTab = dynamic(() => import('../components/statistics/StatisticsTab'), { ssr: false });
@@ -45,6 +46,7 @@ export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { categories } = useCategories();
+  const router = useRouter();
 
   useEffect(() => {
     import('../instrumentation-client');
@@ -194,24 +196,15 @@ export default function Home() {
     setShowSignUp(false);
   };
 
-  // 未ログインかつゲストでない場合はLPを表示
+  // 未ログインかつゲストでない場合は/sign-inへリダイレクト
+  useEffect(() => {
+    if (!user && !isGuest && !isLoading) {
+      router.push('/sign-in');
+    }
+  }, [user, isGuest, isLoading, router]);
+
   if ((!user) && !isGuest) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-2 sm:px-4">
-        <header className="w-full max-w-3xl mx-auto py-6 flex justify-center md:justify-between items-center">
-          <div className="text-2xl font-bold">マイリー家計簿!</div>
-        </header>
-        <main className="flex-1 w-full max-w-3xl mx-auto flex flex-col items-center justify-center">
-          <h1 className="text-3xl font-bold mb-4">家計簿アプリへようこそ</h1>
-          <p className="mb-6">ご利用にはログインが必要です。</p>
-          <div className="flex gap-4">
-            <a href="/sign-in" className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90">ログイン</a>
-            <a href="/sign-up" className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">新規登録</a>
-            <button onClick={handleGuestLogin} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">ゲストで試す</button>
-          </div>
-        </main>
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center">読み込み中...</div>;
   }
 
   // ゲストモード時のUI
