@@ -3,14 +3,22 @@
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { Transaction } from '@/types/transaction';
+import type { Category } from '@/types/expense';
 
 interface Props {
   transactions: Transaction[];
   onEdit?: (transaction: Transaction) => void;
   onDelete?: (id: string) => void;
+  categories: Category[];
 }
 
-export const TransactionList = ({ transactions, onEdit, onDelete }: Props) => {
+export const TransactionList = ({ transactions, onEdit, onDelete, categories }: Props) => {
+  const getCategoryName = (category_id?: string) => {
+    if (!category_id) return '-';
+    const cat = categories.find(c => c.id === category_id);
+    return cat ? cat.name : '-';
+  };
+
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="p-6">
@@ -23,6 +31,7 @@ export const TransactionList = ({ transactions, onEdit, onDelete }: Props) => {
                 <th className="px-4 py-2 text-left">種別</th>
                 <th className="px-4 py-2 text-left">金額</th>
                 <th className="px-4 py-2 text-left">詳細</th>
+                <th className="px-4 py-2 text-left">支払方法</th>
                 <th className="px-4 py-2 text-left">メモ</th>
                 <th className="px-4 py-2 text-left">操作</th>
               </tr>
@@ -61,10 +70,11 @@ export const TransactionList = ({ transactions, onEdit, onDelete }: Props) => {
                     ) : transaction.type === '支払い' ? (
                       transaction.payment_method
                     ) : (
-                      transaction.note || '-'
+                      getCategoryName(transaction.category_id)
                     )}
                   </td>
-                  <td className="px-4 py-2">{transaction.note || '-'}</td>
+                  <td className="px-4 py-2">{transaction.payment_method || '-'}</td>
+                  <td className="px-4 py-2">{transaction.memo || transaction.note || '-'}</td>
                   <td className="px-4 py-2 space-x-2">
                     <button
                       className="text-blue-500 hover:underline"
