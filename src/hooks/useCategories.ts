@@ -24,6 +24,7 @@ export const useCategories = () => {
 
     // カテゴリが0件なら初期データを自動挿入
     if (!error && data && data.length === 0) {
+      console.log('user.id:', user.id);
       const defaultCategories = [
         ...DEFAULT_EXPENSE_CATEGORIES,
         ...DEFAULT_INCOME_CATEGORIES,
@@ -32,7 +33,11 @@ export const useCategories = () => {
         user_id: user.id || '', // Clerkのuser.idを必ずセット
         id: undefined, // idはDB側で自動生成
       }));
-      await supabase.from('categories').insert(defaultCategories);
+      console.log('defaultCategories:', defaultCategories);
+      const { error: insertError } = await supabase.from('categories').insert(defaultCategories);
+      if (insertError) {
+        console.error('カテゴリ挿入エラー:', insertError);
+      }
       // 再取得
       const { data: newData } = await supabase
         .from('categories')
