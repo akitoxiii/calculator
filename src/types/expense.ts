@@ -16,6 +16,7 @@ export interface Expense {
   type: CategoryType;
   memo: string;
   date: string; // YYYY-MM-DD 文字列で管理
+  payment_method?: string;
 }
 
 export const DEFAULT_EXPENSE_CATEGORIES: Category[] = [

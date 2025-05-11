@@ -14,6 +14,7 @@ interface ExpenseData {
   category: string;
   memo: string;
   type: 'income' | 'expense';
+  payment_method: string;
 }
 
 export const DailyExpenseForm = ({ date, onSubmit, categories }: DailyExpenseFormProps) => {
@@ -22,7 +23,16 @@ export const DailyExpenseForm = ({ date, onSubmit, categories }: DailyExpenseFor
     category: '',
     memo: '',
     type: 'expense',
+    payment_method: '',
   });
+
+  const PAYMENT_METHOD_OPTIONS = [
+    '振り替え',
+    '振込',
+    '引き落とし',
+    '現金',
+    '電子決済',
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +42,7 @@ export const DailyExpenseForm = ({ date, onSubmit, categories }: DailyExpenseFor
       category: '',
       memo: '',
       type: 'expense',
+      payment_method: '',
     });
   };
 
@@ -107,6 +118,23 @@ export const DailyExpenseForm = ({ date, onSubmit, categories }: DailyExpenseFor
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             rows={3}
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            支払方法
+          </label>
+          <select
+            value={formData.payment_method}
+            onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            required
+          >
+            <option value="">選択してください</option>
+            {PAYMENT_METHOD_OPTIONS.map((method) => (
+              <option key={method} value={method}>{method}</option>
+            ))}
+          </select>
         </div>
 
         <button

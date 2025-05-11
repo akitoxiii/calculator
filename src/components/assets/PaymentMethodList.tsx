@@ -9,9 +9,9 @@ interface Props {
 export const PaymentMethodList = ({ transactions }: Props) => {
   const calculatePaymentMethodSummary = () => {
     return transactions.reduce((acc, transaction) => {
-      if (transaction.type === '支払い' && transaction.paymentMethod) {
-        acc[transaction.paymentMethod] =
-          (acc[transaction.paymentMethod] || 0) + transaction.amount;
+      if (transaction.type === '支払い' && transaction.payment_method) {
+        acc[transaction.payment_method] =
+          (acc[transaction.payment_method] || 0) + transaction.amount;
       }
       return acc;
     }, {} as Record<string, number>);
