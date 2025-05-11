@@ -37,8 +37,14 @@ export const AssetsTab = () => {
       .eq('user_id', user.id)
       .order('date', { ascending: false });
     if (!error && data) {
-      setTransactions(data as Transaction[]);
-      calculateBalance(data as Transaction[]);
+      const mapped = data.map((row: any) => ({
+        ...row,
+        fromAccount: row.from_account,
+        toAccount: row.to_account,
+        payment_method: row.payment_method ?? '',
+      }));
+      setTransactions(mapped as Transaction[]);
+      calculateBalance(mapped as Transaction[]);
     }
   };
 
