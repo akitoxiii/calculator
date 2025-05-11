@@ -257,54 +257,61 @@ export default function Home() {
   // ゲストモード時のUI
   if (isGuest) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
-        <header className="w-full flex justify-end items-center px-4 py-2">
-          <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded font-bold">ゲストモード</span>
-        </header>
-        <div className="max-w-2xl w-full mx-auto mt-8 mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-center text-primary mb-4">家計簿アプリ Myly</h1>
-          <p className="text-center text-lg text-gray-700 mb-8">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-              <CalendarIcon className="h-10 w-10 text-primary mb-2" />
-              <div className="font-bold mb-1">カレンダー</div>
-              <div className="text-sm text-gray-600 text-center">日々の支出・収入をカレンダー形式で直感的に記録・確認できます。</div>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="flex flex-1 flex-col md:flex-row items-center justify-center max-w-5xl mx-auto w-full px-4 py-12 gap-8">
+          {/* 左側：キャッチコピー・説明・ボタン */}
+          <div className="flex-1 flex flex-col justify-center items-start md:items-start">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 text-left">家計簿アプリ Myly</h1>
+            <p className="text-lg md:text-xl text-gray-700 mb-8 text-left">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
+            <div className="flex flex-row gap-4 mb-8">
+              <button
+                onClick={handleGuestLogin}
+                className="flex items-center justify-center px-6 py-3 bg-primary text-white text-lg font-bold rounded shadow hover:bg-primary/90 transition"
+              >
+                <UserIcon className="h-6 w-6 mr-2" /> ゲスト体験
+              </button>
+              <button
+                onClick={() => router.push('/sign-up')}
+                className="flex items-center justify-center px-6 py-3 bg-white border border-primary text-primary text-lg font-bold rounded shadow hover:bg-primary/10 transition"
+              >
+                <UserPlusIcon className="h-6 w-6 mr-2" /> 新規登録
+              </button>
+              <button
+                onClick={() => router.push('/sign-in')}
+                className="flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 text-lg font-bold rounded shadow hover:bg-gray-300 transition"
+              >
+                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2" /> ログイン
+              </button>
             </div>
-            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-              <ChartBarIcon className="h-10 w-10 text-primary mb-2" />
-              <div className="font-bold mb-1">統計</div>
-              <div className="text-sm text-gray-600 text-center">月ごとの収支やカテゴリー別のグラフで、お金の流れを可視化します。</div>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-              <Cog6ToothIcon className="h-10 w-10 text-primary mb-2" />
-              <div className="font-bold mb-1">カテゴリ編集</div>
-              <div className="text-sm text-gray-600 text-center">自分好みに支出・収入カテゴリを追加・編集できます。</div>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-              <BanknotesIcon className="h-10 w-10 text-primary mb-2" />
-              <div className="font-bold mb-1">資産管理</div>
-              <div className="text-sm text-gray-600 text-center">口座や現金、電子マネーなどの資産をまとめて管理できます。</div>
+            {/* 主要機能紹介 */}
+            <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+                <CalendarIcon className="h-8 w-8 text-primary mb-2" />
+                <div className="font-bold mb-1">カレンダー</div>
+                <div className="text-xs text-gray-600 text-center">日々の支出・収入をカレンダー形式で直感的に記録・確認できます。</div>
+              </div>
+              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+                <ChartBarIcon className="h-8 w-8 text-primary mb-2" />
+                <div className="font-bold mb-1">統計</div>
+                <div className="text-xs text-gray-600 text-center">月ごとの収支やカテゴリー別のグラフで、お金の流れを可視化します。</div>
+              </div>
+              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+                <Cog6ToothIcon className="h-8 w-8 text-primary mb-2" />
+                <div className="font-bold mb-1">カテゴリ編集</div>
+                <div className="text-xs text-gray-600 text-center">自分好みに支出・収入カテゴリを追加・編集できます。</div>
+              </div>
+              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
+                <BanknotesIcon className="h-8 w-8 text-primary mb-2" />
+                <div className="font-bold mb-1">資産管理</div>
+                <div className="text-xs text-gray-600 text-center">口座や現金、電子マネーなどの資産をまとめて管理できます。</div>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
-            <button
-              onClick={handleGuestLogin}
-              className="flex items-center justify-center px-6 py-3 bg-primary text-white text-lg font-bold rounded shadow hover:bg-primary/90 transition"
-            >
-              <UserIcon className="h-6 w-6 mr-2" /> ゲスト体験
-            </button>
-            <button
-              onClick={() => router.push('/sign-up')}
-              className="flex items-center justify-center px-6 py-3 bg-white border border-primary text-primary text-lg font-bold rounded shadow hover:bg-primary/10 transition"
-            >
-              <UserPlusIcon className="h-6 w-6 mr-2" /> 新規登録
-            </button>
-            <button
-              onClick={() => router.push('/sign-in')}
-              className="flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 text-lg font-bold rounded shadow hover:bg-gray-300 transition"
-            >
-              <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2" /> ログイン
-            </button>
+          {/* 右側：イメージ枠 */}
+          <div className="flex-1 flex items-center justify-center w-full h-full">
+            <div className="w-[320px] h-[600px] bg-gray-200 rounded-2xl shadow-inner flex items-center justify-center">
+              <span className="text-gray-400">アプリイメージ</span>
+            </div>
           </div>
         </div>
       </div>

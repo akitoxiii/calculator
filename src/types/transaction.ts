@@ -9,5 +9,6 @@ export interface Transaction {
   toAccount?: string;
   payment_method: string;
   note?: string;
+  memo?: string;
   category_id?: string;
 } 

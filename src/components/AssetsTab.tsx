@@ -140,7 +140,7 @@ export const AssetsTab = () => {
             取引を追加
           </button>
         </div>
-        <TransactionList transactions={transactions} onEdit={handleEdit} onDelete={handleDelete} />
+        <TransactionList transactions={transactions} onEdit={handleEdit} onDelete={handleDelete} categories={categories} />
       </div>
 
       {/* 取引追加・編集モーダル */}
