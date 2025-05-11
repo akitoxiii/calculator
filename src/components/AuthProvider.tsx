@@ -1,26 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { updateSupabaseSession } from '@/utils/supabase';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { getToken } = useAuth();
+  const { isLoaded } = useAuth();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const syncAuth = async () => {
-      try {
-        const token = await getToken();
-        if (token) {
-          await updateSupabaseSession(token);
-        }
-      } catch (error) {
-        console.error('Error syncing auth:', error);
-      }
-    };
+    if (isLoaded) setIsInitialized(true);
+  }, [isLoaded]);
 
-    syncAuth();
-  }, [getToken]);
+  if (!isInitialized) {
+    return null; // またはローディングインジケータ
+  }
 
   return <>{children}</>;
 }; 

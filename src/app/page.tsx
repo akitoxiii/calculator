@@ -78,27 +78,6 @@ export default function Home() {
     }
   }, [isLoaded, isSignedIn, user, fetchExpenses, activeTab]);
 
-  useEffect(() => {
-    const updateSession = async () => {
-      try {
-         // ClerkのSupabase用JWTを取得
-         const token = await getToken({ template: 'supabase' });
-         if (token) {
-           const { error } = await supabase.auth.setSession({
-             access_token: token,
-             refresh_token: token
-           });
-           if (error) {
-             console.error('Error setting session:', error);
-           }
-         }
-      } catch (error) {
-        console.error('Error updating session:', error);
-      }
-    };
-    updateSession();
-  }, [getToken]);
-
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     setIsModalOpen(true);
