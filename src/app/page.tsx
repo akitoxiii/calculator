@@ -35,12 +35,11 @@ export default function Home() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('calendar');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [, setShowSignIn] = useState(false);
+  const [, setShowSignUp] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
 
   const [user, setUser] = useState<any>(null);
@@ -89,7 +88,6 @@ export default function Home() {
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
-    setIsModalOpen(true);
   };
 
   const handleExpenseSubmit = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
@@ -122,7 +120,6 @@ export default function Home() {
       return;
     }
     await fetchExpenses();
-    setIsModalOpen(false);
   };
 
   const handleExpenseDelete = async (id: string) => {
@@ -265,4 +262,67 @@ export default function Home() {
       </div>
     );
   }
+
+  // ログイン済みユーザー用のトップページUI
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="w-full flex justify-end items-center px-4 py-2">
+        <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
+      </header>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex space-x-4 mb-8">
+          <button
+            onClick={() => setActiveTab('calendar')}
+            className={`px-4 py-2 rounded ${activeTab === 'calendar' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+          >
+            カレンダー
+          </button>
+          <button
+            onClick={() => setActiveTab('statistics')}
+            className={`px-4 py-2 rounded ${activeTab === 'statistics' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+          >
+            統計
+          </button>
+          <button
+            onClick={() => setActiveTab('category')}
+            className={`px-4 py-2 rounded ${activeTab === 'category' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+          >
+            カテゴリー
+          </button>
+          <button
+            onClick={() => setActiveTab('assets')}
+            className={`px-4 py-2 rounded ${activeTab === 'assets' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+          >
+            資産
+          </button>
+        </div>
+        {/* タブごとのコンテンツ表示 */}
+        {activeTab === 'calendar' && (
+          <CalendarTab
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            expenses={expenses}
+            onExpenseDelete={handleExpenseDelete}
+            onExpensesUpdate={handleExpensesUpdate}
+            onExpensesReload={fetchExpenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+          />
+        )}
+        {activeTab === 'statistics' && (
+          <StatisticsTab
+            expenses={expenses}
+            year={selectedYear}
+            month={selectedMonth}
+            setYear={setSelectedYear}
+            setMonth={setSelectedMonth}
+          />
+        )}
+        {activeTab === 'category' && <CategoryTab />}
+        {activeTab === 'assets' && <AssetsTab />}
+      </div>
+    </div>
+  );
 }
