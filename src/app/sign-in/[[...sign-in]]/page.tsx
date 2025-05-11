@@ -43,6 +43,7 @@ export default function SignInPage() {
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <button type="submit" className="w-full bg-primary text-white py-2 rounded">ログイン</button>
         <div className="mt-4 text-center">
+          <a href="/auth/reset-password" className="text-blue-600 hover:underline mr-4">パスワードをお忘れですか？</a>
           <a href="/sign-up" className="text-blue-600 hover:underline">新規登録はこちら</a>
         </div>
       </form>
