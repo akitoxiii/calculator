@@ -39,7 +39,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: undefined,
+        elements: {
+          formButtonPrimary: 'bg-primary hover:bg-primary/90',
+          footerActionLink: 'text-primary hover:text-primary/90',
+          cardLogo: '/favicon.ico',
+          headerTitle: 'マイリー家計簿!'
+        }
+      }}
+    >
       <AuthProvider>
         <html lang="ja">
           <head>
