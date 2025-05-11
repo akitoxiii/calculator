@@ -21,7 +21,12 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div className="mb-8 flex flex-col items-center">
+        <img src="/favicon.ico" alt="Myly家計簿" className="h-12 w-12 mb-2" />
+        <h1 className="text-2xl font-extrabold text-primary mb-1">マイリー家計簿</h1>
+        <p className="text-gray-600 text-center text-sm">カレンダー・統計・資産管理・カテゴリ編集など、<br />シンプル＆直感的な操作で毎日続く家計簿アプリです。</p>
+      </div>
       <form onSubmit={handleSignIn} className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">ログイン</h2>
         <input
