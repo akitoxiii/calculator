@@ -3,6 +3,7 @@ import { Category, DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from 
 import { createBrowserSupabaseClient } from '@/utils/supabase';
 import { useUser } from '@clerk/nextjs';
 import { useAuth } from '@clerk/nextjs';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -34,8 +35,8 @@ export const useCategories = () => {
         ...DEFAULT_INCOME_CATEGORIES,
       ].map(cat => ({
         ...cat,
-        user_id: user.id || '', // Clerkのuser.idを必ずセット
-        id: undefined, // idはDB側で自動生成
+        user_id: user.id || '',
+        id: uuidv4(), // idを必ずuuidで生成
       }));
       console.log('defaultCategories:', defaultCategories);
       const { error: insertError } = await supabase.from('categories').insert(defaultCategories);
