@@ -53,10 +53,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data, error }) => {
-      setUser(data?.user ?? null);
-      setIsLoading(false);
-    });
+    (async () => {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        setUser(data?.user ?? null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   console.log({ user });
