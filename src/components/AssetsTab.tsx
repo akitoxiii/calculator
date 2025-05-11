@@ -96,7 +96,7 @@ export const AssetsTab = () => {
     if (transaction.id && transactions.some(t => t.id === transaction.id)) {
       // update
       const { id, ...updateData } = transaction;
-      await supabase.from('expenses').update(updateData).eq('id', id).eq('user_id', user.id);
+      await supabase.from('expenses').update(updateData).eq('id', transaction.id).eq('user_id', user.id);
     } else {
       // insert
       await supabase.from('expenses').insert([{ ...transaction, user_id: user.id }]);
