@@ -53,7 +53,7 @@ export const TransactionList = ({ transactions, onEdit, onDelete }: Props) => {
                         {transaction.fromAccount} → {transaction.toAccount}
                       </>
                     ) : transaction.type === '支払い' ? (
-                      transaction.paymentMethod
+                      transaction.payment_method
                     ) : (
                       transaction.note || '-'
                     )}

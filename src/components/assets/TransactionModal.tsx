@@ -48,8 +48,8 @@ export const TransactionModal = ({ date, onClose, onSave, transaction }: Props) 
   const [amount, setAmount] = useState(transaction ? String(transaction.amount) : '');
   const [fromAccount, setFromAccount] = useState(transaction?.fromAccount || '');
   const [toAccount, setToAccount] = useState(transaction?.toAccount || '');
-  const initialPaymentMethod = transaction?.paymentMethod && PAYMENT_METHODS.includes(transaction.paymentMethod as PaymentMethod)
-    ? transaction.paymentMethod as PaymentMethod
+  const initialPaymentMethod = transaction?.payment_method && PAYMENT_METHODS.includes(transaction.payment_method as PaymentMethod)
+    ? transaction.payment_method as PaymentMethod
     : PAYMENT_METHODS[0];
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(initialPaymentMethod);
   const [note, setNote] = useState(transaction?.note || '');
@@ -87,7 +87,7 @@ export const TransactionModal = ({ date, onClose, onSave, transaction }: Props) 
       amount: parseFloat(amount),
       fromAccount: fromAccount || undefined,
       toAccount: toAccount || undefined,
-      paymentMethod: type === '支払い' ? paymentMethod : undefined,
+      payment_method: type === '支払い' ? paymentMethod : '',
       note: note || undefined,
       category_id: categoryId ? normalizeUUID(categoryId) : undefined,
     };

@@ -4,31 +4,43 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { Transaction } from '@/types/transaction';
-import { TransactionType } from '@/types/transactionTypes';
-import { storage } from '@/utils/storage';
-import { PAYMENT_METHODS } from '@/data/initialData';
 import { useCategories } from '@/hooks/useCategories';
-import { DailyExpenseForm } from '@/components/DailyExpenseForm';
+import { supabase } from '@/utils/supabase';
+import { TransactionModal } from './assets/TransactionModal';
+import { TransactionList } from './assets/TransactionList';
 
 export const AssetsTab = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [balance, setBalance] = useState<{
-    total: number;
-    savings: number;
-    available: number;
-  }>({
-    total: 0,
-    savings: 0,
-    available: 0,
-  });
+  const [balance, setBalance] = useState({ total: 0, savings: 0, available: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
   const { categories } = useCategories();
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const savedTransactions = storage.getTransactions();
-    setTransactions(savedTransactions);
-    calculateBalance(savedTransactions);
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
   }, []);
+
+  useEffect(() => {
+    if (user) fetchTransactions();
+  }, [user, isModalOpen]);
+
+  const fetchTransactions = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('expenses')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false });
+    if (!error && data) {
+      setTransactions(data as Transaction[]);
+      calculateBalance(data as Transaction[]);
+    }
+  };
 
   const calculateBalance = (transactions: Transaction[]) => {
     const newBalance = transactions.reduce(
@@ -47,7 +59,6 @@ export const AssetsTab = () => {
             acc.available -= transaction.amount;
             break;
           case '振替':
-            // 振替は合計には影響しない
             break;
         }
         return acc;
@@ -57,22 +68,34 @@ export const AssetsTab = () => {
     setBalance(newBalance);
   };
 
-  const handleAddTransaction = (transaction: Omit<Transaction, 'id'>) => {
-    const newTransaction: Transaction = {
-      ...transaction,
-      id: Date.now().toString(),
-    };
-    const updatedTransactions = [...transactions, newTransaction];
-    setTransactions(updatedTransactions);
-    storage.saveTransactions(updatedTransactions);
-    calculateBalance(updatedTransactions);
+  const handleAdd = () => {
+    setEditTransaction(null);
+    setIsModalOpen(true);
   };
 
-  const handleExpenseSave = (data: any) => {
-    // Transaction型に合わせて変換・保存
-    // 例:
-    // const newTransaction: Transaction = { ... }
-    // setTransactions([...transactions, newTransaction]);
+  const handleEdit = (transaction: Transaction) => {
+    setEditTransaction(transaction);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!user) return;
+    await supabase.from('expenses').delete().eq('id', id).eq('user_id', user.id);
+    fetchTransactions();
+  };
+
+  const handleSave = async (transaction: Transaction) => {
+    if (!user) return;
+    if (transaction.id && transactions.some(t => t.id === transaction.id)) {
+      // update
+      const { id, ...updateData } = transaction;
+      await supabase.from('expenses').update(updateData).eq('id', id).eq('user_id', user.id);
+    } else {
+      // insert
+      await supabase.from('expenses').insert([{ ...transaction, user_id: user.id }]);
+    }
+    setIsModalOpen(false);
+    fetchTransactions();
   };
 
   return (
@@ -104,74 +127,24 @@ export const AssetsTab = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">取引履歴</h2>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleAdd}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             取引を追加
           </button>
         </div>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  日付
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  種類
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  金額
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  説明
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  支払方法
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {format(new Date(transaction.date), 'yyyy/MM/dd', { locale: ja })}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {transaction.type}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={
-                        transaction.type === '収入'
-                          ? 'text-green-600'
-                          : transaction.type === '支払い'
-                          ? 'text-red-600'
-                          : 'text-gray-900'
-                      }
-                    >
-                      ¥{transaction.amount.toLocaleString()}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {transaction.note}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {transaction.paymentMethod}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TransactionList transactions={transactions} onEdit={handleEdit} onDelete={handleDelete} />
       </div>
 
-      <DailyExpenseForm
-        date={new Date()}
-        onSubmit={handleExpenseSave}
-        categories={categories}
-      />
+      {/* 取引追加・編集モーダル */}
+      {isModalOpen && (
+        <TransactionModal
+          date={new Date()}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSave}
+          transaction={editTransaction || undefined}
+        />
+      )}
     </div>
   );
 }; 
