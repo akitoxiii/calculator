@@ -41,6 +41,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <header className="w-full bg-primary text-white py-4 shadow-md mb-8">
+          <div className="container mx-auto flex items-center justify-center">
+            <img src="/favicon.ico" alt="Myly家計簿" className="h-8 w-8 mr-2" />
+            <span className="text-2xl font-extrabold tracking-tight">マイリー家計簿</span>
+          </div>
+        </header>
         {children}
       </body>
     </html>
