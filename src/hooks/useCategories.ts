@@ -9,7 +9,7 @@ export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Category>>({});
-  const { user } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
   const { getToken } = useAuth();
 
   useEffect(() => {
@@ -56,9 +56,13 @@ export const useCategories = () => {
   };
 
   const addCategory = async (category: Omit<Category, 'id'>) => {
-    if (!user) return;
+    if (!isLoaded || !isSignedIn || !user) return;
     const token = await getToken({ template: 'supabase' });
-    const supabase = createBrowserSupabaseClient(token ?? undefined);
+    if (!token) {
+      alert('認証トークンの取得に失敗しました。再ログインしてください。');
+      return;
+    }
+    const supabase = createBrowserSupabaseClient(token);
     const payload = { ...category, user_id: user.id, id: uuidv4() };
     console.log('addCategory payload:', payload);
     const { error } = await supabase
