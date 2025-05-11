@@ -8,6 +8,11 @@ import { useCategories } from '@/hooks/useCategories';
 import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
+import CookieConsent from '../components/CookieConsent';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 // 動的インポートを使用してモーダルを遅延読み込み
 const StatisticsTab = dynamic(() => import('../components/statistics/StatisticsTab'), { ssr: false });
@@ -285,71 +290,113 @@ export default function Home() {
 
   // ログイン済みユーザー用のトップページUI
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="w-full flex justify-end items-center px-4 py-2">
-        <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
-        <button
-          onClick={handleLogout}
-          className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-        >
-          ログアウト
-        </button>
-      </header>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex space-x-4 mb-8">
-          <button
-            onClick={() => setActiveTab('calendar')}
-            className={`px-4 py-2 rounded ${activeTab === 'calendar' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-          >
-            カレンダー
-          </button>
-          <button
-            onClick={() => setActiveTab('statistics')}
-            className={`px-4 py-2 rounded ${activeTab === 'statistics' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-          >
-            統計
-          </button>
-          <button
-            onClick={() => setActiveTab('category')}
-            className={`px-4 py-2 rounded ${activeTab === 'category' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-          >
-            カテゴリー
-          </button>
-          <button
-            onClick={() => setActiveTab('assets')}
-            className={`px-4 py-2 rounded ${activeTab === 'assets' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
-          >
-            資産
-          </button>
+    <html lang="ja">
+      <head>
+        {/* Google Search Console認証用メタタグ */}
+        <meta name="google-site-verification" content="5hpRcKnJq14HnYg6gbZtBGym66SkrPBmKKcwS6i9Y1E" />
+        {/* Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-6336722634649007" />
+        {/* ファビコン */}
+        <link rel="icon" href="/favicon.ico" />
+        {/* Google Analyticsタグ */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}
+          strategy="lazyOnload"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-V64XBFC7WZ', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+        {/* LCP画像のプリロード */}
+        <link
+          rel="preload"
+          as="image"
+          href="/lp-demo-mobile.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
+        {/* Google AdSense自動広告スクリプト */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6336722634649007"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className={inter.className}>
+        <div className="min-h-screen bg-gray-50">
+          <header className="w-full flex justify-end items-center px-4 py-2">
+            <span className="px-4 py-2 bg-green-100 text-green-800 rounded font-bold">ログイン中</span>
+            <button
+              onClick={handleLogout}
+              className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            >
+              ログアウト
+            </button>
+          </header>
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex space-x-4 mb-8">
+              <button
+                onClick={() => setActiveTab('calendar')}
+                className={`px-4 py-2 rounded ${activeTab === 'calendar' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+              >
+                カレンダー
+              </button>
+              <button
+                onClick={() => setActiveTab('statistics')}
+                className={`px-4 py-2 rounded ${activeTab === 'statistics' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+              >
+                統計
+              </button>
+              <button
+                onClick={() => setActiveTab('category')}
+                className={`px-4 py-2 rounded ${activeTab === 'category' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+              >
+                カテゴリー
+              </button>
+              <button
+                onClick={() => setActiveTab('assets')}
+                className={`px-4 py-2 rounded ${activeTab === 'assets' ? 'bg-primary text-white' : 'bg-white text-gray-700'}`}
+              >
+                資産
+              </button>
+            </div>
+            {/* タブごとのコンテンツ表示 */}
+            {activeTab === 'calendar' && (
+              <CalendarTab
+                selectedDate={selectedDate}
+                onDateSelect={handleDateSelect}
+                expenses={expenses}
+                onExpenseDelete={handleExpenseDelete}
+                onExpensesUpdate={handleExpensesUpdate}
+                onExpensesReload={fetchExpenses}
+                year={selectedYear}
+                month={selectedMonth}
+                setYear={setSelectedYear}
+                setMonth={setSelectedMonth}
+                user_id={user?.id || ''}
+              />
+            )}
+            {activeTab === 'statistics' && (
+              <StatisticsTab
+                expenses={expenses}
+                year={selectedYear}
+                month={selectedMonth}
+                setYear={setSelectedYear}
+                setMonth={setSelectedMonth}
+              />
+            )}
+            {activeTab === 'category' && <CategoryTab />}
+            {activeTab === 'assets' && <AssetsTab />}
+          </div>
         </div>
-        {/* タブごとのコンテンツ表示 */}
-        {activeTab === 'calendar' && (
-          <CalendarTab
-            selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
-            expenses={expenses}
-            onExpenseDelete={handleExpenseDelete}
-            onExpensesUpdate={handleExpensesUpdate}
-            onExpensesReload={fetchExpenses}
-            year={selectedYear}
-            month={selectedMonth}
-            setYear={setSelectedYear}
-            setMonth={setSelectedMonth}
-            user_id={user?.id || ''}
-          />
-        )}
-        {activeTab === 'statistics' && (
-          <StatisticsTab
-            expenses={expenses}
-            year={selectedYear}
-            month={selectedMonth}
-            setYear={setSelectedYear}
-            setMonth={setSelectedMonth}
-          />
-        )}
-        {activeTab === 'category' && <CategoryTab />}
-        {activeTab === 'assets' && <AssetsTab />}
-      </div>
-    </div>
+        <CookieConsent />
+      </body>
+    </html>
   );
 }
