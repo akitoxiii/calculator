@@ -42,7 +42,7 @@ export const AssetsTab = () => {
         fromAccount: row.from_account,
         toAccount: row.to_account,
         payment_method: row.payment_method ?? '',
-        type: row.type === 'income' ? '収入' : row.type === 'expense' ? '支払い' : row.type,
+        type: row.type === 'income' ? '収入' : row.type === 'expense' ? '支払い' : row.type === 'savings' ? '貯金' : row.type === 'transfer' ? '振替' : row.type,
       }));
       setTransactions(mapped as Transaction[]);
       calculateBalance(mapped as Transaction[]);
@@ -91,12 +91,20 @@ export const AssetsTab = () => {
     fetchTransactions();
   };
 
-  // update用に不要なフィールドを除外する関数
   const cleanUpdateData = (data: any) => {
     const allowed = ['category_id', 'payment_method', 'amount', 'type', 'date', 'note', 'memo', 'from_account', 'to_account'];
     const result: any = {};
     for (const key of allowed) {
-      if (data[key] !== undefined) result[key] = data[key];
+      if (data[key] !== undefined) {
+        if (key === 'type') {
+          result[key] = data[key] === '収入' ? 'income' : 
+                       data[key] === '支払い' ? 'expense' : 
+                       data[key] === '貯金' ? 'savings' : 
+                       data[key] === '振替' ? 'transfer' : data[key];
+        } else {
+          result[key] = data[key];
+        }
+      }
     }
     return result;
   };
