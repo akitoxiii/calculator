@@ -5,7 +5,6 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import ExpenseModal from './ExpenseModal';
 import { supabase } from '@/utils/supabase';
-import { useUser } from '@clerk/nextjs';
 
 export type Expense = {
   id: string;
@@ -20,21 +19,18 @@ export default function HouseholdTab() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const { user } = useUser();
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      if (!user) return;
       const { data, error } = await supabase
         .from('expenses')
-        .select('*')
-        .eq('user_id', user.id);
+        .select('*');
       if (!error && data) {
         setExpenses(data as Expense[]);
       }
     };
     fetchExpenses();
-  }, [user, isModalOpen]);
+  }, [isModalOpen]);
 
   const currentDate = new Date();
   const monthStart = startOfMonth(currentDate);
@@ -47,10 +43,8 @@ export default function HouseholdTab() {
   };
 
   const handleAddExpense = async (expense: Omit<Expense, 'id'>) => {
-    if (!user) return;
     const insertData = {
       ...expense,
-      user_id: user.id,
       date: typeof expense.date === 'string' ? expense.date : format(expense.date, 'yyyy-MM-dd'),
     };
     const { error } = await supabase.from('expenses').insert([insertData]);

@@ -9,7 +9,6 @@ import { supabase } from '@/utils/supabase';
 import { insertSampleData } from '@/utils/insertSampleData';
 import { useCategories } from '@/hooks/useCategories';
 import { storage } from '@/utils/storage';
-import { useUser } from "@clerk/nextjs";
 import type { Category } from '@/types/category';
 import { format } from 'date-fns';
 import { normalizeUUID } from '@/utils/uuid';
@@ -43,7 +42,6 @@ export const CalendarTab = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { categories } = useCategories();
-  const { isLoaded, isSignedIn, user } = useUser();
 
   // 年月の状態をpropsで管理
   const currentYear = year;
@@ -204,10 +202,9 @@ export const CalendarTab = ({
 
   const handleExpenseSave = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
     console.log('handleExpenseSave called', data);
-    if (!isLoaded || !isSignedIn || !user || !data) return;
+    if (!data) return;
     try {
       const categoryObj: Category | undefined = normalizedCategories.find(cat => cat.id === data.category_id);
-      console.log('保存時 user.id:', user.id);
       console.log('保存時 category_id:', data.category_id, '（型:', typeof data.category_id, '）');
       console.log('保存時 categoryObj:', categoryObj);
       if (!data.category_id) {
@@ -220,7 +217,7 @@ export const CalendarTab = ({
       }
       // insert直前の値を出力
       const insertData = {
-        user_id: user.id,
+        user_id: '',
         category_id: data.category_id,
         amount: Number(data.amount),
         type: data.type,
@@ -252,12 +249,11 @@ export const CalendarTab = ({
 
   const handleExpenseDelete = async (id: string) => {
     try {
-      if (!isLoaded || !isSignedIn || !user) return;
       const { error } = await supabase
         .from('expenses')
         .delete()
         .eq('id', id)
-        .eq('user_id', user.id);
+        .eq('user_id', '');
       if (error) {
         console.error('Error deleting expense:', error);
         alert('削除に失敗しました: ' + error.message);
@@ -279,20 +275,10 @@ export const CalendarTab = ({
     monthlyExpenses
   });
 
-  if (!isLoaded) {
+  if (!isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div>読み込み中...</div>
-      </div>
-    );
-  }
-
-  if (!isSignedIn || !user) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">ログインが必要です</p>
-        </div>
       </div>
     );
   }
