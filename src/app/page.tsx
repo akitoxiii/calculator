@@ -22,7 +22,7 @@ type TabType = 'calendar' | 'statistics' | 'category' | 'assets';
 
 export default function Home() {
   // メンテナンスモードの場合は503エラーページを表示
-  const isMaintenanceMode = true;
+  const isMaintenanceMode = false;
   if (isMaintenanceMode) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
