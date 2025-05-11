@@ -91,15 +91,42 @@ export const AssetsTab = () => {
     fetchTransactions();
   };
 
+  // update用に不要なフィールドを除外する関数
+  const cleanUpdateData = (data: any) => {
+    const allowed = ['category_id', 'payment_method', 'amount', 'type', 'date', 'note', 'memo', 'from_account', 'to_account'];
+    const result: any = {};
+    for (const key of allowed) {
+      if (data[key] !== undefined) result[key] = data[key];
+    }
+    return result;
+  };
+
   const handleSave = async (transaction: Transaction) => {
     if (!user) return;
     if (transaction.id && transactions.some(t => t.id === transaction.id)) {
       // update
-      const { id, ...updateData } = transaction;
-      await supabase.from('expenses').update(updateData).eq('id', transaction.id).eq('user_id', user.id);
+      const { id, ...rawUpdateData } = transaction;
+      const updateData = cleanUpdateData(rawUpdateData);
+      const { error } = await supabase
+        .from('expenses')
+        .update(updateData)
+        .eq('id', transaction.id)
+        .eq('user_id', user.id);
+      
+      if (error) {
+        console.error('Update error:', error);
+        return;
+      }
     } else {
       // insert
-      await supabase.from('expenses').insert([{ ...transaction, user_id: user.id }]);
+      const { error } = await supabase
+        .from('expenses')
+        .insert([{ ...transaction, user_id: user.id }]);
+      
+      if (error) {
+        console.error('Insert error:', error);
+        return;
+      }
     }
     setIsModalOpen(false);
     fetchTransactions();
