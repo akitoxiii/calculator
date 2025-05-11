@@ -41,14 +41,31 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // ClerkのJWTを使ってSupabaseのセッションを更新する関数
 export const updateSupabaseSession = async (jwt: string) => {
   try {
+    // JWTをデコードして必要な情報を抽出
+    const [header, payload, signature] = jwt.split('.');
+    const decodedPayload = JSON.parse(atob(payload));
+    
+    // Supabaseのセッションを更新
     const { data, error } = await supabase.auth.setSession({
       access_token: jwt,
       refresh_token: jwt,
     });
+
     if (error) {
       console.error('Error updating Supabase session:', error);
       throw error;
     }
+
+    // ユーザーメタデータを更新
+    if (decodedPayload.user_metadata) {
+      await supabase.auth.updateUser({
+        data: {
+          user_metadata: decodedPayload.user_metadata,
+          user_id: decodedPayload.customSubject // customSubjectをuser_idとして使用
+        }
+      });
+    }
+
     return data;
   } catch (error) {
     console.error('Error in updateSupabaseSession:', error);
