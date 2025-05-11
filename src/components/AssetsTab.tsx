@@ -42,6 +42,7 @@ export const AssetsTab = () => {
         fromAccount: row.from_account,
         toAccount: row.to_account,
         payment_method: row.payment_method ?? '',
+        type: row.type === 'income' ? '収入' : row.type === 'expense' ? '支払い' : row.type,
       }));
       setTransactions(mapped as Transaction[]);
       calculateBalance(mapped as Transaction[]);
