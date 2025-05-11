@@ -4,6 +4,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import Script from 'next/script';
 import CookieConsent from '../components/CookieConsent';
+import { AuthProvider } from '@/components/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,61 +39,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider 
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      appearance={{
-        baseTheme: undefined,
-        elements: {
-          formButtonPrimary: 'bg-primary hover:bg-primary/90',
-          footerActionLink: 'text-primary hover:text-primary/90',
-          cardLogo: '/favicon.ico',
-          headerTitle: 'マイリー家計簿!'
-        }
-      }}
-    >
-      <html lang="ja">
-        <head>
-          {/* Google Search Console認証用メタタグ */}
-          <meta name="google-site-verification" content="5hpRcKnJq14HnYg6gbZtBGym66SkrPBmKKcwS6i9Y1E" />
-          {/* Google AdSense */}
-          <meta name="google-adsense-account" content="ca-pub-6336722634649007" />
-          {/* ファビコン */}
-          <link rel="icon" href="/favicon.ico" />
-          {/* Google Analyticsタグ */}
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}
-            strategy="lazyOnload"
-          />
-          <Script id="gtag-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-V64XBFC7WZ', {
-                page_path: window.location.pathname,
-              });
-            `}
-          </Script>
-          {/* LCP画像のプリロード */}
-          <link
-            rel="preload"
-            as="image"
-            href="/lp-demo-mobile.webp"
-            type="image/webp"
-            fetchPriority="high"
-          />
-          {/* Google AdSense自動広告スクリプト */}
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6336722634649007"
-            crossOrigin="anonymous"
-          />
-        </head>
-        <body className={inter.className}>
-          {children}
-          <CookieConsent />
-        </body>
-      </html>
+    <ClerkProvider>
+      <AuthProvider>
+        <html lang="ja">
+          <head>
+            {/* Google Search Console認証用メタタグ */}
+            <meta name="google-site-verification" content="5hpRcKnJq14HnYg6gbZtBGym66SkrPBmKKcwS6i9Y1E" />
+            {/* Google AdSense */}
+            <meta name="google-adsense-account" content="ca-pub-6336722634649007" />
+            {/* ファビコン */}
+            <link rel="icon" href="/favicon.ico" />
+            {/* Google Analyticsタグ */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=G-V64XBFC7WZ`}
+              strategy="lazyOnload"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-V64XBFC7WZ', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+            {/* LCP画像のプリロード */}
+            <link
+              rel="preload"
+              as="image"
+              href="/lp-demo-mobile.webp"
+              type="image/webp"
+              fetchPriority="high"
+            />
+            {/* Google AdSense自動広告スクリプト */}
+            <Script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6336722634649007"
+              crossOrigin="anonymous"
+            />
+          </head>
+          <body className={inter.className}>
+            {children}
+            <CookieConsent />
+          </body>
+        </html>
+      </AuthProvider>
     </ClerkProvider>
   );
 } 

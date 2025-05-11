@@ -40,12 +40,18 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 // ClerkのJWTを使ってSupabaseのセッションを更新する関数
 export const updateSupabaseSession = async (jwt: string) => {
-  const { data, error } = await supabase.auth.setSession({
-    access_token: jwt,
-    refresh_token: jwt,
-  });
-  if (error) {
-    console.error('Error updating Supabase session:', error);
+  try {
+    const { data, error } = await supabase.auth.setSession({
+      access_token: jwt,
+      refresh_token: jwt,
+    });
+    if (error) {
+      console.error('Error updating Supabase session:', error);
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error('Error in updateSupabaseSession:', error);
+    throw error;
   }
-  return data;
 }; 
