@@ -281,10 +281,10 @@ export default function Home() {
           {/* 右側：イラスト画像 */}
           <div className="flex-1 flex items-center justify-center gap-8">
             <div className="bg-white rounded-2xl shadow p-8 flex items-center justify-center">
-              <img src="/kakeibo-illust.png" alt="家計簿アプリイラスト" className="w-64 h-auto transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer" />
+              <img src="/kakeibo-illust.png" alt="家計簿アプリイラスト" className="w-64 h-auto" />
             </div>
             <div className="bg-white rounded-2xl shadow p-8 flex items-center justify-center">
-              <img src="/kakeibo-illust2.png" alt="家計簿アプリイラスト2" className="w-64 h-auto transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer" />
+              <img src="/kakeibo-illust2.png" alt="家計簿アプリイラスト2" className="w-64 h-auto" />
             </div>
           </div>
         </div>
