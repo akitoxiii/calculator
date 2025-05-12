@@ -127,9 +127,22 @@ export const AssetsTab = () => {
       }
     } else {
       // insert
+      const getDefaultCategoryId = (type: string) => {
+        const found = categories.find(cat => cat.type === type);
+        if (found) return found.id;
+        const fallback = categories.find(cat => cat.name.includes('その他') || cat.name.includes('未分類'));
+        if (fallback) return fallback.id;
+        return categories[0]?.id || '';
+      };
       const insertData = {
         user_id: user.id,
-        category_id: transaction.category_id,
+        category_id: transaction.category_id
+          || getDefaultCategoryId(
+               transaction.type === '貯金' ? 'savings'
+               : transaction.type === '振替' ? 'transfer'
+               : transaction.type === '収入' ? 'income'
+               : 'expense'
+             ),
         amount: transaction.amount,
         type: transaction.type === '収入' ? 'income'
              : transaction.type === '支払い' ? 'expense'
