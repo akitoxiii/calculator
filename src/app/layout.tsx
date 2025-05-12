@@ -41,11 +41,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className + " bg-gray-50 text-gray-900"}>
-        <header className="w-full bg-white border-b border-gray-200 py-6 mb-16">
-          <div className="container mx-auto flex justify-center items-center">
-            <span className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 select-none" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</span>
-          </div>
-        </header>
         {children}
       </body>
     </html>
