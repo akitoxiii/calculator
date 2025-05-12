@@ -119,9 +119,12 @@ export const ExpenseModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !selectedCategory) return;
+    if (!amount || !selectedCategory) {
+      console.log('[DEBUG] handleSubmit: amount or selectedCategory is missing', { amount, selectedCategory });
+      return;
+    }
 
-    console.log('ExpenseModal: 保存ボタン押下', {
+    console.log('[DEBUG] ExpenseModal: 保存ボタン押下', {
       amount,
       availableCategories: categories,
       category_id: selectedCategory.id,
@@ -132,17 +135,21 @@ export const ExpenseModal = ({
     });
 
     try {
+      const normalizedCategoryId = normalizeUUID(selectedCategory.id);
+      console.log('[DEBUG] Normalized category ID:', normalizedCategoryId);
+
       const data = {
         amount: Number(amount),
-        category_id: normalizeUUID(selectedCategory.id),
+        category_id: normalizedCategoryId,
         memo,
         type
       };
+      console.log('[DEBUG] Submitting data:', data);
       await onSubmit(data);
       onClose();
     } catch (error) {
-      console.error('Error saving expense:', error);
-      alert('保存に失敗しました');
+      console.error('[DEBUG] Error saving expense:', error);
+      alert('保存に失敗しました: ' + (error instanceof Error ? error.message : '不明なエラー'));
     }
   };
 

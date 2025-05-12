@@ -28,16 +28,18 @@ export const useCategories = () => {
     if (!user || isLoading) return;
     try {
       setIsLoading(true);
+      console.log('[DEBUG] Loading categories for user:', user.id);
       const { data, error } = await supabase
         .from('categories')
         .select('*')
         .eq('user_id', user.id);
       if (error) {
-        console.error('カテゴリ取得エラー:', error);
+        console.error('[DEBUG] カテゴリ取得エラー:', error);
         return;
       }
       // カテゴリが0件なら初期データを自動挿入
       if (data && data.length === 0) {
+        console.log('[DEBUG] No categories found, inserting default categories');
         const defaultCategories = [
           ...DEFAULT_EXPENSE_CATEGORIES,
           ...DEFAULT_INCOME_CATEGORIES,
@@ -50,7 +52,7 @@ export const useCategories = () => {
           .from('categories')
           .insert(defaultCategories);
         if (insertError) {
-          console.error('カテゴリ挿入エラー:', insertError);
+          console.error('[DEBUG] カテゴリ挿入エラー:', insertError);
           return;
         }
         // 再取得
@@ -59,15 +61,17 @@ export const useCategories = () => {
           .select('*')
           .eq('user_id', user.id);
         if (newError) {
-          console.error('カテゴリ再取得エラー:', newError);
+          console.error('[DEBUG] カテゴリ再取得エラー:', newError);
           return;
         }
+        console.log('[DEBUG] Loaded categories after insert:', newData);
         setCategories(newData || []);
       } else {
+        console.log('[DEBUG] Loaded existing categories:', data);
         setCategories(data || []);
       }
     } catch (error) {
-      console.error('カテゴリ操作エラー:', error);
+      console.error('[DEBUG] カテゴリ操作エラー:', error);
     } finally {
       setIsLoading(false);
     }
