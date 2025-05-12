@@ -67,8 +67,6 @@ export const TransactionList = ({ transactions, onEdit, onDelete, categories }: 
                       <>
                         {transaction.fromAccount} → {transaction.toAccount}
                       </>
-                    ) : transaction.type === '支払い' ? (
-                      transaction.payment_method
                     ) : (
                       getCategoryName(transaction.category_id)
                     )}
