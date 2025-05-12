@@ -257,77 +257,51 @@ export default function Home() {
   // ゲストモード時のUI
   if (isGuest) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="flex flex-1 flex-col md:flex-row items-center justify-center max-w-5xl mx-auto w-full px-4 py-12 gap-8">
-          {/* 左側：キャッチコピー・説明・ボタン */}
-          <div className="flex-1 flex flex-col justify-center items-start md:items-start">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 text-left">家計簿アプリ Myly</h1>
-            <p className="text-lg md:text-xl text-gray-700 mb-8 text-left">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
-            <div className="flex flex-col md:flex-row gap-4 mb-12 justify-center">
-              {/* ログインボタン (Primary) */}
-              <button
-                onClick={() => router.push('/sign-in')}
-                className="flex-1 min-w-[180px] px-8 py-4 bg-black text-white text-lg font-semibold rounded-2xl transition hover:bg-gray-800"
-              >
-                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2 inline" /> ログイン
-              </button>
-              {/* 新規登録ボタン (Secondary) */}
-              <button
-                onClick={() => router.push('/sign-up')}
-                className="flex-1 min-w-[180px] px-8 py-4 bg-gray-200 text-gray-900 text-lg font-semibold rounded-2xl transition hover:bg-gray-300"
-              >
-                <UserPlusIcon className="h-6 w-6 mr-2 inline" /> 新規登録
-              </button>
-              {/* ゲスト体験ボタン (Tertiary) */}
-              <button
-                onClick={handleGuestLogin}
-                className="flex-1 min-w-[180px] px-8 py-4 bg-white border border-gray-300 text-gray-700 text-lg font-semibold rounded-2xl transition hover:bg-gray-100"
-              >
-                <UserIcon className="h-6 w-6 mr-2 inline" /> ゲスト体験
-              </button>
-            </div>
-            {/* 主要機能紹介 */}
-            <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-                <CalendarIcon className="h-8 w-8 text-primary mb-2" />
-                <div className="font-bold mb-1">カレンダー</div>
-                <div className="text-xs text-gray-600 text-center">日々の支出・収入をカレンダー形式で直感的に記録・確認できます。</div>
-              </div>
-              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-                <ChartBarIcon className="h-8 w-8 text-primary mb-2" />
-                <div className="font-bold mb-1">統計</div>
-                <div className="text-xs text-gray-600 text-center">月ごとの収支やカテゴリー別のグラフで、お金の流れを可視化します。</div>
-              </div>
-              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-                <Cog6ToothIcon className="h-8 w-8 text-primary mb-2" />
-                <div className="font-bold mb-1">カテゴリ編集</div>
-                <div className="text-xs text-gray-600 text-center">自分好みに支出・収入カテゴリを追加・編集できます。</div>
-              </div>
-              <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
-                <BanknotesIcon className="h-8 w-8 text-primary mb-2" />
-                <div className="font-bold mb-1">資産管理</div>
-                <div className="text-xs text-gray-600 text-center">口座や現金、電子マネーなどの資産をまとめて管理できます。</div>
-              </div>
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex flex-col justify-between">
+        <main className="flex-1 flex flex-col items-center justify-center px-4 pt-12 pb-8">
+          <div className="max-w-2xl w-full mx-auto text-center mb-12">
+            <div className="mb-6">
+              <span className="block text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</span>
+              <p className="text-2xl md:text-3xl font-semibold text-gray-700 leading-snug mb-2">自分に合った家計管理スタイルを作れる家計簿アプリ</p>
+              <p className="text-lg md:text-xl text-gray-500 font-medium">カレンダー・統計・資産管理・カテゴリ編集など、<br className="hidden md:inline"/>シンプル＆直感的な操作で毎日続く家計簿アプリです。</p>
             </div>
           </div>
-          {/* 右側：イメージ枠 */}
-          <div className="flex-1 flex items-center justify-center w-full h-full">
-            <div className="w-[320px] h-[600px] bg-gray-100 rounded-2xl shadow-inner flex flex-col items-center justify-center gap-4 p-4 border border-gray-200">
-              <span className="text-gray-400">アプリイメージ</span>
-              <a href="/demo/demo1.png" target="_blank" rel="noopener noreferrer" className="text-primary underline text-sm hover:text-primary/80">デモ画像を見る</a>
-              {/* 実際のデモ画像を配置する場合は下記を有効化 */}
-              {/* <img src="/demo/demo1.png" alt="アプリデモ" className="rounded-lg shadow max-h-80" /> */}
+          <div className="flex flex-col md:flex-row gap-6 mb-16 justify-center items-center w-full max-w-2xl">
+            {/* ログインボタン */}
+            <button
+              onClick={() => router.push('/sign-in')}
+              className="flex-1 min-w-[200px] px-10 py-5 bg-black text-white text-xl font-semibold rounded-full shadow-sm transition hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            >
+              <ArrowRightOnRectangleIcon className="h-7 w-7 mr-3 inline" /> ログイン
+            </button>
+            {/* 新規登録ボタン */}
+            <button
+              onClick={() => router.push('/sign-up')}
+              className="flex-1 min-w-[200px] px-10 py-5 bg-gray-200 text-gray-900 text-xl font-semibold rounded-full shadow-sm transition hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+            >
+              <UserPlusIcon className="h-7 w-7 mr-3 inline" /> 新規登録
+            </button>
+            {/* ゲスト体験ボタン */}
+            <button
+              onClick={handleGuestLogin}
+              className="flex-1 min-w-[200px] px-10 py-5 bg-white border border-gray-300 text-gray-700 text-xl font-semibold rounded-full shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
+            >
+              <UserIcon className="h-7 w-7 mr-3 inline" /> ゲスト体験
+            </button>
+          </div>
+          {/* アプリイメージ枠 */}
+          <div className="w-full flex justify-center mt-8">
+            <div className="w-[340px] h-[600px] bg-gray-100 rounded-3xl shadow-inner flex flex-col items-center justify-center gap-4 p-6 border border-gray-200">
+              <span className="text-gray-400 text-lg">アプリイメージ</span>
+              <a href="/demo/demo1.png" target="_blank" rel="noopener noreferrer" className="text-primary underline text-base hover:text-primary/80">デモ画像を見る</a>
+              {/* Apple風アニメーション付きダミー画像 */}
+              <div className="w-[220px] h-[440px] bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl shadow-lg flex items-center justify-center transition-transform duration-400 ease-apple hover:scale-105 hover:shadow-2xl hover:-translate-y-2 cursor-pointer">
+                <span className="text-gray-400 text-xl select-none">No Image</span>
+              </div>
+              {/* <img src="/demo/demo1.png" alt="アプリデモ" className="rounded-xl shadow max-h-80 transition-transform duration-400 ease-apple hover:scale-105 hover:shadow-2xl hover:-translate-y-2 cursor-pointer" /> */}
             </div>
           </div>
-        </div>
-        <div className="mt-auto w-full">
-          <CookieConsent />
-          <footer className="w-full text-center text-xs text-gray-500 py-4 flex flex-col md:flex-row items-center justify-center gap-4">
-            <a href="/privacy-policy" className="underline hover:text-primary">プライバシーポリシー</a>
-            <span className="hidden md:inline">|</span>
-            <a href="/contact" className="underline hover:text-primary">お問い合わせ</a>
-          </footer>
-        </div>
+        </main>
       </div>
     );
   }
