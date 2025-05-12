@@ -133,7 +133,24 @@ export const AssetsTab = () => {
         : null;
 
       if (!typeValue) {
-        // 振替・貯金はexpensesテーブルに保存しない
+        // 振替・貯金はtransactionsテーブルに保存
+        const txInsertData = {
+          user_id: user.id,
+          amount: transaction.amount,
+          type: transaction.type === '貯金' ? 'savings' : 'transfer',
+          date: transaction.date,
+          from_account: transaction.fromAccount || null,
+          to_account: transaction.toAccount || null,
+          note: transaction.memo || transaction.note || '',
+          payment_method: transaction.payment_method || null,
+        };
+        const { error } = await supabase
+          .from('transactions')
+          .insert([txInsertData]);
+        if (error) {
+          console.error('Insert error (transactions):', error);
+          return;
+        }
         setIsModalOpen(false);
         fetchTransactions();
         return;
