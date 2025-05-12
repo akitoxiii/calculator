@@ -258,74 +258,33 @@ export default function Home() {
   // ゲストモード時のUI
   if (isGuest) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex flex-col justify-between">
-        <main className="flex-1 flex flex-col items-center justify-center px-4 pt-12 pb-8">
-          <div className="max-w-2xl w-full mx-auto text-center mb-12">
-            <div className="mb-6">
-              <span className="block text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</span>
-              <p className="text-2xl md:text-3xl font-semibold text-gray-700 leading-snug mb-2">自分に合った家計管理スタイルを作れる家計簿アプリ</p>
-              <p className="text-lg md:text-xl text-gray-500 font-medium">カレンダー・統計・資産管理・カテゴリ編集など、<br className="hidden md:inline"/>シンプル＆直感的な操作で毎日続く家計簿アプリです。</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-12 py-16 px-4">
+          {/* 左側：テキスト・ボタン */}
+          <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-2">マイリー家計簿！</h1>
+            <div>
+              <span className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+                自分に合った <span className="text-blue-500">家計管理スタイル</span> を作れる<br />家計簿アプリ
+              </span>
+            </div>
+            <p className="text-base md:text-lg text-gray-700 font-medium mb-2">
+              カレンダー・統計・資産管理・カテゴリ編集など、<br />必要な機能だけONにして自由にカスタマイズ。<br />シンプル＆直感的な操作で毎日続く！
+            </p>
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto justify-center md:justify-start">
+              <button className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition w-full md:w-auto">ユーザー登録</button>
+              <button className="px-6 py-3 bg-white text-blue-600 font-bold border border-blue-600 rounded-lg shadow hover:bg-blue-50 transition w-full md:w-auto">ログイン</button>
+              <button className="px-6 py-3 bg-white text-gray-700 font-bold border border-gray-300 rounded-lg shadow hover:bg-gray-100 transition w-full md:w-auto">ゲストログイン</button>
+            </div>
+            <a href="#" className="text-blue-500 underline text-sm mt-2">お問い合わせ</a>
+          </div>
+          {/* 右側：イラスト画像 */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="bg-white rounded-2xl shadow p-8 flex items-center justify-center">
+              <img src="/kakeibo-illust.png" alt="家計簿アプリイラスト" className="w-64 h-auto" />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-6 mb-8 justify-center items-center w-full max-w-2xl">
-            {/* ログインボタン */}
-            <button
-              onClick={() => setActiveForm('login')}
-              className={`flex-1 min-w-[200px] px-10 py-5 text-xl font-semibold rounded-full shadow-sm transition focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 ${activeForm === 'login' ? 'bg-black text-white' : 'bg-gray-200 text-gray-900 hover:bg-gray-300'}`}
-            >
-              <ArrowRightOnRectangleIcon className="h-7 w-7 mr-3 inline" /> ログイン
-            </button>
-            {/* 新規登録ボタン */}
-            <button
-              onClick={() => setActiveForm('signup')}
-              className={`flex-1 min-w-[200px] px-10 py-5 text-xl font-semibold rounded-full shadow-sm transition focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 ${activeForm === 'signup' ? 'bg-black text-white' : 'bg-gray-200 text-gray-900 hover:bg-gray-300'}`}
-            >
-              <UserPlusIcon className="h-7 w-7 mr-3 inline" /> 新規登録
-            </button>
-            {/* ゲスト体験ボタン */}
-            <button
-              onClick={handleGuestLogin}
-              className="flex-1 min-w-[200px] px-10 py-5 bg-white border border-gray-300 text-gray-700 text-xl font-semibold rounded-full shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
-            >
-              <UserIcon className="h-7 w-7 mr-3 inline" /> ゲスト体験
-            </button>
-          </div>
-          {/* フォーム表示 */}
-          {activeForm === 'login' && (
-            <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-apple p-8 mb-8 animate-fade-in">
-              <h2 className="text-2xl font-bold mb-6 text-left">ログイン</h2>
-              <input type="email" placeholder="メールアドレス" className="w-full mb-4 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none text-lg" />
-              <input type="password" placeholder="パスワード" className="w-full mb-6 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none text-lg" />
-              <button className="w-full py-3 bg-black text-white text-lg font-semibold rounded-xl transition hover:bg-gray-900">ログイン</button>
-              <div className="mt-4 flex justify-between text-sm">
-                <a href="#" className="text-primary hover:underline">パスワードをお忘れですか？</a>
-                <a href="#" className="text-primary hover:underline" onClick={() => setActiveForm('signup')}>新規登録はこちら</a>
-              </div>
-            </div>
-          )}
-          {activeForm === 'signup' && (
-            <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-apple p-8 mb-8 animate-fade-in">
-              <h2 className="text-2xl font-bold mb-6 text-left">新規登録</h2>
-              <input type="email" placeholder="メールアドレス" className="w-full mb-4 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none text-lg" />
-              <input type="password" placeholder="パスワード" className="w-full mb-4 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none text-lg" />
-              <input type="password" placeholder="パスワード（確認）" className="w-full mb-6 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none text-lg" />
-              <button className="w-full py-3 bg-black text-white text-lg font-semibold rounded-xl transition hover:bg-gray-900">新規登録</button>
-              <div className="mt-4 flex justify-between text-sm">
-                <a href="#" className="text-primary hover:underline" onClick={() => setActiveForm('login')}>ログインはこちら</a>
-              </div>
-            </div>
-          )}
-          {/* アプリイメージ枠 */}
-          <div className="w-full flex justify-center mt-8">
-            <div className="w-[340px] h-[600px] bg-gray-100 rounded-3xl shadow-inner flex flex-col items-center justify-center gap-4 p-6 border border-gray-200">
-              <span className="text-gray-400 text-lg">アプリイメージ</span>
-              <a href="/demo/demo1.png" target="_blank" rel="noopener noreferrer" className="text-primary underline text-base hover:text-primary/80">デモ画像を見る</a>
-              <div className="w-[220px] h-[440px] bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl shadow-lg flex items-center justify-center transition-transform duration-400 ease-apple hover:scale-105 hover:shadow-2xl hover:-translate-y-2 cursor-pointer">
-                <span className="text-gray-400 text-xl select-none">No Image</span>
-              </div>
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
     );
   }
