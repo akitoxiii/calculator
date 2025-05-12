@@ -22,7 +22,7 @@ export default function SignInPage() {
         {/* 右側：イラスト画像 */}
         <div className="flex-1 flex items-center justify-center">
           <div className="bg-white rounded-2xl shadow p-8 flex items-center justify-center">
-            <img src="/kakeibo-illust.png" alt="家計簿アプリイラスト" className="w-64 h-auto" />
+            <img src="/kakeibo-illust.png" alt="家計簿アプリイラスト" className="w-64 h-auto transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer" />
           </div>
         </div>
       </div>
