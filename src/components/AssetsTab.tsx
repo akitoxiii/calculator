@@ -31,22 +31,45 @@ export const AssetsTab = () => {
 
   const fetchTransactions = async () => {
     if (!user) return;
-    const { data, error } = await supabase
+    // expenses取得
+    const { data: expensesData, error: expensesError } = await supabase
       .from('expenses')
       .select('*')
       .eq('user_id', user.id)
       .order('date', { ascending: false });
-    if (!error && data) {
-      const mapped = data.map((row: any) => ({
-        ...row,
-        fromAccount: row.from_account,
-        toAccount: row.to_account,
-        payment_method: row.payment_method ?? '',
-        type: row.type === 'income' ? '収入' : row.type === 'expense' ? '支払い' : row.type === 'savings' ? '貯金' : row.type === 'transfer' ? '振替' : row.type,
-      }));
-      setTransactions(mapped as Transaction[]);
-      calculateBalance(mapped as Transaction[]);
+    // transactions取得
+    const { data: transactionsData, error: transactionsError } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false });
+    if (expensesError || transactionsError) {
+      alert('データ取得エラー: ' + (expensesError?.message || transactionsError?.message));
+      return;
     }
+    // expenses正規化
+    const mappedExpenses = (expensesData || []).map((row: any) => ({
+      ...row,
+      fromAccount: row.from_account,
+      toAccount: row.to_account,
+      payment_method: row.payment_method ?? '',
+      type: row.type === 'income' ? '収入' : row.type === 'expense' ? '支払い' : row.type,
+    }));
+    // transactions正規化
+    const mappedTransactions = (transactionsData || []).map((row: any) => ({
+      ...row,
+      fromAccount: row.from_account,
+      toAccount: row.to_account,
+      payment_method: row.payment_method ?? '',
+      type: row.type === 'savings' ? '貯金' : row.type === 'transfer' ? '振替' : row.type,
+      category_id: undefined, // transactionsにはカテゴリなし
+    }));
+    // マージ
+    const all = [...mappedExpenses, ...mappedTransactions];
+    // 日付降順
+    all.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    setTransactions(all as Transaction[]);
+    calculateBalance(all as Transaction[]);
   };
 
   const calculateBalance = (transactions: Transaction[]) => {
@@ -85,9 +108,14 @@ export const AssetsTab = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, type?: string) => {
     if (!user) return;
-    await supabase.from('expenses').delete().eq('id', id).eq('user_id', user.id);
+    // typeでどちらのテーブルか判定
+    if (type === '貯金' || type === '振替') {
+      await supabase.from('transactions').delete().eq('id', id).eq('user_id', user.id);
+    } else {
+      await supabase.from('expenses').delete().eq('id', id).eq('user_id', user.id);
+    }
     fetchTransactions();
   };
 
@@ -149,7 +177,7 @@ export const AssetsTab = () => {
           .from('transactions')
           .insert([txInsertData]);
         if (error) {
-          console.error('Insert error (transactions):', error);
+          alert('Insert error (transactions): ' + error.message);
           return;
         }
         setIsModalOpen(false);
@@ -179,7 +207,7 @@ export const AssetsTab = () => {
         .insert([insertData]);
       
       if (error) {
-        console.error('Insert error:', error);
+        alert('Insert error: ' + error.message);
         return;
       }
     }
@@ -222,7 +250,7 @@ export const AssetsTab = () => {
             取引を追加
           </button>
         </div>
-        <TransactionList transactions={transactions} onEdit={handleEdit} onDelete={handleDelete} categories={categories} />
+        <TransactionList transactions={transactions} onEdit={handleEdit} onDelete={(id, type) => handleDelete(id, type)} categories={categories} />
       </div>
 
       {/* 取引追加・編集モーダル */}

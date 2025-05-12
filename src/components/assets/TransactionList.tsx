@@ -8,7 +8,7 @@ import type { Category } from '@/types/expense';
 interface Props {
   transactions: Transaction[];
   onEdit?: (transaction: Transaction) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, type?: string) => void;
   categories: Category[];
 }
 
@@ -82,7 +82,7 @@ export const TransactionList = ({ transactions, onEdit, onDelete, categories }: 
                     </button>
                     <button
                       className="text-red-500 hover:underline"
-                      onClick={() => onDelete && onDelete(transaction.id)}
+                      onClick={() => onDelete && onDelete(transaction.id, transaction.type)}
                     >
                       削除
                     </button>
