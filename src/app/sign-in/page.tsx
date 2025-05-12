@@ -45,20 +45,9 @@ export default function SignInPage() {
       <div className="w-full max-w-5xl text-center mb-12">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 select-none mb-4" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</h1>
         <div className="relative mb-2">
-          <div className="absolute top-0 left-0 right-0 -translate-y-6 flex justify-center">
-            <div className="flex space-x-2">
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-            </div>
-          </div>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
             自分に合った<span className="text-blue-600 font-semibold relative">
-              <span className="absolute -top-4 left-0 w-full text-center text-blue-500 tracking-[1.05em] pl-[0.5em]">・・・・・・</span>
+              <span className="absolute -top-4 left-0 w-full text-center text-blue-500 tracking-[0.65em] pl-[0.3em]">・・・・・・</span>
               家計管理スタイル
             </span>を作れる家計簿アプリ
           </p>
