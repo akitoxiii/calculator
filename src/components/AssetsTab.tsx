@@ -158,8 +158,30 @@ export const AssetsTab = () => {
     return result;
   };
 
+  // usersテーブルにuser.idがなければinsertする
+  const ensureUserExists = async (userId: string, email: string = '') => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('id', userId)
+      .single();
+    if (!data) {
+      const { error: insertError } = await supabase
+        .from('users')
+        .insert([{ id: userId, email }]);
+      // 409や23505（重複）エラーは無視
+      if (insertError && insertError.code !== '23505' && insertError.code !== '409') {
+        throw insertError;
+      }
+    }
+  };
+
   const handleSave = async (transaction: Transaction) => {
     if (!user) return;
+
+    // usersテーブルに必ず存在させる
+    await ensureUserExists(user.id, user.email);
+
     if (transaction.id && transactions.some(t => t.id === transaction.id)) {
       // update
       const { id, ...rawUpdateData } = transaction;
