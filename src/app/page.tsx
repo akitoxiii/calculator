@@ -263,24 +263,27 @@ export default function Home() {
           <div className="flex-1 flex flex-col justify-center items-start md:items-start">
             <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 text-left">家計簿アプリ Myly</h1>
             <p className="text-lg md:text-xl text-gray-700 mb-8 text-left">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
-            <div className="flex flex-row gap-4 mb-8">
-              <button
-                onClick={handleGuestLogin}
-                className="flex items-center justify-center px-6 py-3 bg-primary text-white text-lg font-bold rounded shadow hover:bg-primary/90 transition"
-              >
-                <UserIcon className="h-6 w-6 mr-2" /> ゲスト体験
-              </button>
+            <div className="flex flex-col md:flex-row gap-4 mb-8">
+              {/* 新規登録ボタン (Primary) */}
               <button
                 onClick={() => router.push('/sign-up')}
-                className="flex items-center justify-center px-6 py-3 bg-white border border-primary text-primary text-lg font-bold rounded shadow hover:bg-primary/10 transition"
+                className="flex items-center justify-center px-8 py-4 bg-primary text-white text-xl font-bold rounded-lg shadow-lg hover:bg-primary/90 transition w-full md:w-auto"
               >
-                <UserPlusIcon className="h-6 w-6 mr-2" /> 新規登録
+                <UserPlusIcon className="h-7 w-7 mr-3" /> 新規登録 (無料)
               </button>
+              {/* ログインボタン (Secondary) */}
               <button
                 onClick={() => router.push('/sign-in')}
-                className="flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 text-lg font-bold rounded shadow hover:bg-gray-300 transition"
+                className="flex items-center justify-center px-8 py-4 bg-white border-2 border-primary text-primary text-xl font-bold rounded-lg shadow hover:bg-primary/10 transition w-full md:w-auto"
               >
-                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2" /> ログイン
+                <ArrowRightOnRectangleIcon className="h-7 w-7 mr-3" /> ログイン
+              </button>
+              {/* ゲスト体験ボタン (Tertiary) */}
+              <button
+                onClick={handleGuestLogin}
+                className="flex items-center justify-center px-8 py-4 bg-gray-200 text-gray-800 text-xl font-bold rounded-lg shadow hover:bg-gray-300 transition w-full md:w-auto"
+              >
+                <UserIcon className="h-7 w-7 mr-3" /> ゲストとして試す
               </button>
             </div>
             {/* 主要機能紹介 */}
@@ -340,30 +343,30 @@ export default function Home() {
       </header>
       <div className="container mx-auto px-4 py-8">
         {/* タブUI */}
-        <div className="flex space-x-2 mb-8 overflow-x-auto scrollbar-hide">
+        <div className="flex space-x-4 mb-8 overflow-x-auto scrollbar-hide border-b border-gray-200">
           <button
             onClick={() => setActiveTab('calendar')}
-            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'calendar' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-t-lg font-bold text-lg transition ${activeTab === 'calendar' ? 'bg-white text-primary border-b-4 border-primary shadow-inner' : 'text-gray-700 hover:bg-gray-100 hover:text-primary'}`}
           >
-            <CalendarIcon className="h-5 w-5" /> カレンダー
+            <CalendarIcon className={`h-6 w-6 ${activeTab === 'calendar' ? 'text-primary' : 'text-gray-500'}`} /> カレンダー
           </button>
           <button
             onClick={() => setActiveTab('statistics')}
-            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'statistics' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-t-lg font-bold text-lg transition ${activeTab === 'statistics' ? 'bg-white text-primary border-b-4 border-primary shadow-inner' : 'text-gray-700 hover:bg-gray-100 hover:text-primary'}`}
           >
-            <ChartBarIcon className="h-5 w-5" /> 統計
+            <ChartBarIcon className={`h-6 w-6 ${activeTab === 'statistics' ? 'text-primary' : 'text-gray-500'}`} /> 統計
           </button>
           <button
             onClick={() => setActiveTab('category')}
-            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'category' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-t-lg font-bold text-lg transition ${activeTab === 'category' ? 'bg-white text-primary border-b-4 border-primary shadow-inner' : 'text-gray-700 hover:bg-gray-100 hover:text-primary'}`}
           >
-            <Cog6ToothIcon className="h-5 w-5" /> カテゴリー
+            <Cog6ToothIcon className={`h-6 w-6 ${activeTab === 'category' ? 'text-primary' : 'text-gray-500'}`} /> カテゴリー
           </button>
           <button
             onClick={() => setActiveTab('assets')}
-            className={`flex items-center gap-2 px-4 py-2 rounded font-bold text-base md:text-lg transition border-b-4 ${activeTab === 'assets' ? 'bg-primary text-white border-primary shadow' : 'bg-white text-gray-700 border-transparent hover:bg-primary/10 hover:text-primary'}`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-t-lg font-bold text-lg transition ${activeTab === 'assets' ? 'bg-white text-primary border-b-4 border-primary shadow-inner' : 'text-gray-700 hover:bg-gray-100 hover:text-primary'}`}
           >
-            <BanknotesIcon className="h-5 w-5" /> 資産
+            <BanknotesIcon className={`h-6 w-6 ${activeTab === 'assets' ? 'text-primary' : 'text-gray-500'}`} /> 資産
           </button>
         </div>
         {/* タブごとのコンテンツ表示 */}
