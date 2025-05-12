@@ -21,6 +21,27 @@ export const AssetsTab = () => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      
+      // ユーザーが存在する場合、usersテーブルにも存在するか確認
+      if (user) {
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        // ユーザーがusersテーブルに存在しない場合は作成
+        if (error || !data) {
+          console.log('Creating user in users table:', user.id);
+          const { error: insertError } = await supabase
+            .from('users')
+            .insert([{ id: user.id, email: user.email }]);
+          
+          if (insertError) {
+            console.error('Error creating user:', insertError);
+          }
+        }
+      }
     };
     getUser();
   }, []);
