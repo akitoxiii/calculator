@@ -162,11 +162,10 @@ export const AssetsTab = () => {
 
       if (!typeValue) {
         // 振替・貯金はtransactionsテーブルに保存
-        const typeForDb = transaction.type === '貯金' ? 'savings' : transaction.type === '振替' ? 'transfer' : transaction.type;
         const txInsertData = {
           user_id: user.id,
           amount: transaction.amount,
-          type: typeForDb,
+          type: transaction.type === '貯金' ? 'savings' : transaction.type === '振替' ? 'transfer' : transaction.type,
           date: transaction.date,
           from_account: transaction.fromAccount || null,
           to_account: transaction.toAccount || null,
