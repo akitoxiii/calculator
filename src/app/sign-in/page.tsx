@@ -4,7 +4,6 @@ export default function SignInPage() {
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-12 py-16 px-4">
         {/* 左側：テキスト・ボタン */}
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-8">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-4 mb-2">マイリー家計簿</h1>
           <div>
             <span className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
               自分に合った <span className="text-blue-500">家計管理スタイル</span> を作れる<br />家計簿アプリ
