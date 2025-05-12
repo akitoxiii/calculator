@@ -127,9 +127,22 @@ export const AssetsTab = () => {
       }
     } else {
       // insert
+      const insertData = {
+        user_id: user.id,
+        category_id: transaction.category_id,
+        amount: transaction.amount,
+        type: transaction.type === '収入' ? 'income'
+             : transaction.type === '支払い' ? 'expense'
+             : transaction.type === '貯金' ? 'savings'
+             : transaction.type === '振替' ? 'transfer'
+             : transaction.type,
+        memo: transaction.memo || transaction.note || '',
+        date: transaction.date,
+        payment_method: transaction.payment_method || null,
+      };
       const { error } = await supabase
         .from('expenses')
-        .insert([{ ...transaction, user_id: user.id }]);
+        .insert([insertData]);
       
       if (error) {
         console.error('Insert error:', error);
