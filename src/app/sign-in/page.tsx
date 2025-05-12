@@ -45,22 +45,23 @@ export default function SignInPage() {
       <div className="w-full max-w-5xl text-center mb-12">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 select-none mb-4" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</h1>
         <div className="relative mb-2">
+          <div className="absolute top-0 left-0 right-0 -translate-y-6 flex justify-center">
+            <div className="flex space-x-2">
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+            </div>
+          </div>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
             自分に合った<span className="text-blue-600 font-semibold relative">家計管理スタイル</span>を作れる家計簿アプリ
           </p>
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 flex space-x-2">
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-          </div>
         </div>
         <p className="text-lg text-gray-500 max-w-3xl mx-auto mt-2">
           カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。
-          <br className="hidden md:block" />
           シンプル＆直感的な操作で毎日続く家計簿アプリです。
         </p>
       </div>
