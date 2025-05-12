@@ -162,20 +162,40 @@ export const AssetsTab = () => {
 
       if (!typeValue) {
         // 振替・貯金はtransactionsテーブルに保存
-        const txInsertData = {
+        const txInsertData: {
+          user_id: any;
+          amount: number;
+          type: string;
+          date: string;
+          from_account: string | null;
+          to_account: string | null;
+          note: string;
+          payment_method?: string;
+        } = {
           user_id: user.id,
           amount: transaction.amount,
           type: transaction.type === '貯金' ? 'savings' : transaction.type === '振替' ? 'transfer' : transaction.type,
           date: transaction.date,
           from_account: transaction.fromAccount || null,
           to_account: transaction.toAccount || null,
-          note: transaction.memo || transaction.note || '',
-          payment_method: transaction.payment_method || null,
+          note: transaction.memo || transaction.note || ''
+          // payment_methodが空文字の場合はnullとして送信
+          // created_atとupdated_atはデフォルト値が設定されているため省略
         };
+
+        // payment_methodがある場合のみ追加
+        if (transaction.payment_method) {
+          txInsertData.payment_method = transaction.payment_method;
+        }
+
+        console.log('Inserting transaction data:', txInsertData);
+        
         const { error } = await supabase
           .from('transactions')
           .insert([txInsertData]);
+        
         if (error) {
+          console.error('Insert error details:', error);
           alert('Insert error (transactions): ' + error.message);
           return;
         }
