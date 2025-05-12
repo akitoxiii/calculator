@@ -66,6 +66,7 @@ export const useCategories = () => {
         }
         console.log('[DEBUG] Loaded categories after insert:', newData);
         setCategories(newData || []);
+        return; // デフォルトカテゴリ挿入後はここで終了
       } else {
         // 既存カテゴリ名・typeの組み合わせを取得
         const existingKeys = new Set((data || []).map(cat => `${cat.name}_${cat.type}`));
