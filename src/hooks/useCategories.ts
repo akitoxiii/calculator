@@ -67,8 +67,29 @@ export const useCategories = () => {
         console.log('[DEBUG] Loaded categories after insert:', newData);
         setCategories(newData || []);
       } else {
-        console.log('[DEBUG] Loaded existing categories:', data);
-        setCategories(data || []);
+        // 既存カテゴリ名・typeの組み合わせを取得
+        const existingKeys = new Set((data || []).map(cat => `${cat.name}_${cat.type}`));
+        // デフォルトカテゴリのうち、未登録のものだけを抽出
+        const defaultCategories = [
+          ...DEFAULT_EXPENSE_CATEGORIES,
+          ...DEFAULT_INCOME_CATEGORIES,
+        ].filter(cat => !existingKeys.has(`${cat.name}_${cat.type}`))
+         .map(cat => ({
+            ...cat,
+            user_id: user.id,
+            id: uuidv4(),
+          }));
+        if (defaultCategories.length > 0) {
+          await supabase.from('categories').insert(defaultCategories);
+          // 再取得
+          const { data: newData } = await supabase
+            .from('categories')
+            .select('*')
+            .eq('user_id', user.id);
+          setCategories(newData || []);
+        } else {
+          setCategories(data || []);
+        }
       }
     } catch (error) {
       console.error('[DEBUG] カテゴリ操作エラー:', error);
