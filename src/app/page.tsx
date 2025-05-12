@@ -316,8 +316,10 @@ export default function Home() {
         </div>
         <div className="mt-auto w-full">
           <CookieConsent />
-          <footer className="w-full text-center text-xs text-gray-500 py-4">
+          <footer className="w-full text-center text-xs text-gray-500 py-4 flex flex-col md:flex-row items-center justify-center gap-4">
             <a href="/privacy-policy" className="underline hover:text-primary">プライバシーポリシー</a>
+            <span className="hidden md:inline">|</span>
+            <a href="/contact" className="underline hover:text-primary">お問い合わせ</a>
           </footer>
         </div>
       </div>
@@ -397,8 +399,10 @@ export default function Home() {
       )}
       <div className="mt-auto w-full">
         <CookieConsent />
-        <footer className="w-full text-center text-xs text-gray-500 py-4">
+        <footer className="w-full text-center text-xs text-gray-500 py-4 flex flex-col md:flex-row items-center justify-center gap-4">
           <a href="/privacy-policy" className="underline hover:text-primary">プライバシーポリシー</a>
+          <span className="hidden md:inline">|</span>
+          <a href="/contact" className="underline hover:text-primary">お問い合わせ</a>
         </footer>
       </div>
     </div>
