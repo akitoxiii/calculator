@@ -41,8 +41,19 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-12 py-16 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div className="w-full max-w-5xl text-center mb-12">
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 select-none mb-4" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</h1>
+        <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+          自分に合った家計管理スタイルを作れる家計簿アプリ
+        </p>
+        <p className="text-lg text-gray-500 max-w-3xl mx-auto mt-2">
+          カレンダー・統計・資産管理・カテゴリ編集など、必要な機能だけONにして自由にカスタマイズ。
+          <br className="hidden md:block" />
+          シンプル＆直感的な操作で毎日続く家計簿アプリです。
+        </p>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-12 py-8 px-4">
         {/* 左側：テキスト・フォーム・ボタン */}
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-8">
           <div>
@@ -93,4 +104,4 @@ export default function SignInPage() {
       </div>
     </div>
   );
-} 
+}
