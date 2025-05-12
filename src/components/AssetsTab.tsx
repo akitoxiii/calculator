@@ -160,6 +160,8 @@ export const AssetsTab = () => {
 
   // usersテーブルにuser.idがなければinsertする
   const ensureUserExists = async (userId: string, email: string = '') => {
+    // emailが空の場合はダミー値をセット
+    const safeEmail = email && email.length > 0 ? email : `guest+${userId}@example.com`;
     const { data, error } = await supabase
       .from('users')
       .select('id')
@@ -168,7 +170,7 @@ export const AssetsTab = () => {
     if (!data) {
       const { error: insertError } = await supabase
         .from('users')
-        .insert([{ id: userId, email }]);
+        .insert([{ id: userId, email: safeEmail }]);
       // 409や23505（重複）エラーは無視
       if (insertError && insertError.code !== '23505' && insertError.code !== '409') {
         throw insertError;
