@@ -312,8 +312,11 @@ export default function Home() {
           </div>
           {/* 右側：イメージ枠 */}
           <div className="flex-1 flex items-center justify-center w-full h-full">
-            <div className="w-[320px] h-[600px] bg-gray-200 rounded-2xl shadow-inner flex items-center justify-center">
+            <div className="w-[320px] h-[600px] bg-gray-100 rounded-2xl shadow-inner flex flex-col items-center justify-center gap-4 p-4 border border-gray-200">
               <span className="text-gray-400">アプリイメージ</span>
+              <a href="/demo/demo1.png" target="_blank" rel="noopener noreferrer" className="text-primary underline text-sm hover:text-primary/80">デモ画像を見る</a>
+              {/* 実際のデモ画像を配置する場合は下記を有効化 */}
+              {/* <img src="/demo/demo1.png" alt="アプリデモ" className="rounded-lg shadow max-h-80" /> */}
             </div>
           </div>
         </div>
