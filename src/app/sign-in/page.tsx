@@ -47,7 +47,7 @@ export default function SignInPage() {
         <div className="relative mb-2">
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
             自分に合った<span className="text-blue-600 font-semibold relative">
-              <span className="absolute -top-4 left-0 w-full text-center text-blue-500 tracking-[0.65em] pl-[0.3em]">・・・・・・</span>
+              <span className="absolute -top-4 left-0 w-full text-center text-blue-500 tracking-[0.35em] pl-[0.2em]">・・・・・・</span>
               家計管理スタイル
             </span>を作れる家計簿アプリ
           </p>
