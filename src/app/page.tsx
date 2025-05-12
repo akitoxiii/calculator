@@ -263,27 +263,27 @@ export default function Home() {
           <div className="flex-1 flex flex-col justify-center items-start md:items-start">
             <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 text-left">家計簿アプリ Myly</h1>
             <p className="text-lg md:text-xl text-gray-700 mb-8 text-left">まずはゲストとして体験してみてください！<br />主要機能はすべて無料でお試しいただけます。</p>
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
-              {/* 新規登録ボタン (Primary) */}
-              <button
-                onClick={() => router.push('/sign-up')}
-                className="flex items-center justify-center px-8 py-4 bg-primary text-white text-xl font-bold rounded-lg shadow-lg hover:bg-primary/90 transition w-full md:w-auto"
-              >
-                <UserPlusIcon className="h-7 w-7 mr-3" /> 新規登録 (無料)
-              </button>
-              {/* ログインボタン (Secondary) */}
+            <div className="flex flex-col md:flex-row gap-4 mb-12 justify-center">
+              {/* ログインボタン (Primary) */}
               <button
                 onClick={() => router.push('/sign-in')}
-                className="flex items-center justify-center px-8 py-4 bg-white border-2 border-primary text-primary text-xl font-bold rounded-lg shadow hover:bg-primary/10 transition w-full md:w-auto"
+                className="flex-1 min-w-[180px] px-8 py-4 bg-black text-white text-lg font-semibold rounded-2xl transition hover:bg-gray-800"
               >
-                <ArrowRightOnRectangleIcon className="h-7 w-7 mr-3" /> ログイン
+                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-2 inline" /> ログイン
+              </button>
+              {/* 新規登録ボタン (Secondary) */}
+              <button
+                onClick={() => router.push('/sign-up')}
+                className="flex-1 min-w-[180px] px-8 py-4 bg-gray-200 text-gray-900 text-lg font-semibold rounded-2xl transition hover:bg-gray-300"
+              >
+                <UserPlusIcon className="h-6 w-6 mr-2 inline" /> 新規登録
               </button>
               {/* ゲスト体験ボタン (Tertiary) */}
               <button
                 onClick={handleGuestLogin}
-                className="flex items-center justify-center px-8 py-4 bg-gray-200 text-gray-800 text-xl font-bold rounded-lg shadow hover:bg-gray-300 transition w-full md:w-auto"
+                className="flex-1 min-w-[180px] px-8 py-4 bg-white border border-gray-300 text-gray-700 text-lg font-semibold rounded-2xl transition hover:bg-gray-100"
               >
-                <UserIcon className="h-7 w-7 mr-3" /> ゲストとして試す
+                <UserIcon className="h-6 w-6 mr-2 inline" /> ゲスト体験
               </button>
             </div>
             {/* 主要機能紹介 */}
