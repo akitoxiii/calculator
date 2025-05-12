@@ -1,4 +1,24 @@
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/utils/supabase';
+
 export default function SignInPage() {
+  const router = useRouter();
+
+  // ゲストログイン処理（Supabase匿名認証）
+  const handleGuestLogin = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInAnonymously();
+      if (error) {
+        alert('ゲストログインに失敗しました: ' + error.message);
+        return;
+      }
+      // 成功時はトップページへ遷移
+      router.push('/');
+    } catch (e) {
+      alert('ゲストログインで予期せぬエラーが発生しました');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-12 py-16 px-4">
@@ -13,9 +33,9 @@ export default function SignInPage() {
             カレンダー・統計・資産管理・カテゴリ編集など、<br />必要な機能だけONにして自由にカスタマイズ。<br />シンプル＆直感的な操作で毎日続く！
           </p>
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto justify-center md:justify-start">
-            <button className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition w-full md:w-auto">ユーザー登録</button>
-            <button className="px-6 py-3 bg-white text-blue-600 font-bold border border-blue-600 rounded-lg shadow hover:bg-blue-50 transition w-full md:w-auto">ログイン</button>
-            <button className="px-6 py-3 bg-white text-gray-700 font-bold border border-gray-300 rounded-lg shadow hover:bg-gray-100 transition w-full md:w-auto">ゲストログイン</button>
+            <button onClick={() => router.push('/sign-up')} className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition w-full md:w-auto">ユーザー登録</button>
+            <button onClick={() => router.push('/sign-in')} className="px-6 py-3 bg-white text-blue-600 font-bold border border-blue-600 rounded-lg shadow hover:bg-blue-50 transition w-full md:w-auto">ログイン</button>
+            <button onClick={handleGuestLogin} className="px-6 py-3 bg-white text-gray-700 font-bold border border-gray-300 rounded-lg shadow hover:bg-gray-100 transition w-full md:w-auto">ゲストログイン</button>
           </div>
         </div>
         {/* 右側：イラスト画像 */}
