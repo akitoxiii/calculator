@@ -41,16 +41,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className + " bg-gray-50 text-gray-900"}>
-        <header className="w-full bg-primary text-white py-6 shadow-lg mb-8">
-          <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="/favicon.ico" alt="Myly家計簿" className="h-10 w-10 mr-2 drop-shadow-lg" />
-              <span className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-lg">マイリー家計簿</span>
-            </div>
-            <div className="mt-4 md:mt-0 flex items-center gap-2">
-              <span className="text-base md:text-lg font-semibold">今月の収支合計:</span>
-              <span className="text-xl md:text-2xl font-bold text-yellow-300">¥0</span>
-            </div>
+        <header className="w-full bg-white border-b border-gray-200 py-6 mb-16">
+          <div className="container mx-auto flex justify-center items-center">
+            <span className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 select-none" style={{letterSpacing: '-0.03em'}}>マイリー家計簿</span>
           </div>
         </header>
         {children}
