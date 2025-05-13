@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabase';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
+import { v4 as uuidv4 } from 'uuid';
 
 // デフォルトカテゴリー定義
 const getDefaultCategories = (userId: string) => [
-  ...DEFAULT_EXPENSE_CATEGORIES.map(cat => ({ ...cat, user_id: userId })),
-  ...DEFAULT_INCOME_CATEGORIES.map(cat => ({ ...cat, user_id: userId })),
+  ...DEFAULT_EXPENSE_CATEGORIES.map(cat => ({ ...cat, user_id: userId, id: uuidv4() })),
+  ...DEFAULT_INCOME_CATEGORIES.map(cat => ({ ...cat, user_id: userId, id: uuidv4() })),
 ];
 
 async function insertDefaultCategories(userId: string) {
