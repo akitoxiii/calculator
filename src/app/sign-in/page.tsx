@@ -34,12 +34,12 @@ export default function SignInPage() {
         alert('ゲストログインに失敗しました: ' + error.message);
         return;
       }
-      // サンプルデータ挿入の呼び出しを削除
-      // try {
-      //   await insertSampleData();
-      // } catch (e) {
-      //   alert('デフォルトカテゴリーの挿入に失敗しました');
-      // }
+      // カテゴリーを挿入するため、insertSampleDataを呼び出す
+      try {
+        await insertSampleData();
+      } catch (e) {
+        alert('デフォルトカテゴリーの挿入に失敗しました');
+      }
       // 成功時はトップページへ遷移
       router.push('/');
     } catch (e) {

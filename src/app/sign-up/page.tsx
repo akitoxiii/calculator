@@ -23,13 +23,13 @@ export default function SignUpPage() {
     if (error) {
       setError(error.message);
     } else {
-      // サインアップ直後のサンプルデータ挿入を削除
-      // try {
-      //   await insertSampleData();
-      // } catch (e) {
-      //   setError('デフォルトカテゴリーの挿入に失敗しました');
-      //   return;
-      // }
+      // サインアップ直後にカテゴリーを挿入するため、insertSampleDataを呼び出す
+      try {
+        await insertSampleData();
+      } catch (e) {
+        setError('デフォルトカテゴリーの挿入に失敗しました');
+        return;
+      }
       setSuccess('確認メールを送信しました。メールをご確認ください。');
     }
   };
