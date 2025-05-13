@@ -37,8 +37,9 @@ export const useCategories = () => {
         console.error('[DEBUG] カテゴリ取得エラー:', error);
         return;
       }
-      // カテゴリが0件なら初期データを自動挿入
-      if (data && data.length === 0) {
+
+      // カテゴリが0件の場合のみ初期データを挿入
+      if (!data || data.length === 0) {
         console.log('[DEBUG] No categories found, inserting default categories');
         const defaultCategories = [
           ...DEFAULT_EXPENSE_CATEGORIES,
@@ -48,6 +49,7 @@ export const useCategories = () => {
           user_id: user.id,
           id: uuidv4(),
         }));
+
         const { error: insertError } = await supabase
           .from('categories')
           .insert(defaultCategories);
@@ -55,7 +57,8 @@ export const useCategories = () => {
           console.error('[DEBUG] カテゴリ挿入エラー:', insertError);
           return;
         }
-        // 再取得
+
+        // 挿入後のデータを再取得
         const { data: newData, error: newError } = await supabase
           .from('categories')
           .select('*')
@@ -66,31 +69,9 @@ export const useCategories = () => {
         }
         console.log('[DEBUG] Loaded categories after insert:', newData);
         setCategories(newData || []);
-        return; // デフォルトカテゴリ挿入後はここで終了
       } else {
-        // 既存カテゴリ名・typeの組み合わせを取得
-        const existingKeys = new Set((data || []).map(cat => `${cat.name}_${cat.type}`));
-        // デフォルトカテゴリのうち、未登録のものだけを抽出
-        const defaultCategories = [
-          ...DEFAULT_EXPENSE_CATEGORIES,
-          ...DEFAULT_INCOME_CATEGORIES,
-        ].filter(cat => !existingKeys.has(`${cat.name}_${cat.type}`))
-         .map(cat => ({
-            ...cat,
-            user_id: user.id,
-            id: uuidv4(),
-          }));
-        if (defaultCategories.length > 0) {
-          await supabase.from('categories').insert(defaultCategories);
-          // 再取得
-          const { data: newData } = await supabase
-            .from('categories')
-            .select('*')
-            .eq('user_id', user.id);
-          setCategories(newData || []);
-        } else {
-          setCategories(data || []);
-        }
+        // 既存のカテゴリをそのまま設定
+        setCategories(data);
       }
     } catch (error) {
       console.error('[DEBUG] カテゴリ操作エラー:', error);
