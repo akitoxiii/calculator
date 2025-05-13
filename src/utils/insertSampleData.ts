@@ -23,12 +23,14 @@ export const insertSampleData = async () => {
 
     if (publicUserError || !publicUser) {
       console.log('public.usersテーブルにユーザーを作成します');
+      // ゲストユーザーの場合はダミーのメールアドレスを使用
+      const email = user.email || `guest+${userId}@example.com`;
       const { data: newUser, error: createUserError } = await supabase
         .from('users')
         .insert([
           {
             id: userId,
-            email: user.email,
+            email: email,
             created_at: new Date().toISOString()
           }
         ])
@@ -36,10 +38,16 @@ export const insertSampleData = async () => {
         .single();
 
       if (createUserError) {
-        console.error('ユーザー作成エラー:', createUserError);
-        throw new Error(`ユーザー作成エラー: ${createUserError.message}`);
+        // 409エラー（重複）の場合は無視して続行
+        if (createUserError.code === '23505') {
+          console.log('ユーザーは既に存在します。処理を続行します。');
+        } else {
+          console.error('ユーザー作成エラー:', createUserError);
+          throw new Error(`ユーザー作成エラー: ${createUserError.message}`);
+        }
+      } else {
+        console.log('作成されたユーザー:', newUser);
       }
-      console.log('作成されたユーザー:', newUser);
     }
 
     // カテゴリーの存在確認
