@@ -268,15 +268,15 @@ export const CalendarTab = ({
   const handleExpenseDelete = async (expenseId: string) => {
     if (!confirm('この取引を削除してもよろしいですか？')) return;
 
-    const { error } = await supabase
-      .from('expenses')
-      .delete()
+      const { error } = await supabase
+        .from('expenses')
+        .delete()
       .eq('id', expenseId);
 
-    if (error) {
-      alert('削除に失敗しました: ' + error.message);
-      return;
-    }
+      if (error) {
+        alert('削除に失敗しました: ' + error.message);
+        return;
+      }
 
     onExpenseDelete(expenseId);
   };

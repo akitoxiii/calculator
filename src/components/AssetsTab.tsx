@@ -159,21 +159,43 @@ export const AssetsTab = () => {
 
   // usersテーブルにuser.idがなければinsertする
   const ensureUserExists = async (userId: string, email: string = '') => {
-    // emailが空の場合はダミー値をセット
-    const safeEmail = email && email.length > 0 ? email : `guest+${userId}@example.com`;
-    const { data, error } = await supabase
-      .from('users')
-      .select('id')
-      .eq('id', userId)
-      .single();
-    if (!data) {
-      const { error: insertError } = await supabase
+    try {
+      // emailが空の場合はダミー値をセット
+      const safeEmail = email && email.length > 0 ? email : `guest+${userId}@example.com`;
+      
+      // まずユーザーの存在確認
+      const { data, error: selectError } = await supabase
         .from('users')
-        .insert([{ id: userId, email: safeEmail }]);
-      // 409や23505（重複）エラーは無視
-      if (insertError && insertError.code !== '23505' && insertError.code !== '409') {
-        throw insertError;
+        .select('id')
+        .eq('id', userId)
+        .single();
+
+      if (selectError && selectError.code !== 'PGRST116') {
+        console.error('ユーザー確認エラー:', selectError);
+        throw selectError;
       }
+
+      // ユーザーが存在しない場合のみ作成
+      if (!data) {
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert([{ 
+            id: userId, 
+            email: safeEmail,
+            created_at: new Date().toISOString()
+          }]);
+
+        if (insertError) {
+          console.error('ユーザー作成エラー:', insertError);
+          // 409や23505（重複）エラーは無視
+          if (insertError.code !== '23505' && insertError.code !== '409') {
+            throw insertError;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('ユーザー確認/作成エラー:', error);
+      // エラーを上位に伝播させない
     }
   };
 
