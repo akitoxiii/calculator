@@ -35,38 +35,7 @@ export const useCategories = () => {
       if (error) {
         return;
       }
-
-      // カテゴリが0件の場合のみ初期データを挿入
-      if (!data || data.length === 0) {
-        const defaultCategories = [
-          ...DEFAULT_EXPENSE_CATEGORIES,
-          ...DEFAULT_INCOME_CATEGORIES,
-        ].map(cat => ({
-          ...cat,
-          user_id: user.id,
-          id: uuidv4(),
-        }));
-        if (defaultCategories.length > 0) {
-          const { error: insertError } = await supabase
-            .from('categories')
-            .insert(defaultCategories);
-          if (insertError) {
-            return;
-          }
-        }
-        // 挿入後のデータを再取得
-        const { data: newData, error: newError } = await supabase
-          .from('categories')
-          .select('*')
-          .eq('user_id', user.id);
-        if (newError) {
-          return;
-        }
-        setCategories(newData || []);
-      } else {
-        // 既存のカテゴリをそのまま設定
-        setCategories(data);
-      }
+      setCategories(data || []);
     } catch (error) {
       // エラー処理
     } finally {
