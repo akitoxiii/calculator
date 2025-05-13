@@ -12,32 +12,40 @@ export const useCategories = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('useCategories: ユーザー情報を取得:', user);
-      setUser(user);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        console.log('useCategories: ユーザー情報を取得:', user);
+        setUser(user);
+      } catch (error) {
+        console.error('useCategories: ユーザー情報取得エラー:', error);
+        // エラー時は匿名ユーザーとして扱う
+        setUser({ id: 'anonymous' });
+      }
     };
     getUser();
   }, []);
 
   useEffect(() => {
-    if (user) {
-      console.log('useCategories: ユーザーが設定されたのでカテゴリーを読み込みます');
-      loadCategories();
-    }
+    loadCategories();
   }, [user]);
 
   const loadCategories = async () => {
-    if (!user || isLoading) {
-      console.log('useCategories: ユーザーが存在しないか、ロード中です');
+    if (isLoading) {
+      console.log('useCategories: ロード中です');
       return;
     }
     try {
       setIsLoading(true);
       console.log('useCategories: カテゴリーを読み込み中...');
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('user_id', user.id);
+      
+      let query = supabase.from('categories').select('*');
+      
+      // ユーザーIDがある場合はそのユーザーのカテゴリーを取得
+      if (user?.id && user.id !== 'anonymous') {
+        query = query.eq('user_id', user.id);
+      }
+      
+      const { data, error } = await query;
       
       if (error) {
         console.error('useCategories: カテゴリー読み込みエラー:', error);
@@ -54,10 +62,14 @@ export const useCategories = () => {
   };
 
   const addCategory = async (category: Omit<Category, 'id'>) => {
-    if (!user || isLoading) return;
+    if (isLoading) return;
     try {
       setIsLoading(true);
-      const payload = { ...category, user_id: user.id, id: uuidv4() };
+      const payload = { 
+        ...category, 
+        user_id: user?.id || 'anonymous', 
+        id: uuidv4() 
+      };
       const { error } = await supabase
         .from('categories')
         .insert([payload]);
@@ -76,24 +88,20 @@ export const useCategories = () => {
   };
 
   const updateCategory = async (id: string, data: Partial<Category>) => {
-    if (!user) return;
     const { error } = await supabase
       .from('categories')
       .update(data)
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .eq('id', id);
     if (!error) loadCategories();
     setIsEditing(null);
     setEditData({});
   };
 
   const deleteCategory = async (id: string) => {
-    if (!user) return;
     const { error } = await supabase
       .from('categories')
       .delete()
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .eq('id', id);
     if (!error) loadCategories();
   };
 
