@@ -28,19 +28,16 @@ export const useCategories = () => {
     if (!user || isLoading) return;
     try {
       setIsLoading(true);
-      console.log('[DEBUG] Loading categories for user:', user.id);
       const { data, error } = await supabase
         .from('categories')
         .select('*')
         .eq('user_id', user.id);
       if (error) {
-        console.error('[DEBUG] カテゴリ取得エラー:', error);
         return;
       }
 
       // カテゴリが0件の場合のみ初期データを挿入
       if (!data || data.length === 0) {
-        console.log('[DEBUG] No categories found, inserting default categories');
         const defaultCategories = [
           ...DEFAULT_EXPENSE_CATEGORIES,
           ...DEFAULT_INCOME_CATEGORIES,
@@ -54,7 +51,6 @@ export const useCategories = () => {
           .from('categories')
           .insert(defaultCategories);
         if (insertError) {
-          console.error('[DEBUG] カテゴリ挿入エラー:', insertError);
           return;
         }
 
@@ -64,17 +60,15 @@ export const useCategories = () => {
           .select('*')
           .eq('user_id', user.id);
         if (newError) {
-          console.error('[DEBUG] カテゴリ再取得エラー:', newError);
           return;
         }
-        console.log('[DEBUG] Loaded categories after insert:', newData);
         setCategories(newData || []);
       } else {
         // 既存のカテゴリをそのまま設定
         setCategories(data);
       }
     } catch (error) {
-      console.error('[DEBUG] カテゴリ操作エラー:', error);
+      // エラー処理
     } finally {
       setIsLoading(false);
     }

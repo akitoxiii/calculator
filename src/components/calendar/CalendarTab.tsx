@@ -266,23 +266,34 @@ export const CalendarTab = ({
     }
   };
 
-  const handleExpenseDelete = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('expenses')
-        .delete()
-        .eq('id', id)
-        .eq('user_id', user_id);
-      if (error) {
-        console.error('Error deleting expense:', error);
-        alert('削除に失敗しました: ' + error.message);
-        return;
-      }
-      await onExpensesReload();
-    } catch (error) {
-      console.error('Error deleting expense:', error);
-      alert('削除時にエラーが発生しました');
+  const handleExpenseDelete = async (expenseId: string) => {
+    if (!confirm('この取引を削除してもよろしいですか？')) return;
+
+    const { error } = await supabase
+      .from('expenses')
+      .delete()
+      .eq('id', expenseId);
+
+    if (error) {
+      alert('削除に失敗しました: ' + error.message);
+      return;
     }
+
+    onExpenseDelete(expenseId);
+  };
+
+  const handleExpenseEdit = async (expenseId: string, data: any) => {
+    const { error } = await supabase
+      .from('expenses')
+      .update(data)
+      .eq('id', expenseId);
+
+    if (error) {
+      alert('更新に失敗しました: ' + error.message);
+      return;
+    }
+
+    onExpenseDelete(expenseId);
   };
 
   console.log('Expenses summary:', {

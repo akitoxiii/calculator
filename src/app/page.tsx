@@ -63,7 +63,6 @@ export default function Home() {
     (async () => {
       try {
         const { data, error } = await supabase.auth.getUser();
-        console.log('[DEBUG] Auth getUser result:', { data, error });
         setUser(data?.user ?? null);
       } finally {
         setIsLoading(false);
@@ -71,78 +70,50 @@ export default function Home() {
     })();
   }, []);
 
-  console.log('[DEBUG] Current user state:', user);
+  const fetchExpenses = async () => {
+    if (!user) return;
 
-  const fetchExpenses = useCallback(async () => {
-    if (!user) {
-      console.log('[DEBUG] fetchExpenses: user is null');
+    const { data, error } = await supabase
+      .from('expenses')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false });
+
+    if (error) {
       return;
     }
-    try {
-      console.log('[DEBUG] fetchExpenses: fetching for user:', user.id);
-      // supabaseから取得
-      const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id);
-      const formattedExpenses = (data || []).map(expense => ({
-        ...expense,
-        date: expense.date
-      }));
-      setExpenses(formattedExpenses);
-    } catch (error) {
-      console.error('[DEBUG] fetchExpenses error:', error);
-    }
-  }, [user]);
 
-  // 初回マウント時のみfetchExpensesを呼ぶ
-  useEffect(() => {
-    if (user) {
-      fetchExpenses();
-    }
-  }, [user, fetchExpenses, activeTab]);
-
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
+    setExpenses(data || []);
   };
 
-  const handleExpenseSubmit = async (data: { amount: number; category_id: string; memo: string; type: CategoryType } | null) => {
-    console.log('[DEBUG] handleExpenseSubmit called with:', { user, data });
-    
-    if (!user || !data) {
-      console.log('[DEBUG] handleExpenseSubmit: user or data is null', { user, data });
-      showToast('ユーザー情報が取得できていません。再度ログインしてください。', 'error');
-      return;
-    }
+  const handleExpenseSubmit = async (data: any) => {
+    if (!user || !data) return;
 
-    if (!user.id) {
-      console.log('[DEBUG] handleExpenseSubmit: user.id is empty', { user });
-      showToast('ユーザーIDが不正です。', 'error');
-      return;
-    }
+    if (!user.id) return;
 
-    const categoryObj = categories.find(cat => cat.id === data.category_id);
-    if (!categoryObj) {
-      console.log('[DEBUG] handleExpenseSubmit: category not found', { category_id: data.category_id, categories });
-      showToast('カテゴリーが見つかりません', 'error');
-      return;
-    }
+    const category = categories.find(c => c.id === data.category_id);
+    if (!category) return;
 
     const insertData = {
       user_id: user.id,
-      category_id: categoryObj.id,
+      category_id: data.category_id,
       amount: data.amount,
       type: data.type,
-      memo: data.memo,
-      date: format(selectedDate, 'yyyy-MM-dd'),
+      date: data.date,
+      memo: data.memo || '',
+      payment_method: data.payment_method || null,
     };
-    console.log('[DEBUG] handleExpenseSubmit: inserting data:', insertData);
 
-    const { error } = await supabase.from('expenses').insert([insertData]);
+    const { error } = await supabase
+      .from('expenses')
+      .insert([insertData]);
+
     if (error) {
-      console.error('[DEBUG] handleExpenseSubmit: insert error:', error);
-      showToast('保存に失敗しました: ' + error.message, 'error');
+      alert('保存に失敗しました: ' + error.message);
       return;
     }
-    console.log('[DEBUG] handleExpenseSubmit: insert successful');
-    await fetchExpenses();
+
+    fetchExpenses();
   };
 
   const handleExpenseDelete = async (id: string) => {
@@ -336,7 +307,7 @@ export default function Home() {
         {activeTab === 'calendar' && (
           <CalendarTab
             selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
+            onDateSelect={setSelectedDate}
             expenses={expenses}
             onExpenseDelete={handleExpenseDelete}
             onExpensesUpdate={handleExpensesUpdate}

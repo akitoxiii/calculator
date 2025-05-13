@@ -15,18 +15,14 @@ export const ResetPassword = ({ onClose }: { onClose: () => void }) => {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,
       });
 
-      if (error) {
-        setError('パスワードリセットメールの送信に失敗しました。');
-        console.error('Reset password error:', error);
-      } else {
-        setMessage('パスワードリセット用のメールを送信しました。メールをご確認ください。');
-      }
-    } catch (error) {
-      setError('予期せぬエラーが発生しました。');
-      console.error('Unexpected error:', error);
+      if (error) throw error;
+
+      setMessage('パスワードリセット用のメールを送信しました。メールをご確認ください。');
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }

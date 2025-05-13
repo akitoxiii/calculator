@@ -32,7 +32,6 @@ export const AssetsTab = () => {
         
         // ユーザーがusersテーブルに存在しない場合は作成
         if (error || !data) {
-          console.log('Creating user in users table:', user.id);
           const { error: insertError } = await supabase
             .from('users')
             .insert([{ id: user.id, email: user.email }]);
@@ -233,14 +232,11 @@ export const AssetsTab = () => {
           txInsertData.payment_method = transaction.payment_method;
         }
 
-        console.log('Inserting transaction data:', txInsertData);
-        
         const { error } = await supabase
           .from('transactions')
           .insert([txInsertData]);
         
         if (error) {
-          console.error('Insert error details:', error);
           alert('Insert error (transactions): ' + error.message);
           return;
         }

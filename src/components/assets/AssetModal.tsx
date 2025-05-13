@@ -36,7 +36,10 @@ export default function AssetModal({ isOpen, onClose, onSave }: Props) {
           user_id: 'dummy-user-id', // TODO: 実際のユーザーIDを使用
         });
 
-      if (error) throw error;
+      if (error) {
+        alert('保存に失敗しました: ' + error.message);
+        return;
+      }
       onSave();
       onClose();
     } catch (error) {
