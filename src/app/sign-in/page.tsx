@@ -15,9 +15,10 @@ async function insertDefaultCategories(userId: string) {
   console.log('[DEBUG] insertDefaultCategories: userId =', userId);
   const categoriesWithUser = getDefaultCategories(userId);
   console.log('[DEBUG] insertDefaultCategories: categoriesWithUser =', categoriesWithUser);
+  console.log('[DEBUG] insertDefaultCategories: categoriesWithUser[0] =', categoriesWithUser[0]);
   const { error } = await supabase.from('categories').insert(categoriesWithUser);
   if (error) {
-    console.error('デフォルトカテゴリー挿入エラー:', error);
+    console.error('デフォルトカテゴリー挿入エラー:', error.message, error.details, error.hint);
     throw error;
   }
 }
