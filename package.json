@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "postinstall": "node -e \"if (process.env.SUPABASE_DB_URL) { require('child_process').execSync('supabase db push --db-url ' + process.env.SUPABASE_DB_URL, { stdio: 'inherit' }); } else { console.log('Skipping database push: SUPABASE_DB_URL not set'); }\"",
     "db:push": "supabase db push --db-url $SUPABASE_DB_URL"
   },
   "dependencies": {
