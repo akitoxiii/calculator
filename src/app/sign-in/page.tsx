@@ -3,6 +3,22 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabase';
+import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
+
+// デフォルトカテゴリー定義
+const getDefaultCategories = (userId: string) => [
+  ...DEFAULT_EXPENSE_CATEGORIES.map(cat => ({ ...cat, user_id: userId })),
+  ...DEFAULT_INCOME_CATEGORIES.map(cat => ({ ...cat, user_id: userId })),
+];
+
+async function insertDefaultCategories(userId: string) {
+  const categoriesWithUser = getDefaultCategories(userId);
+  const { error } = await supabase.from('categories').insert(categoriesWithUser);
+  if (error) {
+    console.error('デフォルトカテゴリー挿入エラー:', error);
+    throw error;
+  }
+}
 
 export default function SignInPage() {
   const router = useRouter();
@@ -45,6 +61,14 @@ export default function SignInPage() {
         return;
       }
       console.log('ゲストログイン成功:', data);
+      // デフォルトカテゴリー挿入
+      if (data.user) {
+        try {
+          await insertDefaultCategories(data.user.id);
+        } catch (e) {
+          setError('カテゴリー初期化に失敗しました');
+        }
+      }
       router.push('/');
     } catch (e) {
       console.error('予期せぬエラー:', e);
