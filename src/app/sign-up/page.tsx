@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabase';
+import { insertSampleData } from '@/utils/insertSampleData';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -22,6 +23,14 @@ export default function SignUpPage() {
     if (error) {
       setError(error.message);
     } else {
+      // サインアップ直後にデフォルトカテゴリーを挿入
+      try {
+        await insertSampleData();
+      } catch (e) {
+        // 挿入失敗時もエラー表示
+        setError('デフォルトカテゴリーの挿入に失敗しました');
+        return;
+      }
       setSuccess('確認メールを送信しました。メールをご確認ください。');
     }
   };
