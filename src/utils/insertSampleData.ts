@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
+import { v4 as uuidv4 } from 'uuid';
 
 export const insertSampleData = async () => {
   try {
@@ -68,17 +70,20 @@ export const insertSampleData = async () => {
       return;
     }
 
-    // デフォルトカテゴリーを挿入（支出カテゴリー）
-    console.log('支出カテゴリーを挿入中...');
-    const expenseCategoriesData = [
-      { user_id: userId, name: 'サブスク', type: 'expense', color: '#FF6384' },
-      { user_id: userId, name: 'ネットショッピング', type: 'expense', color: '#36A2EB' },
-      { user_id: userId, name: '家賃', type: 'expense', color: '#FFCE56' },
-      { user_id: userId, name: '通信費', type: 'expense', color: '#4BC0C0' },
-      { user_id: userId, name: 'ガス', type: 'expense', color: '#9966FF' }
-    ];
+    // デフォルトカテゴリーを全件挿入
+    console.log('全デフォルト支出カテゴリーを挿入中...');
+    const expenseCategoriesData = DEFAULT_EXPENSE_CATEGORIES.map(cat => ({
+      ...cat,
+      user_id: userId,
+      id: uuidv4()
+    }));
 
-    console.log('挿入する支出カテゴリーデータ:', expenseCategoriesData);
+    console.log('全デフォルト収入カテゴリーを挿入中...');
+    const incomeCategoriesData = DEFAULT_INCOME_CATEGORIES.map(cat => ({
+      ...cat,
+      user_id: userId,
+      id: uuidv4()
+    }));
 
     const { data: expenseCategories, error: expenseError } = await supabase
       .from('categories')
@@ -96,16 +101,6 @@ export const insertSampleData = async () => {
     }
 
     console.log('挿入された支出カテゴリー:', expenseCategories);
-
-    // 収入カテゴリーを挿入
-    console.log('収入カテゴリーを挿入中...');
-    const incomeCategoriesData = [
-      { user_id: userId, name: '給与', type: 'income', color: '#4CAF50' },
-      { user_id: userId, name: 'ボーナス', type: 'income', color: '#8BC34A' },
-      { user_id: userId, name: '副業収入', type: 'income', color: '#CDDC39' }
-    ];
-
-    console.log('挿入する収入カテゴリーデータ:', incomeCategoriesData);
 
     const { data: incomeCategories, error: incomeError } = await supabase
       .from('categories')
