@@ -6,7 +6,6 @@ import { ExpenseModal } from '../ExpenseModal';
 import { ExpenseChart } from '../ExpenseChart';
 import type { Expense, CategoryType } from '@/types/expense';
 import { supabase } from '@/utils/supabase';
-import { insertSampleData } from '@/utils/insertSampleData';
 import { useCategories } from '@/hooks/useCategories';
 import { storage } from '@/utils/storage';
 import type { Category } from '@/types/category';

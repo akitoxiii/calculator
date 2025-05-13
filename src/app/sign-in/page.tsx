@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabase';
-import { insertSampleData } from '@/utils/insertSampleData';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -34,13 +33,6 @@ export default function SignInPage() {
         alert('ゲストログインに失敗しました: ' + error.message);
         return;
       }
-      // カテゴリーを挿入するため、insertSampleDataを呼び出す
-      try {
-        await insertSampleData();
-      } catch (e) {
-        alert('デフォルトカテゴリーの挿入に失敗しました');
-      }
-      // 成功時はトップページへ遷移
       router.push('/');
     } catch (e) {
       alert('ゲストログインで予期せぬエラーが発生しました');
