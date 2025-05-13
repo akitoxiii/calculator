@@ -38,22 +38,14 @@ export const useCategories = () => {
 
       // カテゴリが0件の場合のみ初期データを挿入
       if (!data || data.length === 0) {
-        // 既存カテゴリ名・typeのセットを作成
-        const existingSet = new Set(
-          (data || []).map(cat => `${cat.name}_${cat.type}`)
-        );
-        // 既存にないものだけinsert対象に
         const defaultCategories = [
           ...DEFAULT_EXPENSE_CATEGORIES,
           ...DEFAULT_INCOME_CATEGORIES,
-        ]
-          .filter(cat => !existingSet.has(`${cat.name}_${cat.type}`))
-          .map(cat => ({
-            ...cat,
-            user_id: user.id,
-            id: uuidv4(),
-          }));
-
+        ].map(cat => ({
+          ...cat,
+          user_id: user.id,
+          id: uuidv4(),
+        }));
         if (defaultCategories.length > 0) {
           const { error: insertError } = await supabase
             .from('categories')
