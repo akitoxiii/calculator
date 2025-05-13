@@ -16,26 +16,41 @@ export default function SignInPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      setError(error.message);
-    } else {
-      router.push('/');
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        console.error('ログインエラー:', error);
+        setError(error.message);
+      } else {
+        console.log('ログイン成功:', data);
+        router.push('/');
+      }
+    } catch (e) {
+      console.error('予期せぬエラー:', e);
+      setError('予期せぬエラーが発生しました。もう一度お試しください。');
+    } finally {
+      setLoading(false);
     }
   };
 
   // ゲストログイン処理（Supabase匿名認証）
   const handleGuestLogin = async () => {
+    setLoading(true);
+    setError('');
     try {
       const { data, error } = await supabase.auth.signInAnonymously();
       if (error) {
-        alert('ゲストログインに失敗しました: ' + error.message);
+        console.error('ゲストログインエラー:', error);
+        setError(error.message);
         return;
       }
+      console.log('ゲストログイン成功:', data);
       router.push('/');
     } catch (e) {
-      alert('ゲストログインで予期せぬエラーが発生しました');
+      console.error('予期せぬエラー:', e);
+      setError('予期せぬエラーが発生しました。もう一度お試しください。');
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -23,6 +23,13 @@ file_size_limit = "50MiB"
 
 [auth]
 site_url = "https://calculator-akito.vercel.app"
-additional_redirect_urls = ["https://calculator-akito.vercel.app"]
+additional_redirect_urls = [
+  "https://calculator-akito.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:3001"
+]
 jwt_expiry = 3600
-enable_signup = true 
+enable_signup = true
+enable_anonymous_signup = true
+enable_email_signup = true
+enable_email_confirmations = true 
