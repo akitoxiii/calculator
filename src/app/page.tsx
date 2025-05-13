@@ -41,6 +41,7 @@ export default function Home() {
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>('calendar');
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -73,17 +74,36 @@ export default function Home() {
   const fetchExpenses = async () => {
     if (!user) return;
 
-    const { data, error } = await supabase
+    // expenses取得
+    const { data: expensesData, error: expensesError } = await supabase
       .from('expenses')
       .select('*')
       .eq('user_id', user.id)
       .order('date', { ascending: false });
 
-    if (error) {
+    // transactions取得
+    const { data: transactionsData, error: transactionsError } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false });
+
+    if (expensesError || transactionsError) {
       return;
     }
 
-    setExpenses(data || []);
+    setTransactions(transactionsData || []);
+
+    // transactionsのうち「支払い」「収入」だけをExpense型に変換してマージ
+    const txExpenses = (transactionsData || [])
+      .filter(tx => tx.type === '支払い' || tx.type === '収入')
+      .map(convertTransactionToExpense);
+
+    // expensesとマージ
+    const all = [...(expensesData || []), ...txExpenses];
+    // idでユニーク化
+    const unique = Array.from(new Map(all.map(e => [e.id, e])).values());
+    setExpenses(unique);
   };
 
   const handleExpenseSubmit = async (data: any) => {
@@ -175,14 +195,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const transactions = storage.getTransactions();
-    const txExpenses = transactions.map(convertTransactionToExpense);
-    setExpenses(prev => {
-      const all = [...prev, ...txExpenses];
-      const unique = Array.from(new Map(all.map(e => [e.id, e])).values());
-      return unique;
-    });
-  }, [activeTab, categories]);
+    if (user) {
+      fetchExpenses();
+    }
+  }, [user, activeTab, categories]);
 
   // ゲストログイン処理
   const handleGuestLogin = () => {
