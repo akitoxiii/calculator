@@ -13,6 +13,7 @@ export const useCategories = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('useCategories: ユーザー情報を取得:', user);
       setUser(user);
     };
     getUser();
@@ -20,24 +21,33 @@ export const useCategories = () => {
 
   useEffect(() => {
     if (user) {
+      console.log('useCategories: ユーザーが設定されたのでカテゴリーを読み込みます');
       loadCategories();
     }
   }, [user]);
 
   const loadCategories = async () => {
-    if (!user || isLoading) return;
+    if (!user || isLoading) {
+      console.log('useCategories: ユーザーが存在しないか、ロード中です');
+      return;
+    }
     try {
       setIsLoading(true);
+      console.log('useCategories: カテゴリーを読み込み中...');
       const { data, error } = await supabase
         .from('categories')
         .select('*')
         .eq('user_id', user.id);
+      
       if (error) {
+        console.error('useCategories: カテゴリー読み込みエラー:', error);
         return;
       }
+      
+      console.log('useCategories: 読み込んだカテゴリー:', data);
       setCategories(data || []);
     } catch (error) {
-      // エラー処理
+      console.error('useCategories: 予期せぬエラー:', error);
     } finally {
       setIsLoading(false);
     }

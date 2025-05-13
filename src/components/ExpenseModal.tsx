@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { CategoryType, Category, Expense } from '@/types/expense';
 import { DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/types/expense';
+import { normalizeUUID } from '@/utils/uuid';
 
 interface Props {
   isOpen: boolean;
@@ -14,19 +15,6 @@ interface Props {
   onDelete?: (id: string) => Promise<void>;
 }
 
-// UUID正規化関数
-function normalizeUUID(id: string): string {
-  const hex = id.replace(/-/g, '');
-  if (hex.length !== 32) return id;
-  return [
-    hex.slice(0, 8),
-    hex.slice(8, 12),
-    hex.slice(12, 16),
-    hex.slice(16, 20),
-    hex.slice(20)
-  ].join('-');
-}
-
 export const ExpenseModal = ({
   isOpen,
   onClose,
@@ -36,7 +24,7 @@ export const ExpenseModal = ({
   dailyExpenses,
   onDelete
 }: Props) => {
-  console.log('ExpenseModal categories:', categories);
+  console.log('ExpenseModal: 受け取ったカテゴリー:', categories);
   const [type, setType] = useState<CategoryType>('expense');
   const [amount, setAmount] = useState('');
   const [memo, setMemo] = useState('');
@@ -49,13 +37,18 @@ export const ExpenseModal = ({
   }, [calculatorDisplay]);
 
   // categories配列を正規化
-  const normalizedCategories = useMemo(
-    () => categories.map(cat => ({ ...cat, id: normalizeUUID(cat.id) })),
-    [categories]
-  );
+  const normalizedCategories = useMemo(() => {
+    console.log('ExpenseModal: カテゴリーを正規化中...');
+    const normalized = categories.map(cat => ({ ...cat, id: normalizeUUID(cat.id) }));
+    console.log('ExpenseModal: 正規化後のカテゴリー:', normalized);
+    return normalized;
+  }, [categories]);
 
   const filteredCategories = useMemo(() => {
-    return normalizedCategories.filter(cat => cat.type === type);
+    console.log('ExpenseModal: カテゴリーをフィルタリング中...', { type, normalizedCategories });
+    const filtered = normalizedCategories.filter(cat => cat.type === type);
+    console.log('ExpenseModal: フィルタリング後のカテゴリー:', filtered);
+    return filtered;
   }, [normalizedCategories, type]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,7 +56,7 @@ export const ExpenseModal = ({
     setCategoryId(categoryId);
     const normalizedId = normalizeUUID(categoryId);
     const category = normalizedCategories.find(cat => cat.id === normalizedId);
-    console.log('選択されたID:', categoryId, '正規化ID:', normalizedId, '該当カテゴリー:', category);
+    console.log('ExpenseModal: カテゴリー選択:', { categoryId, normalizedId, category });
     setSelectedCategory(category || null);
   };
 
