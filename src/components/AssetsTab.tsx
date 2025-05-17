@@ -115,7 +115,10 @@ export const AssetsTab = () => {
       },
       { total: 0, savings: 0, available: 0 }
     );
-    setBalance(newBalance);
+    setBalance({
+      ...newBalance,
+      available: newBalance.total + newBalance.savings
+    });
   };
 
   const handleAdd = () => {
